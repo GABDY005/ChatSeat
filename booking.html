@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Slot</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <style>
+        body{
+            font-family:Tahoma, sans-serif;
+            background-color:Beige;
+        }
+        .container {
+            background:Bisque;
+            padding:30px;
+            border-radius:10px;
+            text-align:center;
+            max-width:500px;
+            margin: auto;
+            margin-top:50px;
+        }
+        select, input, button {
+            width:100%;
+            padding:10px;
+            margin:10px 0;
+            border:1px solid #333;
+            border-radius:5px;
+            font-size:1em;
+        }
+        button {
+            background:Azure;
+            cursor:pointer;
+            color:black;
+            font-weight:bold;
+        }
+       
+        a {
+            display:inline-block;
+            margin-top:15px;
+            text-decoration:none;
+            color:#333;
+            font-weight:bold;
+        }
+        .success-message{
+            display:none;
+            color:black;
+            font-weight:bold;
+            margin-top:10px;
+        }
+        #book-slot:focus+.success-message{
+            display:block;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2> Book your Slot</h2>
+        <p>Select place and time to book your slot: </p>
+
+        <form>
+            <label for="location">Select Place:</label>
+            <select id="location" name="Location" requuired>
+                <option value="Tea_Tree_Plaza">Tea Tree Plaza</option>
+                <option value="Campbelltown_Library">Campbelltown Library</option>
+                <option value="Rundle_Mall">Rundle Mall</option>
+                <option value="Burnside">Burnside</option>
+                <option value="Greenacres_Library">Greenacres Library</option>
+                <option value="Prospect_Library">Prospect Library</option>
+        </select>
+        
+       <label for="date"> Select Date: </label>
+        <input type="date" id="date" name="date" required placeholder="YYYY-MM-DD">
+
+        <label for="time"> Select Time:</label>
+        <input type="time" id="time" min="09:00" max="16:00" step="3600" required>
+
+        <button type="button" id="book-slot">Book Slot</button>
+        <div class="success-message">Slot booked successfully</div>
+        </form>
+    
+       <br>     <a href="index.html">Back to Home</a>
+         </br>
+</body>
+</html>

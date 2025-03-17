@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> Chat Seat </title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            background-color:Beige;
+        }
+        h1{
+            font-size: 4em;
+            color:black;
+            margin-top:0px;
+        }
+        h2{
+            font-size:2em;
+            color:black;
+            margin-top:0px;
+        }
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+}
+        
+    .btn{
+        font-size:1.5em;
+        padding:15px;
+        border:2px solid black;
+        background-color:#FFFFFF;
+        cursor:pointer;
+        text-align:center;
+        font-weight:bold;
+        transition:0.3s;
+        width:250px;
+        text-decoration:none;
+    }
+    .btn:hover{
+        background-color:black;
+        color:white;
+    }
+    @media (max-width: 600px) {
+    .button-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+    
+</style>
+    <body>
+        <h1 text-align:center;>Chat Seat</h1>
+        <h2>Connecting through Conversations.</h2>
+
+        <div class="button-container">
+            <a href="tips.html" class="btn"> Tips for Good Listener.</a>
+            <a href="booking.html" class="btn"> Booking Slots</a>
+            <a href="review.html" class="btn"> Review </a>
+            <a href="help.html" class="btn"> Help</a>
+            <a href="feedback.html" class="btn"> Feedback Form </a>
+        </div>
+    </body>
+</html>
