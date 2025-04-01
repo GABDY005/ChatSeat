@@ -1,23 +1,43 @@
 import logo from './logo.svg';
-import './App.css';
+//import './App.css';
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import Home from './Components/Home';
+import Help from './Components/Help';
+import About from './Components/About';
+import Login from './Components/Login';
+import Signup from './Components/Signup';
+import Dashboard from './Components/Dashboard';
+import Listener from './Components/Listener';
+import Coordinators from './Components/Coordinators';
+import Chatroom from './Components/Chatroom';
+import Feedback from './Components/Feedback';
+import Scheduling from './Components/Scheduling';
+import AvailableListener from './Components/AvailableListener';
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+    
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Help" element={<Help />} />
+        <Route path="/About" element={<About />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/Listener" element={<Listener />} />
+        <Route path="/Coordinators" element={<Coordinators />} />
+        <Route path="/Chatroom" element={<Chatroom />} />
+        <Route path="/Feedback" element={<Feedback />} />
+        <Route path="/Scheduling" element={<Scheduling />} />
+        <Route path="/AvailableListener" element={<AvailableListener />} />
+
+
+      </Routes>
+    </Router>
     </div>
   );
 }
