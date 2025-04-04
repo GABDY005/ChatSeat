@@ -28,7 +28,7 @@ export default function Dashboard() {
 
                  <div className="mt-auto pt-4">
                     
-                     <Link to="login.html" className="bg-white text-black font-bold px-5 py-2 rounded-lg hover:bg-gray-200 inline-block">Logout</Link>
+                     <Link to="/" className="bg-white text-black font-bold px-5 py-2 rounded-lg hover:bg-gray-200 inline-block">Logout</Link>
                  </div>
              </div>
 
