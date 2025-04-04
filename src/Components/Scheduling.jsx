@@ -1,11 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Scheduling() {
+function Scheduling() {
   return (
     <>
-   <div class="sidebar">
-   <div className="flex flex-col p-4 space-y-4">
+
+<div className="bg-[#003366] text-white text-center py-3">
+         <h4 className="m-0 text-lg font-semibold">Book Your Slot</h4>
+     </div>
+
+   <div class="flex min-h-[calc(100vh-60px)]">
+    <div className="w-1/5 bg-[#A8E4F2] p-4 flex flex-col">
                      
                      <div className="nav-links space-y-4">
                         <Link to="/Coordinators" className="block text-[#003366] font-bold text-lg hover:underline">Coordinators</Link>
@@ -21,18 +26,18 @@ export default function Scheduling() {
 
                  <div className="mt-auto pt-4">
                     
-                     <Link to="login.html" className="bg-white text-black font-bold px-5 py-2 rounded-lg hover:bg-gray-200 inline-block">Logout</Link>
+                     <Link to="/" className="block text-[black] font-[bold] text-center no-underline mt-10 p-2.5 rounded-[10px]">Logout</Link>
                  </div>
              </div>
 
 
     
-    <div class="booking-box">
-        <h2> Book your Slot</h2>
-        <form action="dashboard.html" method="get">
+    <div class="ml-[240px] mt-[80px] px-10 py-6 flex gap-6">
+        <h2 className='text-xl font-bold mb-4' > Book your Slot</h2>
+        {/* <form action="dashboard.html" method="get"> */}
 
-            <label for="location">Select Place:</label>
-            <select id="location" name="Location" requuired>
+            <label htmlFor="location" className='font-bold text-[#003366]'> Select Place:</label>
+            <select id="location" name="Location" className='mt-1 mb-4 p-2 rounded w-full' required>
                 <option value="">----Select Location----</option>
                 <option value="Tea_Tree_Plaza">Tea Tree Plaza</option>
                 <option value="Campbelltown_Library">Campbelltown Library</option>
@@ -42,17 +47,20 @@ export default function Scheduling() {
                 <option value="Prospect_Library">Prospect Library</option>
         </select>
         
-        <label for="date">Select Date:</label>
-        <input type="date" id="date" name="date" required />
+        <label htmlFor="date" className='font-bold text-[#003366]'>Select Date:</label>
+        <input type="date" id="date" name="date" className='mt-1 mb-4 p-2 rounded-full' placeholder='YYYY-MM-DD' disabled/>
 
-        <label for="time"> Select Time:</label>
-        <input type="time" id="time" min="09:00" max="16:00" step="3600" required />
+        <label htmlFor="time" className="font-bold text-[#003366]">Select Time:</label>
+          <select id="time" className="mt-1 mb-4 p-2 rounded w-full" disabled>
+            <option value="">-- Choose Time --</option>
+
+          </select>
 
         <button type="button" id="book-slot">Book Slot</button>
         
-        </form>
+        {/* </form> */}
     
-        <div class="confirmation-box" id="confirmation-box">
+        <div className="bg-[#e6f3ff] text-[#003366] p-[15px] rounded-md border-l-[5px] border-l-[#003366] border-solid" id="confirmation-box">
             <strong>Booking Confirmed!</strong>
             You have booked a chat seat at <strong id="confirm-location"></strong>
             on <strong id="confirm-date"></strong> at <strong id="confirm-time"></strong>.
@@ -63,3 +71,5 @@ export default function Scheduling() {
     </>
   )
 }
+
+export default Scheduling;
