@@ -9,7 +9,7 @@ export default function Dashboard() {
          <h4 className="m-0 text-lg font-semibold">Welcome to Dashboard</h4>
      </div>
 
-     <div class="flex ">
+     <div class="flex min-h-[calc(100vh-60px)]">
          <div className="w-1/5 bg-[#A8E4F2] p-4 flex flex-col">
              <div>
                  <div className="flex flex-col p-4 space-y-4">
