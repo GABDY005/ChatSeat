@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 //import './App.css';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Home from './Components/Home';
@@ -13,6 +13,7 @@ import Chatroom from './Components/Chatroom';
 import Feedback from './Components/Feedback';
 import Scheduling from './Components/Scheduling';
 import AvailableListener from './Components/AvailableListener';
+//import Sidebar from './Components/Sidebar';
 
 
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/Feedback" element={<Feedback />} />
         <Route path="/Scheduling" element={<Scheduling />} />
         <Route path="/AvailableListener" element={<AvailableListener />} />
+        {/* <Route path="/Sidebar" element={<Sidebar />} /> */}
 
 
       </Routes>

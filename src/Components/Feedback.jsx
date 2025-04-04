@@ -1,33 +1,39 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+//import Sidebar from './Sidebar';
 
 export default function Feedback() {
   return (
     <>
-      {/* Header */}
-      <div className="bg-[#003366] text-white text-center p-4 w-full fixed top-0 left-0 z-50">
-        <h4 className="m-0 font-bold">Feedback Form</h4>
-      </div>
-
-      <div className="flex pt-16 min-h-screen">
-        {/* Sidebar */}
-        <div className="bg-[#A8E4F2] fixed top-16 left-0 h-full w-48 p-5 overflow-y-auto">
-          <div className="flex flex-col space-y-4">
-            <Link to="/Coordinators" className="text-[#003366] font-bold text-lg hover:underline">Coordinators</Link>
-            <Link to="/Scheduling" className="text-[#003366] font-bold text-lg hover:underline">Scheduling</Link>
-            <Link to="/Listener" className="text-[#003366] font-bold text-lg hover:underline">Listener</Link>
-            <Link to="/Chatroom" className="text-[#003366] font-bold text-lg hover:underline">Chat Room</Link>
-            <Link to="/About" className="text-[#003366] font-bold text-lg hover:underline">About</Link>
-            <Link to="/Feedback" className="text-[#003366] font-bold text-lg hover:underline">Feedback</Link>
-            <Link to="/Help" className="text-[#003366] font-bold text-lg hover:underline">Help</Link>
+     <div className="bg-[#003366] text-white text-center py-3">
+              <h4 className="m-0 text-lg font-semibold">Feedback Form</h4>
           </div>
+           <div class="flex min-h-[calc(100vh-60px)]">
+                   <div className="w-1/5 bg-[#A8E4F2] p-4 flex flex-col">
+                       <div>
+                           <div className="flex flex-col p-4 space-y-4">
+                               
+                               <div className="nav-links space-y-4">
+                                  <Link to="/Coordinators" className="block text-[#003366] font-bold text-lg hover:underline">Coordinators</Link>
+                                  <Link to="/Scheduling" className="block text-[#003366] font-bold text-lg hover:underline">Scheduling</Link>
+                                  <Link to="/Listener" className="block text-[#003366] font-bold text-lg hover:underline">Listener</Link>
+                                  <Link to="/Chatroom" className="block text-[#003366] font-bold text-lg hover:underline"> Chat Room</Link>
+                                  <Link to="/About" className="block text-[#003366] font-bold text-lg hover:underline"> About</Link>
+                                  <Link to="/Feedback" className="block text-[#003366] font-bold text-lg hover:underline">Feedback</Link>
+                                  <Link to="/Help" className="block text-[#003366] font-bold text-lg hover:underline">Help</Link>
+                               </div>
+          
+                           </div>
+          
+                           <div className="mt-auto pt-4">
+                              
+                               <Link to="/" className="bg-white text-black font-bold px-5 py-2 rounded-lg hover:bg-gray-200 inline-block">Logout</Link>
+                           </div>
+                       </div>
+          
+                       </div>
 
-          <div className="mt-6">
-            <Link to="/" className="bg-white text-black font-bold py-2 px-4 rounded-lg inline-block hover:bg-gray-100">Logout</Link>
-          </div>
-        </div>
-
-        {/* Main Content */}
+      
         <div className="ml-48 flex-1 px-8 py-10">
           <div className="max-w-[600px] mx-auto text-black">
             <h2 className="font-bold mb-4">We Value Your Feedback</h2>
