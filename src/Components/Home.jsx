@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
 
-        <nav className="flex items-center justify-between bg-[#A8E4F2] px-4 py-4">
+        <nav className="flex items-center justify-between bg-[#003366] px-4 py-4">
           <div className="flex justify-center">
             <div className="w-[60px] h-[60px] border-[3px] border-orange-500 rounded-full text-orange-500 font-bold text-center leading-[54px] text-[1.2rem]">
               logo
@@ -14,20 +14,22 @@ export default function Home() {
 
           <div className="flex space-x-2">
             <Link to="/AvailableListener"
-              className="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-100"
+              className="border border-gray-400 text-white px-4 py-2 rounded hover:bg-gray-100"
             >
               Schedule
             </Link>
-            <Link to="/Help"
-              className="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-100"
+            {/* <Link to="/Help"
+              className="border border-gray-400 text-white px-4 py-2 rounded hover:bg-gray-100"
             >
               Help
             </Link>
             <Link to="/About"
-              className="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-100"
-            >
-              About Us
-            </Link>
+              className="border border-gray-400 text-white px-4 py-2 rounded hover:bg-gray-100"
+            > */}
+              {/* About Us
+            </Link> */}
+
+            
             <Link to="/Login"
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
