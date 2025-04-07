@@ -43,17 +43,22 @@ export default function Scheduling() {
       .select('*')
       .eq('location', location)
       .eq('date', date);
-
+  
     if (error) {
       console.error('Error loading times:', error);
       return;
     }
-
+  
+    if (!data || data.length === 0) {
+      setAvailableTimes(timeslots);
+      return;
+    }
+  
     const bookedTimes = data.reduce((acc, cur) => {
       acc[cur.time] = (acc[cur.time] || 0) + 1;
       return acc;
     }, {});
-
+  
     const available = timeslots.filter(t => !bookedTimes[t] || bookedTimes[t] < 2);
     setAvailableTimes(available);
   };
