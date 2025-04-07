@@ -1,107 +1,100 @@
-
-
-/* .sidebar {
-    background-color: #A8E4F2;
-    position: fixed;
-    top: 60px;
-    left: 0;
-    height: calc(100vh - 60px);
+body {
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .topbar {
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+  }
+  
+  .main-layout {
+    display: flex;
+  }
+  
+  .sidebar {
     width: 220px;
-    min-height: 100vh;
+    background-color: #A8E4F2;
     padding: 20px;
-    float: left;
-    overflow-y: auto;
-} */
-
-.logo img {
+    min-height: 100vh;
+  }
+  
+  .logo img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
     border: 3px solid #A8E4F2;
     object-fit: cover;
-}
-
-/* .nav-links a {
+    display: block;
+    margin: 0 auto 20px;
+  }
+  
+  .nav-links a {
     display: block;
     margin: 15px 0;
     font-weight: bold;
-    font-size: 1rem;
     color: #003366;
     text-decoration: none;
-} */
-
-.nav-links a:hover {
+  }
+  
+  .nav-links a:hover {
     text-decoration: underline;
-}
-
-/* .logout-btn {
+  }
+  
+  .logout-btn {
     background-color: white;
     color: black;
     font-weight: bold;
-    padding: 10px 20px;
+    padding: 10px;
     border-radius: 10px;
     text-decoration: none;
     display: inline-block;
-} */
-
-.logout-btn:hover {
+    margin-top: 40px;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 60px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .btn-post {
+    width: 100%;
+    padding: 10px;
+    font-weight: bold;
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 30px;
+  }
+  
+  .thread-card {
     background-color: #f1f1f1;
-}
-
-/* .dashboard-header {
-    background-color: #003366;
-    color: white;
-    text-align: center;
     padding: 15px;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-} */
-/* 
-.main-content {
-    margin-left: 17%;
-    padding: 80px 40px 40px;
-} */
-
-.coordinator-table {
-    max-width: 800px;
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #003366;
-    color: white;
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-
-    .dashboard-header {
-        margin-left: 0;
-    }
-
-    .main-content {
-        margin-left: 0;
-        padding: 20px;
-    }
-}
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .replies {
+    margin-top: 10px;
+  }
+  
+  .reply {
+    background-color: #e6f2ff;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+  }
