@@ -59,8 +59,7 @@ export default function Chatroom() {
             <Link to="/Dashboard">Dashboard</Link>
             <Link to="/Coordinators">Coordinator</Link>
             <Link to="/Listener">Listener</Link>
-            <Link to="/Scheduling">Book Your Slot</Link>
-            <Link to="/Chatroom">Chat Room</Link>
+            <Link to="/Scheduling">Scheduling</Link>
             <Link to="/Feedback">Feedback</Link>
             <Link to="/Help">Help</Link>
             <Link to="/About">About Us</Link>

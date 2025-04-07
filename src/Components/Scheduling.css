@@ -1,0 +1,129 @@
+body {
+  background-color: #ffffff;
+  font-size: 1em;
+  font-family: Tahoma, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-header {
+  background-color: #003366;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.sidebar {
+  background-color: #A8E4F2;
+  width: 220px;
+  min-height: 100vh;
+  padding: 20px;
+  float: left;
+}
+
+.logo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #A8E4F2;
+  object-fit: cover;
+}
+
+.nav-links a {
+  display: block;
+  margin: 15px 0;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #003366;
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.logout-btn {
+  margin-top: 40px;
+  display: block;
+  background: white;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.logout-btn:hover {
+  background-color: #f1f1f1;
+}
+
+.main-area {
+  margin-left: 240px;
+  margin-top: 80px;
+  padding: 40px;
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.booking-box,
+.calendar-box {
+  background-color: #c4dcec;
+  padding: 30px;
+  border-radius: 10px;
+  flex: 1 1 45%;
+  min-width: 350px;
+}
+
+label {
+  font-weight: bold;
+  color: #003366;
+  display: block;
+  margin-top: 10px;
+}
+
+select,
+input[type="text"],
+.flatpickr-input,
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+}
+
+button.btn-primary {
+  background-color: #003366;
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+
+button.btn-primary:hover {
+  background-color: #002244;
+}
+
+.confirmation-box {
+  background-color: #e6f3ff;
+  padding: 15px;
+  border-left: 5px solid #003366;
+  border-radius: 6px;
+  color: #003366;
+  margin-top: 10px;
+}
+
+#calendar {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
