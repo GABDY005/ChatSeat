@@ -1,163 +1,123 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-//import Sidebar from './Sidebar';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import database from '../firebase';
+import { ref, push, onValue, set } from 'firebase/database';
+import './Chatroom.css';
 
 export default function Chatroom() {
+  const [threads, setThreads] = useState({});
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
+  useEffect(() => {
+    const threadsRef = ref(database, 'threads');
+    onValue(threadsRef, snapshot => {
+      const data = snapshot.val() || {};
+      setThreads(data);
+    });
+  }, []);
+
+  const handlePost = () => {
+    if (!title || !content) {
+      alert("Please enter a title and content!");
+      return;
+    }
+    const newRef = push(ref(database, 'threads'));
+    set(newRef, {
+      title,
+      content,
+      username: "User",
+      timestamp: Date.now()
+    });
+    setTitle('');
+    setContent('');
+  };
+
+  const handleReply = (threadID, replyText) => {
+    if (!replyText) return;
+    const newReply = push(ref(database, `threads/${threadID}/replies`));
+    set(newReply, {
+      text: replyText,
+      username: "User",
+      timestamp: Date.now()
+    });
+  };
+
   return (
-      <>
-   <div className="bg-[#003366] text-white text-center py-3">
-                 <h4 className="m-0 text-lg font-semibold">Feedback Form</h4>
-             </div>
-              <div class="flex min-h-[calc(100vh-60px)]">
-                      <div className="w-1/5 bg-[#A8E4F2] p-4 flex flex-col">
-                          <div>
-                              <div className="flex flex-col p-4 space-y-4">
-                                  
-                                  <div className="nav-links space-y-4">
-                                     <Link to="/Coordinators" className="block text-[#003366] font-bold text-lg hover:underline">Coordinators</Link>
-                                     <Link to="/Scheduling" className="block text-[#003366] font-bold text-lg hover:underline">Scheduling</Link>
-                                     <Link to="/Listener" className="block text-[#003366] font-bold text-lg hover:underline">Listener</Link>
-                                     <Link to="/Chatroom" className="block text-[#003366] font-bold text-lg hover:underline"> Chat Room</Link>
-                                     <Link to="/About" className="block text-[#003366] font-bold text-lg hover:underline"> About</Link>
-                                     <Link to="/Feedback" className="block text-[#003366] font-bold text-lg hover:underline">Feedback</Link>
-                                     <Link to="/Help" className="block text-[#003366] font-bold text-lg hover:underline">Help</Link>
-                                  </div>
-             
-                              </div>
-             
-                              <div className="mt-auto pt-4">
-                                 
-                                  <Link to="/" className="bg-white text-black font-bold px-5 py-2 rounded-lg hover:bg-gray-200 inline-block">Logout</Link>
-                              </div>
-                          </div>
-             
-                          </div>
+    <>
+      <div className="topbar">
+        <h4>Chat Room</h4>
+      </div>
 
-            <div className="ml-[17%] pt-20 pb-10 px-10">
-                <h2 className="fw-bold mb-4">Discussion Forum</h2>
-                <p>Post new topics and discuss with others.</p>
+      <div className="main-layout">
+        {/* Sidebar */}
+        <div className="sidebar">
+          <div className="logo">
+            <img src="assets/GetAttachmentThumbnail.png" alt="Chat Seats Logo" />
+          </div>
+          <div className="nav-links">
+            <Link to="/Dashboard">Dashboard</Link>
+            <Link to="/Coordinators">Coordinator</Link>
+            <Link to="/Listener">Listener</Link>
+            <Link to="/Scheduling">Scheduling</Link>
+            <Link to="/Feedback">Feedback</Link>
+            <Link to="/Help">Help</Link>
+            <Link to="/About">About Us</Link>
+          </div>
+          <Link to="/" className="logout-btn">Logout</Link>
+        </div>
 
-                <div className="mb-3">
-                    <input type="text" id="threadTitle" placeholder="Enter topic title" className="form-control mb-2" />
-                    <textarea id="threadContent" placeholder="Write your discussion" className="form-control mb-2"></textarea>
-                    <button onclick="postThread()" className="btn btn-primary w-100">Post Discussion</button>
+        {/* Main Content */}
+        <div className="main-content">
+          <h2>Discussion Forum</h2>
+          <p>Post new topics and discuss with others.</p>
+
+          <div className="form-section">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter topic title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <textarea
+              className="form-control"
+              placeholder="Write your discussion"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            <button className="btn-post" onClick={handlePost}>Post Discussion</button>
+          </div>
+
+          <h3>Discussion Threads</h3>
+          <div className="thread-list">
+            {Object.entries(threads).reverse().map(([id, thread]) => (
+              <div className="thread-card" key={id}>
+                <h4>{thread.title}</h4>
+                <p>{thread.content}</p>
+                <small>Posted by <b>{thread.username}</b> at {new Date(thread.timestamp).toLocaleString()}</small>
+
+                <input
+                  type="text"
+                  className="form-control mt-2"
+                  placeholder="Write a reply..."
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleReply(id, e.target.value);
+                  }}
+                />
+                <div className="replies">
+                  {thread.replies && Object.values(thread.replies).map((reply, i) => (
+                    <div className="reply" key={i}>
+                      <b>{reply.username}</b> at {new Date(reply.timestamp).toLocaleString()}<br />
+                      {reply.text}
+                    </div>
+                  ))}
                 </div>
-
-                <h3 className="mt-4">Discussion Threads</h3>
-                 <div id="threads"></div> 
-            </div>
-     
-
-    
-
-    
-        {/* const firebaseConfig = {
-            apiKey: "AIzaSyBB6KrILbmD6knl9yOsQuFEDP38oU67bcg",
-            authDomain: "chat-seats-chat-room.firebaseapp.com",
-            databaseURL: "https://chat-seats-chat-room-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "chat-seats-chat-room",
-            storageBucket: "chat-seats-chat-room.firebasestorage.app",
-            messagingSenderId: "804236683094",
-            appId: "1:804236683094:web:a8236d8f0f0572acfbd8f7"
-        }; */}
-
-        {/* firebase.initializeApp(firebaseConfig);
-        const database = firebase.database(); */}
-
-        {/* function postThread() {
-            let title = document.getElementById("threadTitle").value;
-            let content = document.getElementById("threadContent").value;
-
-            if (!title || !content) {
-                alert("Please enter a title and content!");
-                return;
-            }
-
-            let newThread = database.ref("threads").push();
-            newThread.set({
-                title: title,
-                content: content,
-                username: "User", 
-                timestamp: Date.now() 
-            });
-
-            document.getElementById("threadTitle").value = "";
-            document.getElementById("threadContent").value = "";
-        }
-
-        function loadThreads() {
-            database.ref("threads").on("value", snapshot => {
-                let threadsDiv = document.getElementById("threads");
-                threadsDiv.innerHTML = "";
-
-                snapshot.forEach(childSnapshot => {
-                    let threadID = childSnapshot.key;
-                    let data = childSnapshot.val();
-
-                    let date = new Date(data.timestamp);
-                    let formattedTime = date.toLocaleString();
-
-                    let thread =  `<div className="thread-card" style="background-color: #f1f1f1; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-                                    <h4 style="color: #003366;">${data.title}</h4>
-                                    <p>${data.content}</p>
-                                    <small>Posted by <b>${data.username}</b> at ${formattedTime}</small>
-
-                                    <div className="reply-box mt-2">
-                                        <input type="text" id="reply-${threadID}" placeholder="Write a reply..." className="form-control mb-2">
-                                        <button onclick="postReply('${threadID}')" className="btn btn-sm btn-secondary">Reply</button>
-                                    </div>
-
-                                    <div id="replies-${threadID}" className="mt-3"></div>
-                                  </div>
-                                  <hr style="border: 1px solid #ccc; margin: 20px 0;">`;
-
-                    threadsDiv.innerHTML += thread;
-
-                    loadReplies(threadID);
-                });
-            }); */}
-        {/* }
-
-        function postReply(threadID) {
-            let replyInput = document.getElementById(`reply-${threadID}`);
-            let replyText = replyInput.value.trim();
-
-            if (!replyText) {
-                alert("Reply cannot be empty!");
-                return;
-            }
-
-            let newReply = database.ref(`threads/${threadID}/replies`).push();
-            newReply.set({
-                text: replyText,
-                username: "User",
-                timestamp: Date.now()
-            });
-
-            replyInput.value = "";
-        }
-
-        function loadReplies(threadID) {
-            database.ref(`threads/${threadID}/replies`).on("value", snapshot => {
-                let repliesDiv = document.getElementById(`replies-${threadID}`);
-                repliesDiv.innerHTML = "";
-
-                snapshot.forEach(replySnapshot => {
-                    let replyData = replySnapshot.val();
-                    let date = new Date(replyData.timestamp);
-                    let formattedTime = date.toLocaleString();
-                    let reply = `<div style="background: #e6f2ff; padding: 8px; border-radius: 5px; margin-top: 5px;">
-                                    <b>${replyData.username}</b> at ${formattedTime}: <br>
-                                    ${replyData.text}
-                                 </div>`;
-
-                    repliesDiv.innerHTML += reply;
-                });
-            });
-        }
-
-        window.onload = loadThreads; */}
-    </div> 
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </>
-  )
+  );
 }
