@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import database from '../firebase';
 import { ref, push, onValue, set } from 'firebase/database';
-import './Chatroom.css';
+
 
 export default function Chatroom() {
   const [threads, setThreads] = useState({});
@@ -17,6 +17,8 @@ export default function Chatroom() {
     });
   }, []);
 
+
+  
   const handlePost = () => {
     if (!title || !content) {
       alert("Please enter a title and content!");

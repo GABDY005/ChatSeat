@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import supabase from '../supabase';
-import './Scheduling.css';
+
 
 export default function Scheduling() {
   const [location, setLocation] = useState('');
@@ -31,13 +31,13 @@ export default function Scheduling() {
 
   useEffect(() => {
     if (location && date) loadAvailableTimes();
-  }, [location, date]);
+  }, [location, date, loadAvailableTimes]);
 
   useEffect(() => {
     if (calendarLocation) fetchCalendarEvents(calendarLocation);
   }, [calendarLocation]);
 
-  const loadAvailableTimes = async () => {
+  const loadAvailableTimes = useCallback(async () => {
     const { data, error } = await supabase
       .from('bookings')
       .select('*')
@@ -61,7 +61,7 @@ export default function Scheduling() {
   
     const available = timeslots.filter(t => !bookedTimes[t] || bookedTimes[t] < 2);
     setAvailableTimes(available);
-  };
+  }, [location, date, timeslots]);
 
   const bookSlot = async () => {
     if (!location || !date || !time) return alert('Please complete all fields.');
