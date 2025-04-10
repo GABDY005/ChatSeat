@@ -21,55 +21,49 @@ export default function Login() {
   };
 
   return (
-    <div className="font-sans bg-[#a8e4f2] ml-0 p-0 flex justify-center items-center h-[100vh]">
-      <div class="login-box">
-        <h2 className="font-bold text-center mb-6">Login</h2>
-        <form onSubmit={handleSubmit}>
-          <label className="font-bold text-primary-blue" htmlFor="email"> Username or Email:</label>
-          <input className="w-full p-3 mt-2 mb-5 border-solid rounded-md"
+    <>
+      <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4]">
+        <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+          <h2 className="text-2xl font-bold text-center text-[#1E3A8A] mb-6">
+              Log In
+          </h2>
+
+          <form onSubmit={handleSubmit}>
+            <label className="block text-sm font-semibold mb-1 text-gray-700"> Email </label>
+            <input
             type="email"
-            id="email"
-            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter email"
+            className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
             required
           />
 
-          <label className="font-bold text-primary-blue" htmlFor="password">Password:</label>
-          <input className="w-full p-3 mt-2 mb-5 border-solid rounded-md"
+<label className="block text-sm font-semibold mb-1 text-gray-700">Password</label>
+          <input
             type="password"
-            name="password"
-            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter Password"
+            placeholder="Enter password"
+            className="w-full p-3 mb-6 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
             required
           />
 
-          <button
-            className="bg-[#003366] text-white font-bold p-3 rounded-md w-full cursor-pointer"
-            type="submit"
-          >
-            Login{" "}
+          <button type="submit" className="w-full bg-[#003366] text-white py-3 rounded-md font-semibold hover:bg-[#1E3A8A] transition">
+            Login
           </button>
+          </form>
 
+          <div className="text-center mt-6 text-sm">
+            <p>
+              Don't have an account? {" "}
+              <Link to="/Signup" className="text-[#1E3A8A] font-semibold hover:underline"> SignUp</Link>
+            </p>
 
-        </form>
-
-        <div class="text-center mt-3">
-          <p>
-            Don’t have an account?{" "}
-            
-            <Link to="/Signup" className="text-[#003366] font-bold"> Sign Up</Link>
-              
-          </p>
+            <Link to="/" className="inline-block mt-4 text-black font-semibold hover:underline"> ⬅️Back</Link>
+          </div>
         </div>
-
-        <Link to="/" className="text-center mt-6 font-bold text-none text-[#003366]">
-          Back{" "}
-        </Link>
       </div>
-    </div>
+    </>
   );
 }
