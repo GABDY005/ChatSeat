@@ -60,7 +60,7 @@ export default function Login() {
               <Link to="/Signup" className="text-[#1E3A8A] font-semibold hover:underline"> SignUp</Link>
             </p>
 
-            <Link to="/" className="inline-block mt-4 text-black font-semibold hover:underline"> ⬅️Back</Link>
+            <Link to="/" className="inline-block mt-4 text-black font-semibold hover:underline"> Back</Link>
           </div>
         </div>
       </div>
