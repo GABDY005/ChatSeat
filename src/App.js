@@ -14,7 +14,6 @@ import Feedback from "./Components/Feedback";
 import Scheduling from "./Components/Scheduling";
 import AvailableListener from "./Components/AvailableListener";
 import Sidebar from './Components/Sidebar';
-import TestUser from "./Components/TestUser";
 import AdminDashboard from "./Components/AdminDashboard";
 //import RequireAuth from "./context/RequireAuth";
 //import SidebarCoordinator from "./Components/SidebarCoordinator";
@@ -43,7 +42,6 @@ function App() {
           <Route path="/Scheduling" element={<Scheduling />} />
           <Route path="/AvailableListener" element={<AvailableListener />} />
           <Route path="/Sidebar" element={<Sidebar />} />
-          <Route path="/TestUser" element={<TestUser />} />
           <Route path = "/CoordinatorDashboard" element={<CoordinatorDashboard />} />
           <Route path = "/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/CoordinatorDashboard" element={<CoordinatorDashboard />} />
