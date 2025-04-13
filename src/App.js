@@ -13,13 +13,16 @@ import Chatroom from "./Components/Chatroom";
 import Feedback from "./Components/Feedback";
 import Scheduling from "./Components/Scheduling";
 import AvailableListener from "./Components/AvailableListener";
-//import Sidebar from './Components/Sidebar';
+import Sidebar from './Components/Sidebar';
 import TestUser from "./Components/TestUser";
-import CoordinatorDashboard from "./Components/CoordinatorDashboard";
 import AdminDashboard from "./Components/AdminDashboard";
-import RequireAuth from "./context/RequireAuth";
-
-
+//import RequireAuth from "./context/RequireAuth";
+//import SidebarCoordinator from "./Components/SidebarCoordinator";
+import CoordinatorDashboard from "./Components/CoordinatorDashboard";
+import Appointments from "./Components/Appointments";
+import AvailabilityCoordinator from "./Components/AvailabilityCoordinator";
+import ChatroomCoordinator from "./Components/ChatroomCoordinator";
+import LessonCoordinator from "./Components/LessonCoordinator";
 
 
 function App() {
@@ -39,28 +42,17 @@ function App() {
           <Route path="/Feedback" element={<Feedback />} />
           <Route path="/Scheduling" element={<Scheduling />} />
           <Route path="/AvailableListener" element={<AvailableListener />} />
-          {/* <Route path="/Sidebar" element={<Sidebar />} /> */}
+          <Route path="/Sidebar" element={<Sidebar />} />
           <Route path="/TestUser" element={<TestUser />} />
           <Route path = "/CoordinatorDashboard" element={<CoordinatorDashboard />} />
           <Route path = "/AdminDashboard" element={<AdminDashboard />} />
-          {/* <Route
-            path="/coordinator"
-            element={
-              <RequireAuth role="coordinator">
-                <CoordinatorDashboard />
-              </RequireAuth>
-            }
-          /> */}
-          {/* <Route
-            path="/admin"
-            element={
-              <RequireAuth role="admin">
-                <AdminDashboard />
-              </RequireAuth>
-
-
-            }
-          /> */}
+          <Route path="/CoordinatorDashboard" element={<CoordinatorDashboard />} />
+          <Route path="/Appointments" element={<Appointments />} />
+          <Route path="/AvailabilityCoordinator" element={<AvailabilityCoordinator />} />
+          <Route path="/LessonCoordinator" element={<LessonCoordinator />} />
+          <Route path="/ChatroomCoordinator" element={<ChatroomCoordinator />} />
+          
+        
 
 
 

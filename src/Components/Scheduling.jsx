@@ -1,10 +1,11 @@
 import React, {useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import supabase from '../supabase';
+import Sidebar from './Sidebar';
 
 
 export default function Scheduling() {
@@ -127,8 +128,12 @@ export default function Scheduling() {
         <h4 className="m-0 text-lg font-semibold">Scheduling</h4>
       </div>
 
-      <div className="flex min-h-[calc(100vh-60px)]">
-        {/* Sidebar */}
+      <div className="flex min-h-[calc(100vh-64px)]">
+              
+              <Sidebar userName="Darshi" />
+
+      {/* <div className="flex min-h-[calc(100vh-60px)]">
+        
         <div className="w-1/5 bg-[#A8E4F2] p-4 flex flex-col">
           <div className="logo mb-4">
             <img src="assets/GetAttachmentThumbnail.png" alt="Chat Seats Logo" className="w-20 h-20 rounded-full border-4 border-[#A8E4F2] object-cover" />
@@ -145,7 +150,7 @@ export default function Scheduling() {
           <div className="mt-auto pt-4">
             <Link to="/" className="bg-white text-black font-bold px-5 py-2 rounded-lg hover:bg-gray-200 inline-block">Logout</Link>
           </div>
-        </div>
+        </div> */}
 
         {/* Main Content */}
         <div className="flex-grow flex p-10 gap-10 bg-[#d9ecf5]">
