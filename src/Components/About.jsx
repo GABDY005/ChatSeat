@@ -1,15 +1,39 @@
-import React from "react";
-//import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
+import supabase from "../supabase";
 
 export default function About() {
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+
+      if (user && !error) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+    };
+
+    fetchUserName();
+  }, []);
+
   return (
     <>
       <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
         <h4 className="text-xl font-bold">About Us</h4>
       </div>
-      <div class="flex min-h-[calc(100vh-60px)]">
-        <Sidebar userName="Darshi" />
+      <div className="flex min-h-[calc(100vh-60px)]">
+        <Sidebar userName={firstName} />
 
         <div className="flex-1 p-10">
           <div className="mw-[800px] bg-white p-5 border-r-8 shadow-[0px_0px_10px_rgba(0,0,0,0.1)]">

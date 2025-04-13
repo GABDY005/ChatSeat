@@ -1,17 +1,42 @@
-import React from "react";
-// import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
+import supabase from "../supabase";
 
 export default function Listener() {
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+    };
+
+    fetchUserName();
+  }, []);
+
   return (
     <>
       <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
         <h4 className="text-xl font-bold">Listener</h4>
       </div>
-      <div class="flex min-h-[calc(100vh-60px)]">
-        <Sidebar userName="Darshi" />
+      <div className="flex min-h-[calc(100vh-60px)]">
+        <Sidebar userName={firstName} />
       </div>
-      <div class="md:ml-[220px] pt-20 px-6 pb-10">
+      <div className="md:ml-[220px] pt-20 px-6 pb-10">
         <div className="ml-[17%] pt-20 pb-10 px-10">
           <div className="mw-[90%] m-auto text-left">
             <p>

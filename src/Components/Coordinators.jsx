@@ -1,16 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 //import { Link } from 'react-router-dom'
 import Sidebar from "./Sidebar";
+import supabase from "../supabase";
 
 export default function Coordinators() {
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+    };
+
+    fetchUserName();
+  }, []);
+
   return (
     <>
       <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
         <h4 className="text-xl font-bold">Coordinator</h4>
       </div>
-      <div class="flex min-h-[calc(100vh-60px)]">
-        <Sidebar userName="Darshi" />
-        
+      <div className="flex min-h-[calc(100vh-60px)]">
+        <Sidebar userName={firstName} />
+
         <div className="flex pt-16">
           <div className="ml-56 px-10 py-12 w-full">
             <div className="max-w-4xl mx-auto text-black space-y-6">
