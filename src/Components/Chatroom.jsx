@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import database from "../firebase";
-import { ref, push, onValue, set } from "firebase/database";
+import { ref, push, onValue, set, remove } from "firebase/database";
 import Sidebar from "./Sidebar";
 import supabase from "../supabase";
 
@@ -9,6 +9,8 @@ export default function Chatroom() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [username, setUsername] = useState("User");
+  const [userId, setUserId] = useState("");
+  const [role, setRole] = useState("listener");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -17,14 +19,17 @@ export default function Chatroom() {
       } = await supabase.auth.getUser();
 
       if (user) {
-        const { data: profile, error } = await supabase
+        setUserId(user.id);
+
+        const { data: profile } = await supabase
           .from("profiles")
-          .select("first_name")
+          .select("first_name, role")
           .eq("id", user.id)
           .single();
 
-        if (profile && profile.first_name) {
+        if (profile) {
           setUsername(profile.first_name);
+          setRole(profile.role);
         }
       }
     };
@@ -45,25 +50,40 @@ export default function Chatroom() {
       alert("Please enter a title and content!");
       return;
     }
+
     const newRef = push(ref(database, "threads"));
     set(newRef, {
       title,
       content,
       username,
+      user_id: userId,
       timestamp: Date.now(),
     });
+
     setTitle("");
     setContent("");
   };
 
   const handleReply = (threadID, replyText) => {
     if (!replyText) return;
+
     const newReply = push(ref(database, `threads/${threadID}/replies`));
     set(newReply, {
       text: replyText,
       username,
+      user_id: userId,
       timestamp: Date.now(),
     });
+  };
+
+  const handleDeleteThread = (threadId) => {
+    const threadRef = ref(database, `threads/${threadId}`);
+    remove(threadRef);
+  };
+
+  const handleDeleteReply = (threadId, replyKey) => {
+    const replyRef = ref(database, `threads/${threadId}/replies/${replyKey}`);
+    remove(replyRef);
   };
 
   return (
@@ -76,31 +96,28 @@ export default function Chatroom() {
 
         <div className="main-content p-6 w-full">
           <h2 className="text-xl font-bold mb-4">Discussion Forum</h2>
-          <p className="mb-4">Post new topics and discuss with others.</p>
-
           <div className="mb-6">
             <input
               type="text"
-              className="form-control w-full p-2 mb-2 border border-gray-300 rounded"
+              className="form-control w-full p-2 mb-2 border rounded"
               placeholder="Enter topic title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
             <textarea
-              className="form-control w-full p-2 mb-2 border border-gray-300 rounded"
+              className="form-control w-full p-2 mb-2 border rounded"
               placeholder="Write your discussion"
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
             <button
-              className="w-full bg-[#003366] text-white py-2 rounded hover:bg-[#1E3A8A]"
+              className="w-full bg-[#003366] text-white py-2 rounded"
               onClick={handlePost}
             >
               Post Discussion
             </button>
           </div>
 
-          <h3 className="text-lg font-semibold mb-3">Discussion Threads</h3>
           <div className="space-y-4">
             {Object.entries(threads)
               .reverse()
@@ -113,9 +130,18 @@ export default function Chatroom() {
                     {new Date(thread.timestamp).toLocaleString()}
                   </small>
 
+                  {(thread.user_id === userId || role === "admin") && (
+                    <button
+                      onClick={() => handleDeleteThread(id)}
+                      className="text-red-500 ml-4"
+                    >
+                      Delete
+                    </button>
+                  )}
+
                   <input
                     type="text"
-                    className="form-control mt-2 p-2 border border-gray-300 rounded w-full"
+                    className="form-control mt-2 p-2 border rounded w-full"
                     placeholder="Write a reply..."
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
@@ -124,16 +150,28 @@ export default function Chatroom() {
                       }
                     }}
                   />
+
                   <div className="mt-3 space-y-2">
                     {thread.replies &&
-                      Object.values(thread.replies).map((reply, i) => (
+                      Object.entries(thread.replies).map(([key, reply]) => (
                         <div
-                          className="bg-blue-100 p-2 rounded text-sm"
-                          key={i}
+                          className="bg-blue-100 p-2 rounded text-sm flex justify-between"
+                          key={key}
                         >
-                          <b>{reply.username}</b> at{" "}
-                          {new Date(reply.timestamp).toLocaleString()}<br />
-                          {reply.text}
+                          <div>
+                            <b>{reply.username}</b> at{" "}
+                            {new Date(reply.timestamp).toLocaleString()} <br />
+                            {reply.text}
+                          </div>
+
+                          {(reply.user_id === userId || role === "admin") && (
+                            <button
+                              onClick={() => handleDeleteReply(id, key)}
+                              className="text-red-500 ml-4"
+                            >
+                              ❌  
+                            </button>
+                          )}
                         </div>
                       ))}
                   </div>
