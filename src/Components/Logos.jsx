@@ -1,13 +1,12 @@
 import React from "react";
 import SidebarCoordinator from "./SidebarCoordinator";
 
-
-function LessonCoordinator() {
+function Logos() {
     return(
         <>
         {/* Navbar */}
       <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
-        <h4 className="text-xl font-bold">Resources</h4>
+        <h4 className="text-xl font-bold">Logos</h4>
       </div>
 
       {/* Main Layout */}
@@ -19,7 +18,5 @@ function LessonCoordinator() {
 
       </>
     )
-    
 }
-
-export default LessonCoordinator;
+export default Logos;

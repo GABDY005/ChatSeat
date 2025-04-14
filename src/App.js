@@ -22,7 +22,9 @@ import Appointments from "./Components/Appointments";
 import AvailabilityCoordinator from "./Components/AvailabilityCoordinator";
 import ChatroomCoordinator from "./Components/ChatroomCoordinator";
 import LessonCoordinator from "./Components/LessonCoordinator";
-
+import Logos from "./Components/Logos";
+import FeedbackCoordinator from "./Components/FeedbackCoordinator";
+import HelpCoordinator from "./Components/HelpCoordinator";
 
 function App() {
   return (
@@ -49,7 +51,10 @@ function App() {
           <Route path="/AvailabilityCoordinator" element={<AvailabilityCoordinator />} />
           <Route path="/LessonCoordinator" element={<LessonCoordinator />} />
           <Route path="/ChatroomCoordinator" element={<ChatroomCoordinator />} />
-          
+          <Route path="/Logos" element={<Logos />} />
+          <Route path="/FeedbackCoordinator" element={<FeedbackCoordinator />} />
+          <Route path="/HelpCoordinator" element={<HelpCoordinator />} />
+          {/* Add other routes here */}
         
 
 
