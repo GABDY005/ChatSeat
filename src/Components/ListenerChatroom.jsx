@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import database from "../firebase";
 import { ref, push, onValue, set } from "firebase/database";
-import Sidebar from "./Sidebar";
+import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../supabase";
 
-export default function Chatroom() {
+export default function ListenerChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -72,7 +72,7 @@ export default function Chatroom() {
         <h4 className="text-xl font-bold">Chatroom</h4>
       </div>
       <div className="flex min-h-[calc(100vh-64px)]">
-        <Sidebar userName={username} />
+        <ListenerSidebar userName={username} />
 
         <div className="main-content p-6 w-full">
           <h2 className="text-xl font-bold mb-4">Discussion Forum</h2>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SidebarCoordinator from "./SidebarCoordinator";
+import CoordinatorSidebar from "./CoordinatorSidebar";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 
@@ -9,7 +9,7 @@ const dummyCalendarData = [
   { date: "2025-04-16", time: "11:00", count: 0 },
 ];
 
-export default function AvailabilityCoordinator() {
+export default function CoordinatorAvailability() {
   const [calendarEvents, setCalendarEvents] = useState([]);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function AvailabilityCoordinator() {
       </div>
 
       <div className="flex min-h-[calc(100vh-64px)]">
-        <SidebarCoordinator userName="Tricia" />
+        <CoordinatorSidebar userName="Tricia" />
 
         <div className="flex-1 p-10">
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">View All Slots</h2>

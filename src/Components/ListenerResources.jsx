@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
+import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../supabase";
 
-export default function Listener() {
+export default function ListenerResources() {
   const [firstName, setFirstName] = useState("User");
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function Listener() {
         <h4 className="text-xl font-bold">Listener</h4>
       </div>
       <div className="flex min-h-[calc(100vh-60px)]">
-        <Sidebar userName={firstName} />
+        <ListenerSidebar userName={firstName} />
       </div>
       <div className="md:ml-[220px] pt-20 px-6 pb-10">
         <div className="ml-[17%] pt-20 pb-10 px-10">

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import SidebarCoordinator from "./SidebarCoordinator";
+import CoordinatorSidebar from "./CoordinatorSidebar";
 import supabase from "../supabase";
 
-export default function Feedback() {
+export default function CoordinatorFeedback() {
   const [firstName, setFirstName] = useState("User");
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function Feedback() {
         <h4 className="text-xl font-bold">Feedback</h4>
       </div>
       <div className="flex min-h-[calc(100vh-60px)]">
-        <SidebarCoordinator userName={firstName} />
+        <CoordinatorSidebar userName={firstName} />
 
         <div className="ml-48 flex-1 px-8 py-10">
           <div className="max-w-[600px] mx-auto text-black">

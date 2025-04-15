@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function AvailableListener() {
+export default function BookedListener() {
   const listeners = [
     {id: 1, location: "Tea Tree Plaza",date:"15/04/2025", time:"10:00 AM"},
     {id: 2,location: "Campbelltow Library",date:"10/05/2025", time:"11:00 AM"},

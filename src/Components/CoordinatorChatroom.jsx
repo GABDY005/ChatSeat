@@ -1,7 +1,7 @@
 import React from "react";
-import SidebarCoordinator from "./SidebarCoordinator";
+import CoordinatorSidebar from "./CoordinatorSidebar";
 
-function ChatroomCoordinator() {
+function CoordinatorChatroom() {
     return(
         <>
         {/* Navbar */}
@@ -12,7 +12,7 @@ function ChatroomCoordinator() {
       {/* Main Layout */}
       <div className="flex min-h-[calc(100vh-64px)]">
         {/* Sidebar */}
-        <SidebarCoordinator userName="Tricia" />
+        <CoordinatorSidebar userName="Tricia" />
 
         </div>
 
@@ -21,4 +21,4 @@ function ChatroomCoordinator() {
     
 }
 
-export default ChatroomCoordinator;
+export default CoordinatorChatroom;

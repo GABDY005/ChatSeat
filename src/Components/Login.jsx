@@ -23,7 +23,7 @@ export default function Login() {
       } else if (role === "coordinator") {
         navigate("/CoordinatorDashboard");
       } else {
-        navigate("/dashboard");
+        navigate("/ListenerDashboard");
       }
     } catch (error) {
       alert(error.message || "Login failed. Please try again.");

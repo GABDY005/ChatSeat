@@ -1,5 +1,5 @@
 import React from "react";
-import SidebarCoordinator from "./SidebarCoordinator";
+import CoordinatorSidebar from "./CoordinatorSidebar";
 
 function CoordinatorDashboard() {
   return (
@@ -12,7 +12,7 @@ function CoordinatorDashboard() {
       {/* Main Layout */}
       <div className="flex min-h-[calc(100vh-64px)]">
         {/* Sidebar */}
-        <SidebarCoordinator userName="Tricia" />
+        <CoordinatorSidebar userName="Tricia" />
 
         {/* Main Content */}
         <div className="flex-1 flex items-center justify-center p-10">

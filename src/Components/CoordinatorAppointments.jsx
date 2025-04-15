@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SidebarCoordinator from "./SidebarCoordinator";
+import CoordinatorSidebar from "./CoordinatorSidebar";
 
 const dummyAppointments = [
   {
@@ -25,7 +25,7 @@ const dummyAppointments = [
   },
 ];
 
-export default function Appointments() {
+export default function CoordinatorAppointments() {
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const toggleDropdown = (id) => {
@@ -41,7 +41,7 @@ export default function Appointments() {
 
       {/* Page Layout */}
       <div className="flex min-h-[calc(100vh-64px)]">
-        <SidebarCoordinator userName="Tricia" />
+        <CoordinatorSidebar userName="Tricia" />
 
         {/* Main Content */}
         <div className="flex-1 p-10">

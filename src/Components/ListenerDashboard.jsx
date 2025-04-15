@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Sidebar from './Sidebar';
+import ListenerSidebar from './ListenerSidebar';
 import supabase from '../supabase';
 
-export default function Dashboard() {
+export default function ListenerDashboard() {
   const [firstName, setFirstName] = useState("User");
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function Dashboard() {
       </div>
 
       <div className="flex min-h-[calc(100vh-64px)]">
-        <Sidebar userName={firstName} />
+        <ListenerSidebar userName={firstName} />
 
         <div className="flex-1 flex items-center justify-center p-10">
           <div className="text-center max-w-[600px]">

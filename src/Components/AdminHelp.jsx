@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
+import AdminSidebar from "./AdminSidebar";
 import supabase from "../supabase";
 
 export default function Help() {
@@ -35,7 +35,7 @@ export default function Help() {
       </div>
 
       <div className="flex min-h-[calc(100vh-64px)]">
-        <Sidebar userName={firstName} />
+        <AdminSidebar userName={firstName} />
 
         <div className="flex-1 px-10 py-12 w-full">
           <div className="max-w-[800px] mx-auto text-black">

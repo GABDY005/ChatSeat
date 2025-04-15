@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 //import { Link } from 'react-router-dom'
-import Sidebar from "./Sidebar";
+import Sidebar from "./ListenerSidebar";
 import supabase from "../supabase";
 
-export default function Coordinators() {
+export default function CoordinatorsListInListener() {
   const [firstName, setFirstName] = useState("User");
 
   useEffect(() => {

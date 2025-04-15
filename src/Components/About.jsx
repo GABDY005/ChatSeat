@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
+import Sidebar from "./ListenerSidebar";
 import supabase from "../supabase";
+import ListenerSidebar from "./ListenerSidebar";
 
 export default function About() {
   const [firstName, setFirstName] = useState("User");
@@ -33,7 +34,7 @@ export default function About() {
         <h4 className="text-xl font-bold">About Us</h4>
       </div>
       <div className="flex min-h-[calc(100vh-60px)]">
-        <Sidebar userName={firstName} />
+        <ListenerSidebar userName={firstName} />
 
         <div className="flex-1 p-10">
           <div className="mw-[800px] bg-white p-5 border-r-8 shadow-[0px_0px_10px_rgba(0,0,0,0.1)]">

@@ -1,5 +1,5 @@
 import React from "react";
-import SidebarCoordinator from "./SidebarCoordinator";
+import SidebarCoordinator from "./CoordinatorSidebar";
 
 function Logos() {
     return(
