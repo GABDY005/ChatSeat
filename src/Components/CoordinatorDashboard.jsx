@@ -4,17 +4,16 @@ import CoordinatorSidebar from "./CoordinatorSidebar";
 function CoordinatorDashboard() {
   return (
     <>
-      {/* Navbar */}
+      
       <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
         <h4 className="text-xl font-bold">Coordinator Dashboard</h4>
       </div>
 
-      {/* Main Layout */}
+      
       <div className="flex min-h-[calc(100vh-64px)]">
-        {/* Sidebar */}
+        
         <CoordinatorSidebar userName="Tricia" />
 
-        {/* Main Content */}
         <div className="flex-1 flex items-center justify-center p-10">
           <div className="text-center max-w-[600px]">
             <h2 className="font-bold text-3xl mb-5 text-[#1E3A8A]">Welcome, Coordinators</h2>

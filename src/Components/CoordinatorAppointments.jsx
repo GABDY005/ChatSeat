@@ -34,23 +34,21 @@ export default function CoordinatorAppointments() {
 
   return (
     <>
-      {/* Top Navbar */}
+      
       <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
         <h4 className="text-xl font-bold">Booked Appointments</h4>
       </div>
 
-      {/* Page Layout */}
       <div className="flex min-h-[calc(100vh-64px)]">
         <CoordinatorSidebar userName="Tricia" />
 
-        {/* Main Content */}
         <div className="flex-1 p-10">
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">Confirmed Listener Bookings</h2>
 
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {dummyAppointments.map((appointment) => (
               <div key={appointment.id} className="relative bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
-                {/* 3-dot menu */}
+              
                 <div className="absolute top-3 right-3">
                   <button onClick={() => toggleDropdown(appointment.id)} className="text-gray-600 hover:text-black text-xl">
                     ⋮
@@ -65,7 +63,7 @@ export default function CoordinatorAppointments() {
                   )}
                 </div>
 
-                {/* Card Content */}
+       
                 <h3 className="text-lg font-semibold text-[#1E3A8A] mb-1">{appointment.listenerName}</h3>
                 <p className="text-gray-700 mb-1">🕒 {appointment.time}</p>
                 <p className="text-gray-700 mb-1">📅 {appointment.date}</p>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   const handleLogoClick = () => {
-    window.location.reload(); // Refresh the page
+    window.location.reload(); 
   };
 
   return (
@@ -13,7 +13,7 @@ export default function Home() {
      
         <div onClick={handleLogoClick} className="flex items-center space-x-2 cursor-pointer ">
           <img
-            src="/assets/logo.png"  // Replace with your actual logo path
+            src=""  
             alt="ChatSeat Logo"
             className="w-12 h-12 object-cover rounded-full border-2 border-white shadow-md"
           />
@@ -22,20 +22,14 @@ export default function Home() {
 
         <h1 className="text-white font-extrabold text-2xl sm:text-3xl tracking-wide uppercase"></h1>
        
-        <div className="flex items-center space-x-4">
-          <Link
-            to="/AvailableListener"
-            className="bg-white text-[#003366] font-semibold px-4 py-2 rounded-full shadow hover:bg-blue-100 transition duration-200"
-          >
-            Who's at the seat?
-          </Link>
+        
           <Link
             to="/Login"
             className="bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200"
           >
             Login
           </Link>
-        </div>
+       
       </nav>
 
       

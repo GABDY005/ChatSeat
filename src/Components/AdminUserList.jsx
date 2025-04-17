@@ -5,7 +5,7 @@ export default function AdminUserList() {
   const [users, setUsers] = useState([
     {
       id: 1,
-      name: "Darshi Patel",
+      name: "Darshi Gabani",
       email: "darshi@example.com",
       role: "Listener"
     },

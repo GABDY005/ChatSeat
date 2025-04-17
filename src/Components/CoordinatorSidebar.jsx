@@ -12,10 +12,10 @@ function CoordinatorSidebar({ userName = "Coordinator" }) {
   return (
     <>
     <div className="w-64 bg-[#A8E4F2] min-h-screen flex flex-col px-4 py-4">
-      {/* User Greeting */}
+      
       <div className="text-[#1E3A8A] font-bold text-xl mb-12 mt-1 text-center">Hello, {userName} </div>
 
-      {/* Navigation Links */}
+     
       <div className="flex flex-col space-y-3 mb-auto">
         <Link to="/CoordinatorDashboard" className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle('/CoordinatorDashboard')}`}>
           Dashboard

@@ -13,11 +13,11 @@ export default function BookedListener() {
   return (
     <>
     <div className="min-h-sceen bg-[#f4f8fb]">
-      {/* Code for Navbar */}
+      
       <nav className="flex items-center justify-between bg-[#1E3A8A] px-6 py-4 shadow-md">
         <div>
           <Link to="/" className='text-white font-semibold text-lg hover:underline'>
-            ⬅️Home
+            Home
           </Link>
         </div>
 

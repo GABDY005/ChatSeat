@@ -12,12 +12,12 @@ export default function AdminSidebar({ userName = "Admin" }) {
   return (
     <div className="w-64 bg-[#A8E4F2] min-h-screen flex flex-col justify-between px-4 py-6">
       
-      {/* Greeting */}
+     
       <div className="mb-6 text-[#1E3A8A] font-bold text-lg">
-        👋 Hello, {userName}
+        Hello, {userName}
       </div>
 
-      {/* Nav Links */}
+     
       <div className="flex-1 flex flex-col space-y-3">
         <Link to="/AdminDashboard" className={`px-4 py-2 rounded-full text-center shadow ${getLinkStyle("/AdminDashboard")}`}>
           Dashboard
@@ -36,7 +36,7 @@ export default function AdminSidebar({ userName = "Admin" }) {
         </Link>
       </div>
 
-      {/* Logout */}
+      
       <div className="pt-6">
         <Link
           to="/"

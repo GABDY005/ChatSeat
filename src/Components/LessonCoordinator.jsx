@@ -9,11 +9,11 @@ function LessonCoordinator() {
         <h4 className="text-xl font-bold">Coordinator Resources</h4>
       </div>
 
-      {/* Layout */}
+      
       <div className="flex min-h-[calc(100vh-64px)]">
         <CoordinatorSidebar userName="Tricia" />
 
-        {/* Main Content */}
+       
         <div className="flex-1 p-10">
           <div className="bg-white p-6 rounded-lg shadow max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold text-[#1E3A8A] mb-4">Welcome, Coordinator!</h2>

@@ -23,9 +23,9 @@ export default function CoordinatorAvailability() {
         const match = dummyCalendarData.find((slot) => slot.date === date && slot.time === time);
         const count = match ? match.count : 0;
 
-        let color = "#86efac"; // green for available
-        if (count === 1) color = "#fde047"; // yellow for partially booked
-        if (count === 2) color = "#f87171"; // red for fully booked
+        let color = "#86efac";
+        if (count === 1) color = "#fde047"; 
+        if (count === 2) color = "#f87171"; 
 
         allTimeSlots.push({
           title: `${time} (${count}/2)`,
@@ -51,7 +51,7 @@ export default function CoordinatorAvailability() {
         <div className="flex-1 p-10">
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">View All Slots</h2>
 
-          {/* Legend */}
+          
           <div className="flex gap-6 mb-4">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-[#86efac] rounded-sm"></div> Available
@@ -64,7 +64,7 @@ export default function CoordinatorAvailability() {
             </div>
           </div>
 
-          {/* Calendar View */}
+          
           <div className="bg-white p-6 rounded shadow">
             <FullCalendar
               plugins={[timeGridPlugin]}
