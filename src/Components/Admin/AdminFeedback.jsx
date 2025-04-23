@@ -3,9 +3,9 @@ import AdminSidebar from "../Admin/AdminSidebar";
 import supabase from "../../supabase";
 import AdminNavbar from "./AdminNavbar";
 
-
 export default function Feedback() {
   const [firstName, setFirstName] = useState("User");
+  const [feedback, setFeedback] = useState([]);
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -30,14 +30,52 @@ export default function Feedback() {
     fetchUserName();
   }, []);
 
+  useEffect(() => {
+    const fetchFeedback = async () => {
+      const { data, error } = await supabase
+        .from("feedback")
+        .select("id, user_id, name, email,role, message, created_at")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching feedback:", error);
+      } else {
+        setFeedback(data);
+      }
+    };
+
+    fetchFeedback();
+  }, []);
+
   return (
     <>
-      <AdminNavbar />
+      <AdminNavbar title="Feedback" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-<div className="sticky top-16 h-[calc(100vh-64px)]" />
+        <div className="sticky top-16 h-[calc(100vh-64px)]" />
         <AdminSidebar userName={firstName} />
 
-        <div className="ml-48 flex-1 px-8 py-10">
+        <div className="flex-1 px-8 py-10">
+          <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">
+            📬 Feedback from Listeners & Coordinators
+          </h2>
+
+          {feedback.map((item) => (
+            <div key={item.id} className="bg-white shadow rounded p-4 mb-4">
+              <p className="font-medium">{item.message}</p>
+              <p className="text-sm text-gray-500 mt-2">
+                <span className="font-semibold">Role:</span> {item.role || ""} <br />
+                <span className="font-semibold">Name:</span>{" "}
+                {item.name || "N/A"} <br />
+                <span className="font-semibold">Email:</span>{" "}
+                {item.email || "N/A"} <br />
+                <span className="font-semibold">Submitted:</span>{" "}
+                {new Date(item.created_at).toLocaleString()}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* <div className="ml-48 flex-1 px-8 py-10">
           <div className="max-w-[600px] mx-auto text-black">
             <h2 className="font-bold mb-4">We Value Your Feedback</h2>
             <p className="mb-6">
@@ -102,9 +140,7 @@ export default function Feedback() {
                   Submit Feedback
                 </button>
               </form>
-            </div>
-          </div>
-        </div>
+            </div> */}
       </div>
     </>
   );

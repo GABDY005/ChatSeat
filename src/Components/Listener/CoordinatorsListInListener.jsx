@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 //import { Link } from 'react-router-dom'
 import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
+import ListenerNavbar from "./ListenerNavbar";
 
 export default function CoordinatorsListInListener() {
   const [firstName, setFirstName] = useState("User");
@@ -31,11 +32,17 @@ export default function CoordinatorsListInListener() {
 
   return (
     <>
-      <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
+
+    <ListenerNavbar title="Coordinators"/>
+               <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+                 <div className="sticky top-16 h-[calc(100vh-64px)]">
+                   <ListenerSidebar userName={firstName} />
+                 </div>
+      {/* <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
         <h4 className="text-xl font-bold">Coordinator</h4>
-      </div>
-      <div className="flex min-h-[calc(100vh-60px)]">
-        <ListenerSidebar userName={firstName} />
+      </div> */}
+      {/* <div className="flex min-h-[calc(100vh-60px)]">
+        <ListenerSidebar userName={firstName} /> */}
 
         <div className="flex pt-16">
           <div className="ml-56 px-10 py-12 w-full">

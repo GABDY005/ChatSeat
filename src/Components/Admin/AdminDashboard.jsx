@@ -26,7 +26,7 @@ export default function AdminDashboard() {
   return (
     <>
       
-      <AdminNavbar />
+      <AdminNavbar title="Dashboard"/>
       {/* <div className="bg-[#003366] text-white h-16 flex items-center justify-center px-6 shadow-md relative">
         <h4 className="text-xl font-bold justify-center">Admin Dashboard</h4>
 

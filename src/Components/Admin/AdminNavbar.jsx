@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function AdminNavbar() {
+export default function AdminNavbar({title="Admin Dashboard"}) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
     <div className="fixed top-0 w-full z-50 bg-[#003366] text-white h-16 flex items-center justify-center px-6 shadow-md">
-      <h4 className="text-xl font-bold">Admin Dashboard</h4>
+      <h4 className="text-xl font-bold">{title}</h4>
 
       {/* Dropdown Button */}
       <div className="absolute right-6">

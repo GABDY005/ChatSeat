@@ -168,7 +168,7 @@ export default function ListenerScheduling() {
   return (
     <>
 
-<ListenerNavbar />
+<ListenerNavbar title="Book Your Slot" />
       <div className="flex min-h-screen bg-[#e6f4f9] pt-16">
         <div className="sticky top-16 h-[calc(100vh-64px)] z-10">
           <ListenerSidebar userName={userName || "Guest"} />
