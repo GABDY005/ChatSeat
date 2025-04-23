@@ -1,5 +1,5 @@
-import { useEffect, useState, createContext, useContext } from 'react';
-import { supabase } from '../services/supabaseClient';
+import { useEffect, useState, createContext, useContext } from "react";
+import { supabase } from "../services/supabaseClient";
 
 const AuthContext = createContext();
 
@@ -10,14 +10,16 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const getSessionAndRole = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       setSession(session);
 
       if (session) {
         const { data, error } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', session.user.id)
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
           .single();
 
         if (data) {

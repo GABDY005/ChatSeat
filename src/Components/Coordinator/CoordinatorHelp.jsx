@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import AdminSidebar from "./AdminSidebar";
-import supabase from "../supabase";
+import CoordinatorSidebar from "./CoordinatorSidebar";
+import supabase from "../../supabase";
+import CoordinatorNavbar from "./CoordinatorNavbar";
 
-export default function Help() {
+export default function CoordinatorHelp() {
   const [firstName, setFirstName] = useState("User");
 
   useEffect(() => {
@@ -30,13 +31,12 @@ export default function Help() {
 
   return (
     <>
-      <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
-        <h4 className="text-xl font-bold">Help</h4>
-      </div>
+      <CoordinatorNavbar />
 
-      <div className="flex min-h-[calc(100vh-64px)]">
-        <AdminSidebar userName={firstName} />
-
+      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+      <div className="sticky top-16 h-[calc(100vh-64px)]">
+          <CoordinatorSidebar userName="Tricia" />
+        </div>
         <div className="flex-1 px-10 py-12 w-full">
           <div className="max-w-[800px] mx-auto text-black">
             <h2 className="text-2xl font-bold mb-4">How to Use the Website</h2>

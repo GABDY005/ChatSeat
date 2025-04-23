@@ -92,7 +92,10 @@ export default function Signup() {
         </form>
 
         <div className="text-center mt-6">
-          <Link to="/Login" className="text-black font-semibold hover:underline">
+          <Link
+            to="/Login"
+            className="text-black font-semibold hover:underline"
+          >
             Back
           </Link>
         </div>

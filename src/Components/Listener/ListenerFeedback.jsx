@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ListenerSidebar from "./ListenerSidebar";
-import supabase from "../supabase";
+import supabase from "../../supabase";
+import ListenerNavbar from "./ListenerNavbar";
 
 export default function Feedback() {
   const [firstName, setFirstName] = useState("User");
@@ -30,11 +31,12 @@ export default function Feedback() {
 
   return (
     <>
-      <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
-        <h4 className="text-xl font-bold">Feedback</h4>
-      </div>
-      <div className="flex min-h-[calc(100vh-60px)]">
-        <ListenerSidebar userName={firstName} />
+      <ListenerNavbar />
+      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+        <div className="sticky top-16 h-[calc(100vh-64px)]">
+          <ListenerSidebar userName={firstName} />
+        </div>
+
 
         <div className="ml-48 flex-1 px-8 py-10">
           <div className="max-w-[600px] mx-auto text-black">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 //import { Link } from 'react-router-dom'
-import Sidebar from "./ListenerSidebar";
-import supabase from "../supabase";
+import ListenerSidebar from "./ListenerSidebar";
+import supabase from "../../supabase";
 
 export default function CoordinatorsListInListener() {
   const [firstName, setFirstName] = useState("User");
@@ -35,7 +35,7 @@ export default function CoordinatorsListInListener() {
         <h4 className="text-xl font-bold">Coordinator</h4>
       </div>
       <div className="flex min-h-[calc(100vh-60px)]">
-        <Sidebar userName={firstName} />
+        <ListenerSidebar userName={firstName} />
 
         <div className="flex pt-16">
           <div className="ml-56 px-10 py-12 w-full">

@@ -1,75 +1,82 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../Controller/UserController";
 
-export default function Login() {
+export default function LoginPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
       const { user, role } = await loginUser({ email, password });
 
-      if (!user) {
-        alert("Login failed: No user returned.");
-        return;
-      }
-
       if (role === "admin") {
         navigate("/AdminDashboard");
+      } else if (role === "listener") {
+        navigate("/ListenerDashboard");
       } else if (role === "coordinator") {
         navigate("/CoordinatorDashboard");
+      } else if (role === "pending") {
+        navigate("/awaiting-approval");
       } else {
-        navigate("/ListenerDashboard");
+        alert("Unknown role. Please contact admin.");
       }
-    } catch (error) {
-      alert(error.message || "Login failed. Please try again.");
+    } catch (err) {
+      alert("Login failed: " + err.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-[#1E3A8A] mb-6">Log In</h2>
-
-        <form onSubmit={handleSubmit}>
-          <label className="block text-sm font-semibold mb-1 text-gray-700">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 mb-4 border border-gray-300 rounded"
-            required
-          />
-
-          <label className="block text-sm font-semibold mb-1 text-gray-700">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-6 border border-gray-300 rounded"
-            required
-          />
-
-          <button type="submit" className="w-full bg-[#003366] text-white py-3 rounded-md font-semibold hover:bg-[#1E3A8A]">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">
+          Login
+        </h2>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-blue-600 hover:underline"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          >
             Login
           </button>
         </form>
-
-        <div className="text-center mt-6 text-sm">
-          <p>
-            Don't have an account?{" "}
-            <Link to="/Signup" className="text-[#1E3A8A] font-semibold hover:underline">
-              Sign Up
-            </Link>
-          </p>
-          <Link to="/" className="inline-block mt-4 text-black font-semibold hover:underline">
-            Back
-          </Link>
-        </div>
       </div>
     </div>
   );

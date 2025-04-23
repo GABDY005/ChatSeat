@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import CoordinatorSidebar from "./CoordinatorSidebar";
-import supabase from "../supabase";
+import ListenerSidebar from "./ListenerSidebar";
+import supabase from "../../supabase";
+import ListenerNavbar from "./ListenerNavbar";
 
-export default function CoordinatorHelp() {
+export default function ListenerHelp() {
   const [firstName, setFirstName] = useState("User");
 
   useEffect(() => {
@@ -30,12 +31,12 @@ export default function CoordinatorHelp() {
 
   return (
     <>
-      <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
-        <h4 className="text-xl font-bold">Help</h4>
-      </div>
+      <ListenerNavbar />
+      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+        <div className="sticky top-16 h-[calc(100vh-64px)]">
+          <ListenerSidebar userName={firstName} />
+        </div>
 
-      <div className="flex min-h-[calc(100vh-64px)]">
-        <CoordinatorSidebar userName={firstName} />
 
         <div className="flex-1 px-10 py-12 w-full">
           <div className="max-w-[800px] mx-auto text-black">

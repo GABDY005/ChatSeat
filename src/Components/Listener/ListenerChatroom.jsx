@@ -3,7 +3,8 @@ import database from "../firebase";
 import { ref, push, onValue, set } from "firebase/database";
 import ListenerSidebar from "./ListenerSidebar";
 import { remove } from "firebase/database";
-import supabase from "../supabase";
+import supabase from "../../supabase";
+import ListenerNavbar from "./ListenerNavbar";
 
 export default function ListenerChatroom() {
   const [threads, setThreads] = useState({});
@@ -89,11 +90,17 @@ export default function ListenerChatroom() {
 
   return (
     <>
-      <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
+
+     <ListenerNavbar />
+          <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+            <div className="sticky top-16 h-[calc(100vh-64px)]">
+            <ListenerSidebar userName={username} />
+            </div>
+      {/* <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
         <h4 className="text-xl font-bold">Chatroom</h4>
       </div>
       <div className="flex min-h-[calc(100vh-64px)]">
-        <ListenerSidebar userName={username} />
+        <ListenerSidebar userName={username} /> */}
 
         <div className="main-content p-6 w-full">
           <h2 className="text-xl font-bold mb-4">Discussion Forum</h2>
@@ -170,7 +177,7 @@ export default function ListenerChatroom() {
                               onClick={() => handleDeleteReply(id, key)}
                               className="text-red-500 ml-4"
                             >
-                              ❌  
+                              ❌
                             </button>
                           )}
                         </div>

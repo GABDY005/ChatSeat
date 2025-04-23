@@ -1,22 +1,17 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-//import { useEffect } from "react";
 
-// This component checks if the user is authenticated and has the required role to access a route
-// If the user is not authenticated, it redirects to the login page
-const RequireAuth = ({ children }) => {
-    const { user } = useAuth();
+export default function RequireAuth({ children, allowedRoles }) {
+  const { user } = useAuth();
 
-    // Check if the user is authenticated and has the required role
-    // If not, redirect to the login page
-    if (!user) {
-        return <Navigate to="/login" />;
-    }
+  if (!user) {
+    return <Navigate to="/Login" />;
+  }
 
-  
+  if (!allowedRoles.includes(user.role)) {
+    return <Navigate to="/" />;
+  }
 
-    return children;
-};
-
-export default RequireAuth;
+  return children;
+}

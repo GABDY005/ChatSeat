@@ -2,83 +2,120 @@
 //import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
-import ListenerHelp from "./Components/ListenerHelp";
-import About from "./Components/About";
+import About from "./Components/Listener/About.jsx";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
-import ListenerDashboard from "./Components/ListenerDashboard";
-import ListenerResources from "./Components/ListenerResources.jsx";
-import CoordinatorsListInListener from "./Components/CoordinatorsListInListener.jsx";
-import ListenerChatroom from "./Components/ListenerChatroom";
-import ListenerFeedback from "./Components/ListenerFeedback.jsx";
-import ListenerScheduling from "./Components/ListenerScheduling.jsx";
+
+//Listener components
+import ListenerDashboard from "./Components/Listener/ListenerDashboard";
+import ListenerResources from "./Components/Listener/ListenerResources.jsx";
+import CoordinatorsListInListener from "./Components/Listener/CoordinatorsListInListener.jsx";
+import ListenerChatroom from "./Components/Listener/ListenerChatroom";
+import ListenerFeedback from "./Components/Listener/ListenerFeedback.jsx";
+import ListenerScheduling from "./Components/Listener/ListenerScheduling.jsx";
+import ListenerHelp from "./Components/Listener/ListenerHelp.jsx";
+
+import RequireAuth from "./context/RequireAuth";
+import { AuthProvider } from "./context/AuthContext.jsx";
+
+//Coordinator components
+import CoordinatorDashboard from "./Components/Coordinator/CoordinatorDashboard";
+import CoordinatorAppointments from "./Components/Coordinator/CoordinatorAppointments";
+import CoordinatorAvailability from "./Components/Coordinator/CoordinatorAvailability";
+import LessonCoordinator from "./Components/Coordinator/LessonCoordinator";
+import Logos from "./Components/Coordinator/Logos";
+import CoordinatorFeedback from "./Components/Coordinator/CoordinatorFeedback";
+import CoordinatorHelp from "./Components/Coordinator/CoordinatorHelp.jsx";
 import BookedListener from "./Components/BookedListener.jsx";
 
-import AdminDashboard from "./Components/AdminDashboard";
-//import RequireAuth from "./context/RequireAuth";
-import CoordinatorDashboard from "./Components/CoordinatorDashboard";
-import CoordinatorAppointments from "./Components/CoordinatorAppointments";
-import CoordinatorAvailability from "./Components/CoordinatorAvailability";
-import LessonCoordinator from "./Components/LessonCoordinator";
-import Logos from "./Components/Logos";
-import CoordinatorFeedback from "./Components/CoordinatorFeedback";
-import CoordinatorHelp from "./Components/CoordinatorHelp.jsx";
-import AdminUserList from "./Components/AdminUserList";
-import AdminResources from "./Components/AdminResources";
-import AdminHelp from "./Components/AdminHelp";
-import AdminFeedback from "./Components/AdminFeedback";
-import CoordinatorChatroom from "./Components/CoordinatorChatroom";
+//Admin components
+import AdminDashboard from "./Components/Admin/AdminDashboard";
+import AdminUserList from "./Components/Admin/AdminUserList";
+import AdminResources from "./Components/Admin/AdminResources";
+import AdminHelp from "./Components/Admin/AdminHelp";
+import AdminFeedback from "./Components/Admin/AdminFeedback";
+import CoordinatorChatroom from "./Components/Coordinator/CoordinatorChatroom";
+import PendingApproval from "./Components/Admin/PendingApproval";
 
 function App() {
   return (
     <div>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/ListenerHelp" element={<ListenerHelp />} />
-          <Route path="/About" element={<About />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Signup" element={<Signup />} />
-          <Route path="/ListenerDashboard" element={<ListenerDashboard />} />
-          <Route path="/ListenerResources" element={<ListenerResources />} />
-          <Route path="/CoordinatorsListInListener" element={<CoordinatorsListInListener />} />
-          <Route path="/ListenerChatroom" element={<ListenerChatroom />} />
-          <Route path="/ListenerFeedback" element={<ListenerFeedback />} />
-          <Route path="/ListenerScheduling" element={<ListenerScheduling />} />
-          <Route path="/BookedListener" element={<BookedListener />} />
-          <Route
-            path="/CoordinatorDashboard"
-            element={<CoordinatorDashboard />}
-          />
-          <Route path="/AdminDashboard" element={<AdminDashboard />} />
-          <Route
-            path="/CoordinatorDashboard"
-            element={<CoordinatorDashboard />}
-          />
-          <Route path="/CoordinatorAppointments" element={<CoordinatorAppointments />} />
-          <Route
-            path="/CoordinatorAvailability"
-            element={<CoordinatorAvailability />}
-          />
-          <Route path="/LessonCoordinator" element={<LessonCoordinator />} />
-          <Route
-            path="/CoordinatorChatroom"
-            element={<CoordinatorChatroom />}
-          />
-          <Route path="/Logos" element={<Logos />} />
-          <Route
-            path="/CoordinatorFeedback"
-            element={<CoordinatorFeedback />}
-          />
-          <Route path="/CoordinatorHelp" element={<CoordinatorHelp />} />
-          <Route path="/AdminUserList" element={<AdminUserList />} />
-          <Route path="/AdminResources" element={<AdminResources />} />
-          <Route path="/AdminHelp" element={<AdminHelp />} />
-          <Route path="/AdminFeedback" element={<AdminFeedback />} />
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/ListenerHelp" element={<ListenerHelp />} />
+            <Route path="/About" element={<About />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Signup" element={<Signup />} />
+            <Route
+              path="/ListenerDashboard"
+              element={
+                // <RequireAuth allowedRoles={["listener"]}>
+                  <ListenerDashboard />
+                // </RequireAuth>
+              }
+            />
+            <Route path="/ListenerResources" element={<ListenerResources />} />
+            <Route
+              path="/CoordinatorsListInListener"
+              element={<CoordinatorsListInListener />}
+            />
+            <Route path="/ListenerChatroom" element={<ListenerChatroom />} />
+            <Route path="/ListenerFeedback" element={<ListenerFeedback />} />
+            <Route
+              path="/ListenerScheduling"
+              element={<ListenerScheduling />}
+            />
+            <Route path="/BookedListener" element={<BookedListener />} />
+            <Route path="/PendingApproval" element={<PendingApproval />} />
 
-          {/* Add other routes here */}
-        </Routes>
-      </Router>
+            <Route
+              path="/CoordinatorDashboard"
+              element={
+                // <RequireAuth allowedRoles={["coordinator"]}>
+                  <CoordinatorDashboard />
+                // </RequireAuth>
+              }
+            />
+
+            <Route
+              path="/AdminDashboard"
+              element={
+                // <RequireAuth allowedRoles={["admin"]}>
+                  <AdminDashboard />
+                // </RequireAuth>
+              }
+            />
+
+            <Route
+              path="/CoordinatorAppointments"
+              element={<CoordinatorAppointments />}
+            />
+            <Route
+              path="/CoordinatorAvailability"
+              element={<CoordinatorAvailability />}
+            />
+            <Route path="/LessonCoordinator" element={<LessonCoordinator />} />
+            <Route
+              path="/CoordinatorChatroom"
+              element={<CoordinatorChatroom />}
+            />
+            <Route path="/Logos" element={<Logos />} />
+            <Route
+              path="/CoordinatorFeedback"
+              element={<CoordinatorFeedback />}
+            />
+            <Route path="/CoordinatorHelp" element={<CoordinatorHelp />} />
+            <Route path="/AdminUserList" element={<AdminUserList />} />
+            <Route path="/AdminResources" element={<AdminResources />} />
+            <Route path="/AdminHelp" element={<AdminHelp />} />
+            <Route path="/AdminFeedback" element={<AdminFeedback />} />
+
+            {/* Add other routes here */}
+          </Routes>
+        </Router>
+      </AuthProvider>
     </div>
   );
 }

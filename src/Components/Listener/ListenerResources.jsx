@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ListenerSidebar from "./ListenerSidebar";
-import supabase from "../supabase";
+// import supabase from "../supabase";
+import supabase from "../../supabase";
+import ListenerNavbar from "./ListenerNavbar";
 
 export default function ListenerResources() {
   const [firstName, setFirstName] = useState("User");
@@ -30,12 +32,12 @@ export default function ListenerResources() {
 
   return (
     <>
-      <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
-        <h4 className="text-xl font-bold">Listener</h4>
-      </div>
-      <div className="flex min-h-[calc(100vh-60px)]">
-        <ListenerSidebar userName={firstName} />
-      </div>
+       <ListenerNavbar />
+      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+        <div className="sticky top-16 h-[calc(100vh-64px)]">
+          <ListenerSidebar userName={firstName} />
+        </div>
+
       <div className="md:ml-[220px] pt-20 px-6 pb-10">
         <div className="ml-[17%] pt-20 pb-10 px-10">
           <div className="mw-[90%] m-auto text-left">
@@ -71,6 +73,7 @@ export default function ListenerResources() {
             </p>
           </div>
         </div>
+      </div>
       </div>
     </>
   );
