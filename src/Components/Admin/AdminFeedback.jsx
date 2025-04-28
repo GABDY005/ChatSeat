@@ -56,91 +56,37 @@ export default function Feedback() {
 
         <div className="flex-1 px-8 py-10">
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">
-            📬 Feedback from Listeners & Coordinators
+            Feedback from Listeners & Coordinators
           </h2>
 
-          {feedback.map((item) => (
-            <div key={item.id} className="bg-white shadow rounded p-4 mb-4">
-              <p className="font-medium">{item.message}</p>
-              <p className="text-sm text-gray-500 mt-2">
-                <span className="font-semibold">Role:</span> {item.role || ""} <br />
-                <span className="font-semibold">Name:</span>{" "}
-                {item.name || "N/A"} <br />
-                <span className="font-semibold">Email:</span>{" "}
-                {item.email || "N/A"} <br />
-                <span className="font-semibold">Submitted:</span>{" "}
-                {new Date(item.created_at).toLocaleString()}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* <div className="ml-48 flex-1 px-8 py-10">
-          <div className="max-w-[600px] mx-auto text-black">
-            <h2 className="font-bold mb-4">We Value Your Feedback</h2>
-            <p className="mb-6">
-              Please let us know your thoughts about your experience.
-            </p>
-
-            <div className="bg-white p-5 rounded-lg shadow-md">
-              <form
-                action="https://formsubmit.co/chatseatstest1@gmail.com"
-                method="POST"
+          <div className="grid lg:grid-cols-3 gap-4 rounded-md">
+            {feedback.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white shadow-md rounded-lg p-6 hover:shadow-lg hover:scale-105 transition-transform duration-300 border-2 border-blue-900"
               >
-                <input
-                  type="hidden"
-                  name="_subject"
-                  value="New Feedback Submission"
-                />
-                <input type="hidden" name="_captcha" value="false" />
+                <div className="mb-4 space-y-1 text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 space-y-1">
+                    <span className="font-semibold">Role:</span>{" "}
+                    {item.role || ""} <br />
+                    <span className="font-semibold">Name:</span>{" "}
+                    {item.name || "N/A"} <br />
+                    <span className="font-semibold">Email:</span>{" "}
+                    {item.email || "N/A"} <br />
+                    <span className="font-semibold">Submitted:</span>{" "}
+                    {new Date(item.created_at).toLocaleString()}
+                  </p>
 
-                <div className="mb-3">
-                  <label htmlFor="name" className="block font-medium mb-1">
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  />
+                  <div className="border-t-2 y-3"></div>
+
+                  <p className="text-gray-800 font-medium text-base">
+                    {item.message}
+                  </p>
                 </div>
-
-                <div className="mb-3">
-                  <label htmlFor="email" className="block font-medium mb-1">
-                    Your Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="message" className="block font-medium mb-1">
-                    Your Feedback
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="4"
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
-                >
-                  Submit Feedback
-                </button>
-              </form>
-            </div> */}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );
