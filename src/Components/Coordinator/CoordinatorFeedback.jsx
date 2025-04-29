@@ -1,73 +1,91 @@
-
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import supabase from "../../supabase";
+import { checkUserRole } from "../../Controller/UserController"; 
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
-    
-    export default function Feedback() {
-      const [firstName, setFirstName] = useState("User");
-    const [email, setEmail] = useState("");
-    const [message, setMessage] = useState("");
-    const [loading, setLoading] = useState(false);
-    
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      setLoading(true);
-    
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
-    
-      if (!user || authError) {
-        alert("You must be logged in to submit feedback.");
-        setLoading(false);
+
+export default function Feedback() {
+  const [firstName, setFirstName] = useState("User");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) {
+        navigate("/");
         return;
       }
+
+      const isCoordinator = await checkUserRole("coordinator");
+      const isAdmin = await checkUserRole("admin");
+
+      if (!isCoordinator && !isAdmin) {
+        alert("Access denied.");
+        navigate("/");
+        return;
+      }
+
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
         .select("first_name, email")
         .eq("id", user.id)
         .single();
-    
-      const { error } = await supabase.from("feedback").insert([
-        {
-          user_id: user.id,
-          message: message,
-          role: "coordinator",
-          name: profile?.first_name || "Unknown",
-          email: profile?.email || "Unknown",
-        },
-      ]);
-    
-      setLoading(false);
-    
-      if (error) {
-        console.error("Feedback insert error:", error);
-        alert("Oops! Something went wrong. Please try again later.");
-      } else {
-        alert("Thank you for your feedback!");
-        setMessage("");
+
+      if (profileError || !profile) {
+        navigate("/");
+        return;
       }
+
+      if (profile.first_name) setFirstName(profile.first_name);
+      if (profile.email) setEmail(profile.email);
     };
-    
-    useEffect(() => {
-      const fetchUserProfile = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-    
-        if (user) {
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("first_name, email")
-            .eq("id", user.id)
-            .single();
-    
-          if (profile?.first_name) setFirstName(profile.first_name);
-          if (profile?.email) setEmail(profile.email);
-        }
-      };
-      fetchUserProfile();
-    }, []);
+
+    fetchUserProfile();
+  }, [navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (!user || authError) {
+      alert("You must be logged in to submit feedback.");
+      setLoading(false);
+      return;
+    }
+
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("first_name, email")
+      .eq("id", user.id)
+      .single();
+
+    const { error } = await supabase.from("feedback").insert([
+      {
+        user_id: user.id,
+        message: message,
+        role: "coordinator", 
+        name: profile?.first_name || "Unknown",
+        email: profile?.email || "Unknown",
+      },
+    ]);
+
+    setLoading(false);
+
+    if (error) {
+      console.error("Feedback insert error:", error);
+      alert("Oops! Something went wrong. Please try again later.");
+    } else {
+      alert("Thank you for your feedback!");
+      setMessage("");
+    }
+  };
+
     
       return (
         <>

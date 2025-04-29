@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
+import { checkUserRole } from "../../Controller/UserController";
 
 export default function CoordinatorChatroom() {
   const [threads, setThreads] = useState({});
@@ -12,31 +14,53 @@ export default function CoordinatorChatroom() {
   const [username, setUsername] = useState("User");
   const [userId, setUserId] = useState("");
   const [role, setRole] = useState("listener");
+  const [searchQuery, setSearchQuery] = useState(""); 
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error || !user) {
+          navigate("/");
+          return;
+        }
 
-      if (user) {
         setUserId(user.id);
 
-        const { data: profile } = await supabase
+        const isCoordinator = await checkUserRole("coordinator");
+        const isAdmin = await checkUserRole("admin");
+
+        if (!isCoordinator && !isAdmin) {
+          alert("Access denied. Coordinators and Admins only.");
+          navigate("/");
+          return;
+        }
+
+        setRole(isAdmin ? "admin" : "coordinator");
+
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
-          .select("first_name, role")
+          .select("first_name")
           .eq("id", user.id)
           .single();
 
-        if (profile) {
-          setUsername(profile.first_name);
-          setRole(profile.role);
+        if (profileError || !profile) {
+          alert("Failed to load user profile.");
+          navigate("/");
+          return;
         }
+
+        setUsername(profile.first_name);
+      } catch (err) {
+        console.error("Error verifying user:", err);
+        navigate("/");
       }
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const threadsRef = ref(database, "coordinator_threads");
@@ -87,6 +111,10 @@ export default function CoordinatorChatroom() {
     remove(replyRef);
   };
 
+  const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
+    thread.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
       <CoordinatorNavbar title="Coordinator Chat" />
@@ -98,7 +126,16 @@ export default function CoordinatorChatroom() {
         <div className="main-content p-6 w-full">
           <h2 className="text-xl font-bold mb-4">Discussion Forum</h2>
 
+          {/*SearchQuery*/}
           <div className="mb-6">
+            <input
+              type="text"
+              placeholder="Search discussions..."
+              className="form-control w-full p-2 mb-4 border rounded"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+
             <input
               type="text"
               className="form-control w-full p-2 mb-2 border rounded"
@@ -121,9 +158,8 @@ export default function CoordinatorChatroom() {
           </div>
 
           <div className="space-y-4">
-            {Object.entries(threads)
-              .reverse()
-              .map(([id, thread]) => (
+            {filteredThreads.length > 0 ? (
+              filteredThreads.reverse().map(([id, thread]) => (
                 <div className="bg-white p-4 rounded shadow" key={id}>
                   <h4 className="font-bold text-[#003366]">{thread.title}</h4>
                   <p>{thread.content}</p>
@@ -178,7 +214,12 @@ export default function CoordinatorChatroom() {
                       ))}
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="text-center text-gray-500">
+                No discussions found.
+              </div>
+            )}
           </div>
         </div>
       </div>
