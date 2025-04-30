@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
-import CoordinatorSidebar from "./CoordinatorSidebar";
-import CoordinatorNavbar from "./CoordinatorNavbar";
+import AdminSidebar from "../Admin/AdminSidebar";
+import AdminNavbar from "../Admin/AdminNavbar";
 import supabase from "../../supabase";
 import { checkUserRole } from "../../Controller/UserController";
 
-export default function CoordinatorChatroom() {
+export default function AdminCoordinatorChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [username, setUsername] = useState("User");
+  const [username, setUsername] = useState("Admin");
   const [userId, setUserId] = useState("");
-  const [role, setRole] = useState("listener");
+  const [role, setRole] = useState("admin");
   const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
@@ -40,19 +40,15 @@ export default function CoordinatorChatroom() {
 
         setRole(isAdmin ? "admin" : "coordinator");
 
-        const { data: profile, error: profileError } = await supabase
+        const { data: profile } = await supabase
           .from("profiles")
           .select("first_name")
           .eq("id", user.id)
           .single();
 
-        if (profileError || !profile) {
-          alert("Failed to load user profile.");
-          navigate("/");
-          return;
+        if (profile) {
+          setUsername(profile.first_name);
         }
-
-        setUsername(profile.first_name);
       } catch (err) {
         console.error("Error verifying user:", err);
         navigate("/");
@@ -125,10 +121,10 @@ export default function CoordinatorChatroom() {
 
   return (
     <>
-      <CoordinatorNavbar title="Coordinator Chat" />
+      <AdminNavbar title="Admin - Coordinator Chatroom" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName={username} />
+          <AdminSidebar userName={username} />
         </div>
 
         <div className="main-content p-6 w-full bg-[#ffe5e5]">
@@ -205,8 +201,8 @@ export default function CoordinatorChatroom() {
                         >
                           <div>
                             <b>{reply.username}</b> at{" "}
-                            {new Date(reply.timestamp).toLocaleString()} <br />
-                            {reply.text}
+                              {new Date(reply.timestamp).toLocaleString()} <br />
+                              {reply.text}
                           </div>
 
                           {canDeleteReply(reply.user_id, reply.role) && (

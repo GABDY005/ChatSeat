@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import CoordinatorSidebar from "./CoordinatorSidebar";
-import CoordinatorNavbar from "./CoordinatorNavbar";
+import CoordinatorNavbar from "./CoordinatorNavbar";   
 import supabase from "../../supabase";
-import { checkUserRole } from "../../Controller/UserController";
 
-export default function CoordinatorChatroom() {
+export default function CoordinatorListenerChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -16,54 +14,31 @@ export default function CoordinatorChatroom() {
   const [role, setRole] = useState("listener");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (error || !user) {
-          navigate("/");
-          return;
-        }
+      const { data: { user } } = await supabase.auth.getUser();
 
+      if (user) {
         setUserId(user.id);
 
-        const isCoordinator = await checkUserRole("coordinator");
-        const isAdmin = await checkUserRole("admin");
-
-        if (!isCoordinator && !isAdmin) {
-          alert("Access denied. Coordinators and Admins only.");
-          navigate("/");
-          return;
-        }
-
-        setRole(isAdmin ? "admin" : "coordinator");
-
-        const { data: profile, error: profileError } = await supabase
+        const { data: profile } = await supabase
           .from("profiles")
-          .select("first_name")
+          .select("first_name, role")
           .eq("id", user.id)
           .single();
 
-        if (profileError || !profile) {
-          alert("Failed to load user profile.");
-          navigate("/");
-          return;
+        if (profile) {
+          setUsername(profile.first_name);
+          setRole(profile.role);
         }
-
-        setUsername(profile.first_name);
-      } catch (err) {
-        console.error("Error verifying user:", err);
-        navigate("/");
       }
     };
 
     fetchUser();
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
-    const threadsRef = ref(database, "coordinator_threads");
+    const threadsRef = ref(database, "threads");
     onValue(threadsRef, (snapshot) => {
       const data = snapshot.val() || {};
       setThreads(data);
@@ -76,7 +51,7 @@ export default function CoordinatorChatroom() {
       return;
     }
 
-    const newRef = push(ref(database, "coordinator_threads"));
+    const newRef = push(ref(database, "threads"));
     set(newRef, {
       title,
       content,
@@ -92,7 +67,7 @@ export default function CoordinatorChatroom() {
   const handleReply = (threadID, replyText) => {
     if (!replyText) return;
 
-    const newReply = push(ref(database, `coordinator_threads/${threadID}/replies`));
+    const newReply = push(ref(database, `threads/${threadID}/replies`));
     set(newReply, {
       text: replyText,
       username,
@@ -103,12 +78,12 @@ export default function CoordinatorChatroom() {
   };
 
   const handleDeleteThread = (threadId) => {
-    const threadRef = ref(database, `coordinator_threads/${threadId}`);
+    const threadRef = ref(database, `threads/${threadId}`);
     remove(threadRef);
   };
 
   const handleDeleteReply = (threadId, replyKey) => {
-    const replyRef = ref(database, `coordinator_threads/${threadId}/replies/${replyKey}`);
+    const replyRef = ref(database, `threads/${threadId}/replies/${replyKey}`);
     remove(replyRef);
   };
 
@@ -125,14 +100,14 @@ export default function CoordinatorChatroom() {
 
   return (
     <>
-      <CoordinatorNavbar title="Coordinator Chat" />
+      <CoordinatorNavbar title="Coordinator & Listener Chat" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={username} />
         </div>
 
-        <div className="main-content p-6 w-full bg-[#ffe5e5]">
-          <h2 className="text-xl font-bold text-red-800 mb-4">Discussion Forum</h2>
+        <div className="main-content p-6 w-full">
+          <h2 className="text-xl font-bold mb-4">Discussion Forum</h2>
 
           <div className="mb-6">
             <input
@@ -168,7 +143,7 @@ export default function CoordinatorChatroom() {
             {filteredThreads.length > 0 ? (
               filteredThreads.reverse().map(([id, thread]) => (
                 <div className="bg-white p-4 rounded shadow" key={id}>
-                  <h4 className="font-bold text-red-700">{thread.title}</h4>
+                  <h4 className="font-bold text-[#003366]">{thread.title}</h4>
                   <p>{thread.content}</p>
                   <small>
                     Posted by <b>{thread.username}</b> at{" "}
@@ -200,7 +175,7 @@ export default function CoordinatorChatroom() {
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (
                         <div
-                          className="bg-red-100 p-2 rounded text-sm flex justify-between"
+                          className="bg-blue-100 p-2 rounded text-sm flex justify-between"
                           key={key}
                         >
                           <div>

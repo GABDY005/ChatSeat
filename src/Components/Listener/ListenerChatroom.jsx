@@ -12,7 +12,7 @@ export default function ListenerChatroom() {
   const [username, setUsername] = useState("User");
   const [userId, setUserId] = useState("");
   const [role, setRole] = useState("listener");
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -72,6 +72,7 @@ export default function ListenerChatroom() {
       text: replyText,
       username,
       user_id: userId,
+      role,
       timestamp: Date.now(),
     });
   };
@@ -84,6 +85,12 @@ export default function ListenerChatroom() {
   const handleDeleteReply = (threadId, replyKey) => {
     const replyRef = ref(database, `threads/${threadId}/replies/${replyKey}`);
     remove(replyRef);
+  };
+
+  const canDeleteReply = (replyUserId, replyUserRole) => {
+    if (userId === replyUserId) return true;
+    if (role === "admin") return true;
+    return false;
   };
 
   const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
@@ -176,7 +183,7 @@ export default function ListenerChatroom() {
                             {reply.text}
                           </div>
 
-                          {(reply.user_id === userId || role === "admin") && (
+                          {canDeleteReply(reply.user_id, reply.role) && (
                             <button
                               onClick={() => handleDeleteReply(id, key)}
                               className="text-red-500 ml-4"
