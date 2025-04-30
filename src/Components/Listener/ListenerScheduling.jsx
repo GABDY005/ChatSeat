@@ -41,7 +41,7 @@ export default function ListenerScheduling() {
     flatpickr("#date-picker", {
       dateFormat: "Y-m-d",
       minDate: "2025-04-01",
-      maxDate: "2025-04-30",
+      maxDate: "2025-06-30",
       onChange: (_, dateStr) => {
         setDate(dateStr);
       },
