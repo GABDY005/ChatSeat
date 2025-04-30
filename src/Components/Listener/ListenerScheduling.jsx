@@ -38,6 +38,17 @@ export default function ListenerScheduling() {
   ];
 
   useEffect(() => {
+    flatpickr("#date-picker", {
+      dateFormat: "Y-m-d",
+      minDate: "2025-04-01",
+      maxDate: "2025-04-30",
+      onChange: (_, dateStr) => {
+        setDate(dateStr);
+      },
+    });
+  }, []);
+
+  useEffect(() => {
     if (editBookingId !== null) {
       flatpickr("#edit-date-picker", {
         dateFormat: "Y-m-d",
