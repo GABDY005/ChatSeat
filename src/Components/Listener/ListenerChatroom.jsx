@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import database from "../firebase";
-import { ref, push, onValue, set } from "firebase/database";
+import { ref, push, onValue, set, remove } from "firebase/database";
 import ListenerSidebar from "./ListenerSidebar";
-import { remove } from "firebase/database";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 
@@ -13,12 +12,11 @@ export default function ListenerChatroom() {
   const [username, setUsername] = useState("User");
   const [userId, setUserId] = useState("");
   const [role, setRole] = useState("listener");
+  const [searchQuery, setSearchQuery] = useState(""); 
 
   useEffect(() => {
     const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
 
       if (user) {
         setUserId(user.id);
@@ -88,23 +86,30 @@ export default function ListenerChatroom() {
     remove(replyRef);
   };
 
+  const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
+    thread.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
-
-     <ListenerNavbar title="Let's Chat" />
-          <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-            <div className="sticky top-16 h-[calc(100vh-64px)]">
-            <ListenerSidebar userName={username} />
-            </div>
-      {/* <div className="bg-[#003366] text-white h-16 flex items-center justify-center shadow-md px-6">
-        <h4 className="text-xl font-bold">Chatroom</h4>
-      </div>
-      <div className="flex min-h-[calc(100vh-64px)]">
-        <ListenerSidebar userName={username} /> */}
+      <ListenerNavbar title="Let's Chat" />
+      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+        <div className="sticky top-16 h-[calc(100vh-64px)]">
+          <ListenerSidebar userName={username} />
+        </div>
 
         <div className="main-content p-6 w-full">
           <h2 className="text-xl font-bold mb-4">Discussion Forum</h2>
+
           <div className="mb-6">
+            <input
+              type="text"
+              placeholder="Search discussions..."
+              className="form-control w-full p-2 mb-4 border rounded"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+
             <input
               type="text"
               className="form-control w-full p-2 mb-2 border rounded"
@@ -127,9 +132,8 @@ export default function ListenerChatroom() {
           </div>
 
           <div className="space-y-4">
-            {Object.entries(threads)
-              .reverse()
-              .map(([id, thread]) => (
+            {filteredThreads.length > 0 ? (
+              filteredThreads.reverse().map(([id, thread]) => (
                 <div className="bg-white p-4 rounded shadow" key={id}>
                   <h4 className="font-bold text-[#003366]">{thread.title}</h4>
                   <p>{thread.content}</p>
@@ -184,7 +188,12 @@ export default function ListenerChatroom() {
                       ))}
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="text-center text-gray-500">
+                No discussions found.
+              </div>
+            )}
           </div>
         </div>
       </div>

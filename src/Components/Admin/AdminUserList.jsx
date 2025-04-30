@@ -101,7 +101,7 @@ export default function AdminUserList() {
                       {user.first_name} {user.last_name}
                     </td>
                     <td className="p-3">{user.email}</td>
-                    <td className="p-3 capitalize">{user.role}</td>
+                    <td className="p-3 capitalise">{user.role}</td>
                     <td className="p-3 text-center space-x-2">
                       {user.role === "pending" ? (
                         <>

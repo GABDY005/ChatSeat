@@ -104,3 +104,37 @@ export const deleteUserById = async (userId) => {
 
   return true;
 };
+
+export const getCurrentUser = async () => {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error || !user) throw new Error("No authenticated user");
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("first_name, role")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError || !profile) throw new Error("Failed to load user profile");
+
+  return { id: user.id, ...profile };
+};
+
+export const checkUserRole = async (requiredRole) => {
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) throw new Error("User not authenticated");
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError || !profile) throw new Error("Failed to retrieve role");
+
+  return profile.role === requiredRole;
+};
