@@ -5,30 +5,31 @@ import CoordinatorNavbar from "./CoordinatorNavbar";
 const dummyAppointments = [
   {
     id: 1,
-    listenerName: "Alice Johnson",
+    listenerName: "Darshi",
     time: "10:00 AM",
     date: "April 15, 2024",
-    location: "City Library",
+    location: "Tea Tree Gully Library",
   },
   {
     id: 2,
-    listenerName: "Rahul Patel",
+    listenerName: "Mahek",
     time: "11:30 AM",
     date: "April 15, 2024",
-    location: "Shopping Mall",
+    location: "Rundle Library",
   },
   {
     id: 3,
-    listenerName: "Emma Wilson",
+    listenerName: "Kesha",
     time: "2:00 PM",
     date: "April 16, 2024",
-    location: "Community Center",
+    location: "Campbelltown",
   },
 ];
 
 export default function CoordinatorAppointments() {
   const [openDropdown, setOpenDropdown] = useState(null);
 
+  //it will toggle the dropdown button when it is clicked
   const toggleDropdown = (id) => {
     setOpenDropdown(openDropdown === id ? null : id);
   };
@@ -40,7 +41,7 @@ export default function CoordinatorAppointments() {
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
             <div className="sticky top-16 h-[calc(100vh-64px)]">
 
-    <CoordinatorSidebar userName="Tricia" />
+    <CoordinatorSidebar userName="" />
   </div>
 
         <div className="flex-1 p-10">
@@ -64,12 +65,12 @@ export default function CoordinatorAppointments() {
 
                   {openDropdown === appointment.id && (
                     <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-md z-10">
-                      <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                      {/* <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                         View
                       </button>
                       <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                         Edit
-                      </button>
+                      </button> */}
                       <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-500">
                         Delete
                       </button>

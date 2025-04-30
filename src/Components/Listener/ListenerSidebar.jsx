@@ -1,9 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-export default function ListenerSidebar({ userName = "Guest" }) {
+export default function ListenerSidebar({ userName = "" }) {
   const location = useLocation();
 
+  
   const getLinkStyle = (path) =>
     location.pathname === path
       ? "bg-[#003366] text-white font-semibold"
@@ -12,20 +13,28 @@ export default function ListenerSidebar({ userName = "Guest" }) {
   return (
     <>
     <div className="w-64 bg-[#A8E4F2] h-[calc(100vh-64px)] sticky top-16 flex flex-col px-4 py-6 overflow-y-auto">
-      {/* Greeting */}
+     
       <div className="text-[#1E3A8A] font-bold text-xl mb-12 text-center">
-        Hello, {userName}
+        Hello, {userName}!
       </div>
 
-      {/* Navigation */}
+      
       <div className="flex flex-col space-y-3 mb-auto">
+      <Link
+          to="/ListenerDashboard"
+          className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
+            "/ListenerDashboard"
+          )}`}
+        >
+          Dashboard
+          </Link>
         <Link
           to="/CoordinatorsListInListener"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
             "/CoordinatorsListInListener"
           )}`}
         >
-          Coordinators
+         List of Coordinators
         </Link>
         <Link
           to="/ListenerScheduling"

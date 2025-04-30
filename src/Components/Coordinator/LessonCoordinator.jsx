@@ -9,7 +9,7 @@ function LessonCoordinator() {
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
       <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName="Tricia" />
+          <CoordinatorSidebar userName="" />
         </div>
         <div className="flex-1 p-10">
           <div className="bg-white p-6 rounded-lg shadow max-w-4xl mx-auto">

@@ -8,11 +8,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async (e) => {
+  // Function will run when the login button is clicked
+  // It will call the loginUser function from UserController and navigate to the dashboard based on the role approved by admin
+    const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const { user, role } = await loginUser({ email, password });
+      const { role } = await loginUser({ email, password });
 
       if (role === "admin") {
         navigate("/AdminDashboard");
@@ -21,7 +23,7 @@ export default function LoginPage() {
       } else if (role === "coordinator") {
         navigate("/CoordinatorDashboard");
       } else if (role === "pending") {
-        navigate("/awaiting-approval");
+        navigate("/PendingApproval");
       } else {
         alert("Unknown role. Please contact admin.");
       }
@@ -31,26 +33,27 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">
+    <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4 ">
+      <div className="bg-white p-10 shadow-lg w-full max-w-sm rounded-lg">
+        <h2 className="text-3xl font-bold text-center text-[#003366] mb-8 ">
           Login
         </h2>
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Email Address
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your email"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Password
             </label>
             <div className="relative">
@@ -59,23 +62,41 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter your password"
+                className="w-full px-4 py-3 pr-16 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-              <button
-                type="button"
+              <span
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-blue-600 hover:underline"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm text-[#003366] cursor-pointer select-none"
               >
                 {showPassword ? "Hide" : "Show"}
-              </button>
+              </span>
             </div>
           </div>
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+            className="w-full bg-[#003366] hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300"
           >
             Login
           </button>
+
+          <div className="flex justify-between mt-6 text-sm text-[#003366] font-semibold">
+            <button
+              type="button"
+              onClick={() => navigate("/")}
+              className="hover:underline"
+            >
+              Back to Home
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/signup")}
+              className="hover:underline text-[#003366]"
+            >
+              Sign Up
+            </button>
+          </div>
         </form>
       </div>
     </div>

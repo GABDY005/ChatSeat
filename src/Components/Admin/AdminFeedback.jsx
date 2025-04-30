@@ -4,32 +4,33 @@ import supabase from "../../supabase";
 import AdminNavbar from "./AdminNavbar";
 
 export default function Feedback() {
-  const [firstName, setFirstName] = useState("User");
+  // const [firstName, setFirstName] = useState("User");
   const [feedback, setFeedback] = useState([]);
 
-  useEffect(() => {
-    const fetchUserName = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // useEffect(() => {
+  //   const fetchUserName = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
+  //     if (user && !authError) {
+  //       const { data: profile, error: profileError } = await supabase
+  //         .from("profiles")
+  //         .select("first_name")
+  //         .eq("id", user.id)
+  //         .single();
 
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-        }
-      }
-    };
+  //       if (profile?.first_name) {
+  //         setFirstName(profile.first_name);
+  //       }
+  //     }
+  //   };
 
-    fetchUserName();
-  }, []);
+  //   fetchUserName();
+  // }, []);
 
+  //to get the feedback from the database according to the user id, role, message, and created_at
   useEffect(() => {
     const fetchFeedback = async () => {
       const { data, error } = await supabase
@@ -52,7 +53,7 @@ export default function Feedback() {
       <AdminNavbar title="Feedback" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]" />
-        <AdminSidebar userName={firstName} />
+        <AdminSidebar userName="Tricia" />
 
         <div className="flex-1 px-8 py-10">
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">

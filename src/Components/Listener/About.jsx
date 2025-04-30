@@ -60,7 +60,7 @@ export default function About() {
               particularly those who may be feeling isolated and lonely.
             </p>
 
-            <h4>Noel Fraser</h4>
+            <h4><strong>Noel Fraser</strong></h4>
             <p>
               Noel experienced extreme loneliness for most of his life,
               including throughout the entirety of a twenty-year stint in the

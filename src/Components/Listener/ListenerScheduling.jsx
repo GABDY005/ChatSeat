@@ -38,19 +38,16 @@ export default function ListenerScheduling() {
   ];
 
   useEffect(() => {
-    if (editBookingId !== null) {
-      flatpickr("#edit-date-picker", {
-        dateFormat: "Y-m-d",
-        defaultDate: editValues.date,
-        minDate: "2025-04-01",
-        maxDate: "2025-04-30",
-        onChange: (_, dateStr) => {
-          setEditValues((prev) => ({ ...prev, date: dateStr }));
-        },
-      });
-    }
-  }, [editBookingId]);
+    flatpickr("#date-picker", {
+      dateFormat: "Y-m-d",
+      minDate: "2025-01-01",
+      onChange: (_, dateStr) => {
+        setDate(dateStr);
+      },
+    });
+  }, []);
 
+  //shows the all future booked data of the logged in user.
   useEffect(() => {
     const getUser = async () => {
       const {
@@ -70,6 +67,7 @@ export default function ListenerScheduling() {
     getUser();
   }, []);
 
+  //It will show the booking of all done by all the users in the calendar
   const fetchUserBookings = async (uid) => {
     const { data, error } = await supabase
       .from("bookings")
@@ -78,12 +76,7 @@ export default function ListenerScheduling() {
     if (!error && data) setUserBookings(data);
   };
 
-  const handleCancel = async (id) => {
-    await supabase.from("bookings").delete().eq("id", id);
-    fetchUserBookings(userId);
-    loadAvailableTimes();
-  };
-
+  //it will show all the available time for the selected location and date
   const loadAvailableTimes = useCallback(async () => {
     const { data, error } = await supabase
       .from("bookings")
@@ -101,6 +94,7 @@ export default function ListenerScheduling() {
     setAvailableTimes(available);
   }, [location, date]);
 
+  //Whenever the location or date changes, it will re-load the available times
   useEffect(() => {
     if (location && date) loadAvailableTimes();
   }, [location, date, loadAvailableTimes]);
@@ -147,6 +141,22 @@ export default function ListenerScheduling() {
     loadAvailableTimes();
   };
 
+  //flatpickr calendar will open for editting the date in the upcoming bookings tab
+  useEffect(() => {
+    if (editBookingId !== null) {
+      flatpickr("#edit-date-picker", {
+        dateFormat: "Y-m-d",
+        defaultDate: editValues.date,
+        minDate: "2025-01-01",
+
+        onChange: (_, dateStr) => {
+          setEditValues((prev) => ({ ...prev, date: dateStr }));
+        },
+      });
+    }
+  }, [editBookingId]);
+
+  //it will allow user to edit the booking
   const handleUpdateBooking = async (id) => {
     const { error } = await supabase
       .from("bookings")
@@ -165,10 +175,16 @@ export default function ListenerScheduling() {
     }
   };
 
+  //User can delete the booking
+  const handleCancel = async (id) => {
+    await supabase.from("bookings").delete().eq("id", id);
+    fetchUserBookings(userId);
+    loadAvailableTimes();
+  };
+
   return (
     <>
-
-<ListenerNavbar title="Book Your Slot" />
+      <ListenerNavbar title="Book Your Slot" />
       <div className="flex min-h-screen bg-[#e6f4f9] pt-16">
         <div className="sticky top-16 h-[calc(100vh-64px)] z-10">
           <ListenerSidebar userName={userName || "Guest"} />
@@ -186,6 +202,8 @@ export default function ListenerScheduling() {
                     : "bg-white text-[#1E3A8A] hover:bg-[#d9eefe]"
                 }`}
               >
+     
+                {/*here we have used ternary operator for different tabs*/}
                 {tab === "Book"
                   ? "📍 Book a Slot"
                   : tab === "Calendar"
@@ -198,48 +216,97 @@ export default function ListenerScheduling() {
           {activeTab === "Book" && (
             <div className="flex justify-center items-center min-h-[calc(100vh-200px)]">
               <div className="bg-white w-full max-w-xl p-8 rounded-xl shadow-lg">
-              <h2 className="text-xl font-bold mb-4 text-[#1E3A8A]">Book Your Slot</h2>
-              <label className="block mb-1 font-semibold text-[#003366]">Select Place:</label>
-              <select value={location} onChange={(e) => setLocation(e.target.value)} className="form-select w-full p-2 mb-3 rounded border">
-                <option value="">-- Select Location --</option>
-                <option value="Tea_Tree_Plaza">Tea Tree Plaza</option>
-                <option value="Campbelltown_Library">Campbelltown Library</option>
-                <option value="Rundle_Mall">Rundle Mall</option>
-              </select>
+                <h2 className="text-xl font-bold mb-4 text-[#1E3A8A]">
+                  Book Your Slot
+                </h2>
+                <label className="block mb-1 font-semibold text-[#003366]">
+                  Select Place:
+                </label>
+                <select
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  className="form-select w-full p-2 mb-3 rounded border"
+                >
+                  <option value="">-- Select Location --</option>
+                  <option value="Tea_Tree_Plaza">Tea Tree Plaza</option>
+                  <option value="Campbelltown_Library">
+                    Campbelltown Library
+                  </option>
+                  <option value="Rundle_Mall">Rundle Mall</option>
+                </select>
 
-              <label className="block mb-1 font-semibold text-[#003366]">Select Date:</label>
-              <input type="text" id="date-picker" className="form-control w-full p-2 mb-3 rounded border" readOnly />
+                <label className="block mb-1 font-semibold text-[#003366]">
+                  Select Date:
+                </label>
+                <input
+                  type="text"
+                  id="date-picker"
+                  className="form-control w-full p-2 mb-3 rounded border"
+                  readOnly
+                />
 
-              <label className="block mb-1 font-semibold text-[#003366]">Select Time:</label>
-              <select value={time} onChange={(e) => setTime(e.target.value)} className="form-select w-full p-2 mb-3 rounded border">
-                <option value="">-- Choose Time --</option>
-                {availableTimes.map((t, i) => (
-                  <option key={i} value={t}>{t}</option>
-                ))}
-              </select>
+                <label className="block mb-1 font-semibold text-[#003366]">
+                  Select Time:
+                </label>
+                <select
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="form-select w-full p-2 mb-3 rounded border"
+                >
+                  <option value="">-- Choose Time --</option>
+                  {availableTimes.map((t, i) => (
+                    <option key={i} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
 
-              <button onClick={bookSlot} className="w-full bg-[#003366] text-white py-2 rounded hover:bg-[#1E3A8A]">Book Slot</button>
-              {confirmation && <div className="bg-blue-100 text-blue-900 mt-3 p-3 rounded">{confirmation}</div>}
-            </div>
+                <button
+                  onClick={bookSlot}
+                  className="w-full bg-[#003366] text-white py-2 rounded hover:bg-[#1E3A8A]"
+                >
+                  Book Slot
+                </button>
+                {confirmation && (
+                  <div className="bg-blue-100 text-blue-900 mt-3 p-3 rounded">
+                    {confirmation}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
           {activeTab === "Calendar" && (
             <div className="bg-white p-6 rounded shadow w-full">
-              <h4 className="text-lg font-bold mb-4 text-[#1E3A8A]">View Booked Schedule</h4>
-              <select value={calendarLocation} onChange={(e) => setCalendarLocation(e.target.value)} className="form-select w-full p-2 mb-3 rounded border">
+              <h4 className="text-lg font-bold mb-4 text-[#1E3A8A]">
+                View Booked Schedule
+              </h4>
+              <select
+                value={calendarLocation}
+                onChange={(e) => setCalendarLocation(e.target.value)}
+                className="form-select w-full p-2 mb-3 rounded border"
+              >
                 <option value="">-- Select Location --</option>
                 <option value="Tea_Tree_Plaza">Tea Tree Plaza</option>
-                <option value="Campbelltown_Library">Campbelltown Library</option>
+                <option value="Campbelltown_Library">
+                  Campbelltown Library
+                </option>
                 <option value="Rundle_Mall">Rundle Mall</option>
               </select>
-              <FullCalendar plugins={[timeGridPlugin]} initialView="timeGridWeek" height={500} events={calendarEvents} />
+              <FullCalendar
+                plugins={[timeGridPlugin]}
+                initialView="timeGridWeek"
+                height={500}
+                events={calendarEvents}
+              />
             </div>
           )}
 
           {activeTab === "Upcoming" && (
             <div className="bg-white p-6 rounded shadow w-full">
-              <h3 className="text-xl font-bold mb-3 text-[#1E3A8A]">Your Upcoming Bookings</h3>
+              <h3 className="text-xl font-bold mb-3 text-[#1E3A8A]">
+                Your Upcoming Bookings
+              </h3>
               {userBookings.length === 0 ? (
                 <p>No bookings yet.</p>
               ) : (
@@ -248,38 +315,88 @@ export default function ListenerScheduling() {
                     <li key={b.id} className="border p-4 rounded shadow">
                       {editBookingId === b.id ? (
                         <>
-<input
-  type="text"
-  id="edit-date-picker"
-  value={editValues.date}
-  readOnly
-  className="w-full mb-2 p-2 border rounded bg-white"
-/>
+                          <input
+                            type="text"
+                            id="edit-date-picker"
+                            value={editValues.date}
+                            readOnly
+                            className="w-full mb-2 p-2 border rounded bg-white"
+                          />
 
-                          <select value={editValues.time} onChange={(e) => setEditValues((prev) => ({ ...prev, time: e.target.value }))} className="w-full mb-2 p-2 border rounded">
+                          <select
+                            value={editValues.time}
+                            onChange={(e) =>
+                              setEditValues((prev) => ({
+                                ...prev,
+                                time: e.target.value,
+                              }))
+                            }
+                            className="w-full mb-2 p-2 border rounded"
+                          >
                             {timeslots.map((slot) => (
-                              <option key={slot} value={slot}>{slot}</option>
+                              <option key={slot} value={slot}>
+                                {slot}
+                              </option>
                             ))}
                           </select>
-                          <select value={editValues.location} onChange={(e) => setEditValues((prev) => ({ ...prev, location: e.target.value }))} className="w-full mb-2 p-2 border rounded">
-                            <option value="Tea_Tree_Plaza">Tea Tree Plaza</option>
-                            <option value="Campbelltown_Library">Campbelltown Library</option>
+                          <select
+                            value={editValues.location}
+                            onChange={(e) =>
+                              setEditValues((prev) => ({
+                                ...prev,
+                                location: e.target.value,
+                              }))
+                            }
+                            className="w-full mb-2 p-2 border rounded"
+                          >
+                            <option value="Tea_Tree_Plaza">
+                              Tea Tree Plaza
+                            </option>
+                            <option value="Campbelltown_Library">
+                              Campbelltown Library
+                            </option>
                             <option value="Rundle_Mall">Rundle Mall</option>
                           </select>
                           <div className="flex gap-2 mt-2">
-                            <button onClick={() => handleUpdateBooking(b.id)} className="bg-green-600 text-white px-3 py-1 rounded">Save</button>
-                            <button onClick={() => setEditBookingId(null)} className="bg-gray-400 text-white px-3 py-1 rounded">Cancel</button>
+                            <button
+                              onClick={() => handleUpdateBooking(b.id)}
+                              className="bg-green-600 text-white px-3 py-1 rounded"
+                            >
+                              Save
+                            </button>
+                            <button
+                              onClick={() => setEditBookingId(null)}
+                              className="bg-gray-400 text-white px-3 py-1 rounded"
+                            >
+                              Cancel
+                            </button>
                           </div>
                         </>
                       ) : (
                         <div className="flex justify-between items-center">
-                          <span>{b.date} at {b.time} in {b.location}</span>
+                          <span>
+                            {b.date} at {b.time} in {b.location}
+                          </span>
                           <div className="space-x-2">
-                            <button className="text-blue-600 hover:underline" onClick={() => {
-                              setEditBookingId(b.id);
-                              setEditValues({ date: b.date, time: b.time, location: b.location });
-                            }}>Edit</button>
-                            <button className="text-red-600 hover:underline" onClick={() => handleCancel(b.id)}>Delete</button>
+                            <button
+                              className="text-blue-600 hover:underline"
+                              onClick={() => {
+                                setEditBookingId(b.id);
+                                setEditValues({
+                                  date: b.date,
+                                  time: b.time,
+                                  location: b.location,
+                                });
+                              }}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="text-red-600 hover:underline"
+                              onClick={() => handleCancel(b.id)}
+                            >
+                              Delete
+                            </button>
                           </div>
                         </div>
                       )}
@@ -291,7 +408,6 @@ export default function ListenerScheduling() {
           )}
         </div>
       </div>
-      
     </>
   );
 }

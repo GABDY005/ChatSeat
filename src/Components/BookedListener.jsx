@@ -21,7 +21,7 @@ export default function BookedListener() {
   ];
   return (
     <>
-      <div className="min-h-sceen bg-[#f4f8fb]">
+      <div className="min-h-sceen bg-white">
         <nav className="flex items-center justify-between bg-[#1E3A8A] px-6 py-4 shadow-md">
           <div>
             <Link

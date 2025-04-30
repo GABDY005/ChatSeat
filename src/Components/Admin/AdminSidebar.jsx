@@ -1,9 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-export default function AdminSidebar({ userName = "Admin" }) {
+export default function AdminSidebar({ userName = "" }) {
   const location = useLocation();
 
+  //it is used to get the current path of the page and also to highlight the option on the sidebar
   const getLinkStyle = (path) =>
     location.pathname === path
       ? "bg-[#003366] text-white font-semibold"

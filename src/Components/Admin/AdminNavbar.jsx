@@ -9,7 +9,7 @@ export default function AdminNavbar({title="Admin Dashboard"}) {
     <div className="fixed top-0 w-full z-50 bg-[#003366] text-white h-16 flex items-center justify-center px-6 shadow-md">
       <h4 className="text-xl font-bold">{title}</h4>
 
-      {/* Dropdown Button */}
+      
       <div className="absolute right-6">
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -24,13 +24,13 @@ export default function AdminNavbar({title="Admin Dashboard"}) {
               onClick={() => navigate("/ListenerDashboard")}
               className="text-sm w-full text-left px-4 py-2 hover:bg-blue-100"
             >
-              👤 Listener Dashboard
+               Listener Dashboard
             </button>
             <button
               onClick={() => navigate("/CoordinatorDashboard")}
               className="text-sm w-full text-left px-4 py-2 hover:bg-green-100"
             >
-              👩‍🏫 Coordinator Dashboard
+              Coordinator Dashboard
             </button>
           </div>
         )}

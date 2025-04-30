@@ -44,7 +44,7 @@ export default function CoordinatorsListInListener() {
       {/* <div className="flex min-h-[calc(100vh-60px)]">
         <ListenerSidebar userName={firstName} /> */}
 
-        <div className="flex pt-16">
+        {/* <div className="flex pt-16">
           <div className="ml-56 px-10 py-12 w-full">
             <div className="max-w-4xl mx-auto text-black space-y-6">
               <p>
@@ -192,11 +192,11 @@ export default function CoordinatorsListInListener() {
                 <li>Use “Hello my name is...” badges.</li>
                 <li>Provide tea/coffee if possible.</li>
                 <li>Encourage venues to promote Chat Seats availability.</li>
-              </ul>
+              </ul> */}
             </div>
-          </div>
-        </div>
-      </div>
+          {/* </div> */}
+        {/* </div> */}
+      {/* </div> */}
     </>
   );
 }

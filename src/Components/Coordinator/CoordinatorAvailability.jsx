@@ -13,11 +13,13 @@ const dummyCalendarData = [
 export default function CoordinatorAvailability() {
   const [calendarEvents, setCalendarEvents] = useState([]);
 
+  //it willtake the dummy data and set the calendar events
   useEffect(() => {
     const allTimeSlots = [];
     const timeslots = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00"];
     const days = ["2025-04-15", "2025-04-16"];
 
+    //it will loop through the days and timeslots to get the dummy data and then it will set the color accordingly
     days.forEach((date) => {
       timeslots.forEach((time) => {
         const match = dummyCalendarData.find(
@@ -29,6 +31,7 @@ export default function CoordinatorAvailability() {
         if (count === 1) color = "#fde047";
         if (count === 2) color = "#f87171";
 
+        //it will push the data to the allTimeSlots array
         allTimeSlots.push({
           title: `${time} (${count}/2)`,
           start: `${date}T${time}`,

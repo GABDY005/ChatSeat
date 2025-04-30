@@ -11,10 +11,12 @@ export default function AdminUserList() {
   const [users, setUsers] = useState([]);
   const [activeTab, setActiveTab] = useState("pending");
 
+  //it will run when the page is load 
   useEffect(() => {
     getUsers();
   }, []);
 
+  //it will fetch the users from database
   const getUsers = async () => {
     try {
       const data = await fetchAllUsers();
@@ -24,6 +26,7 @@ export default function AdminUserList() {
     }
   };
 
+  //it will approve the user according to the role
   const handleApprove = async (userId, role) => {
     try {
       await updateUserRole(userId, role);
@@ -34,6 +37,7 @@ export default function AdminUserList() {
     }
   };
 
+  //it will delete the user from the database
   const handleDelete = async (userId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this user?"
@@ -48,6 +52,7 @@ export default function AdminUserList() {
     }
   };
 
+  //it will filter the user according tot he role
   const filteredUsers = users.filter((user) => user.role === activeTab);
 
   return (
@@ -56,14 +61,14 @@ export default function AdminUserList() {
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
       <div className="sticky top-16 h-[calc(100vh-64px)]" />
-        <AdminSidebar userName="Admin" />
+        <AdminSidebar userName="" />
 
         <div className="flex-1 p-8">
-          <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">All Users</h2>
+          {/* <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">All Users</h2> */}
 
-          {/* Tabs */}
           <div className="flex space-x-4 mb-6">
             {["pending", "listener", "coordinator"].map((tab) => (
+              //it will create 3 tabs
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -88,6 +93,7 @@ export default function AdminUserList() {
               </tr>
             </thead>
             <tbody>
+              {/*it will map the users according to the role and show the data in the table */}
               {filteredUsers.length > 0 ? (
                 filteredUsers.map((user) => (
                   <tr key={user.id} className="border-t">

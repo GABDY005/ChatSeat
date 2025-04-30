@@ -9,6 +9,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  // Function to handle signup form submission
   const handleSignup = async (e) => {
     e.preventDefault();
 

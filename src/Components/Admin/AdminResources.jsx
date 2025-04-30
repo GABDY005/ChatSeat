@@ -3,6 +3,7 @@ import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 
 function AdminResources() {
+  
   return (
     <>
       <AdminNavbar title="Resources" />
