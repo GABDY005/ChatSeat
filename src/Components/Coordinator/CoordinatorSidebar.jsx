@@ -55,7 +55,15 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
             "/CoordinatorChatroom"
           )}`}
         >
-          Let's Talk
+          Coordinator Chat room
+        </Link>
+        <Link
+          to="/CoordinatorListenerChatroom"
+          className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
+            "/CoordinatorListenerChatroom"
+          )}`}
+        >
+          Listener Chat room
         </Link>
         <Link
           to="/Logos"

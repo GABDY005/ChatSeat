@@ -20,6 +20,8 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 
 //Coordinator components
 import CoordinatorDashboard from "./Components/Coordinator/CoordinatorDashboard";
+import CoordinatorChatroom from "./Components/Coordinator/CoordinatorChatroom";
+import CoordinatorListenerChatroom from "./Components/Coordinator/CoordinatorListenerChatroom";
 import CoordinatorAppointments from "./Components/Coordinator/CoordinatorAppointments";
 import CoordinatorAvailability from "./Components/Coordinator/CoordinatorAvailability";
 import LessonCoordinator from "./Components/Coordinator/LessonCoordinator";
@@ -30,11 +32,12 @@ import BookedListener from "./Components/BookedListener.jsx";
 
 //Admin components
 import AdminDashboard from "./Components/Admin/AdminDashboard";
+import AdminCoordinatorChatroom from "./Components/Admin/AdminCoordinatorChatroom";
+import AdminListenerChatroom from "./Components/Admin/AdminListenerChatroom";
 import AdminUserList from "./Components/Admin/AdminUserList";
 import AdminResources from "./Components/Admin/AdminResources";
 import AdminHelp from "./Components/Admin/AdminHelp";
 import AdminFeedback from "./Components/Admin/AdminFeedback";
-import CoordinatorChatroom from "./Components/Coordinator/CoordinatorChatroom";
 import PendingApproval from "./Components/Admin/PendingApproval";
 
 function App() {
@@ -101,6 +104,10 @@ function App() {
               path="/CoordinatorChatroom"
               element={<CoordinatorChatroom />}
             />
+            <Route
+            path="/CoordinatorListenerChatroom"
+            element={<CoordinatorListenerChatroom />}
+            />
             <Route path="/Logos" element={<Logos />} />
             <Route
               path="/CoordinatorFeedback"
@@ -111,6 +118,14 @@ function App() {
             <Route path="/AdminResources" element={<AdminResources />} />
             <Route path="/AdminHelp" element={<AdminHelp />} />
             <Route path="/AdminFeedback" element={<AdminFeedback />} />
+            <Route
+            path="/AdminCoordinatorChatroom"
+            element={<AdminCoordinatorChatroom />}
+            />
+            <Route
+            path="/AdminListenerChatroom"
+            element={<AdminListenerChatroom />}
+            />
 
             {/* Add other routes here */}
           </Routes>

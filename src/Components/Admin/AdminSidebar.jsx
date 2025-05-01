@@ -35,6 +35,22 @@ export default function AdminSidebar({ userName = "" }) {
           Manage Users
         </Link>
         <Link
+          to="/AdminCoordinatorChatroom"
+          className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
+            "/AdminCoordinatorChatroom"
+          )}`}
+        >
+          Coordinator Chat Room
+        </Link>
+        <Link
+          to="/AdminListenerChatroom"
+          className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
+            "/AdminListenerChatroom"
+          )}`}
+        >
+          Listener Chat room
+        </Link>
+        <Link
           to="/AdminResources"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
             "/AdminResources"

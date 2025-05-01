@@ -40,6 +40,17 @@ export default function ListenerScheduling() {
   useEffect(() => {
     flatpickr("#date-picker", {
       dateFormat: "Y-m-d",
+      minDate: "2025-04-01",
+      maxDate: "2025-06-30",
+      onChange: (_, dateStr) => {
+        setDate(dateStr);
+      },
+    });
+  }, []);
+
+  useEffect(() => {
+    flatpickr("#date-picker", {
+      dateFormat: "Y-m-d",
       minDate: "2025-01-01",
       onChange: (_, dateStr) => {
         setDate(dateStr);
