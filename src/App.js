@@ -40,7 +40,7 @@ import PendingApproval from "./Components/Admin/PendingApproval";
 function App() {
   return (
     <div>
-      <AuthProvider>
+      {/* <AuthProvider> */}
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -115,7 +115,7 @@ function App() {
             {/* Add other routes here */}
           </Routes>
         </Router>
-      </AuthProvider>
+      {/* </AuthProvider> */}
     </div>
   );
 }

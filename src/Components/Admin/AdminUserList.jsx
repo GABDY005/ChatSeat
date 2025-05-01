@@ -68,7 +68,6 @@ export default function AdminUserList() {
 
           <div className="flex space-x-4 mb-6">
             {["pending", "listener", "coordinator"].map((tab) => (
-              //it will create 3 tabs
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -93,7 +92,6 @@ export default function AdminUserList() {
               </tr>
             </thead>
             <tbody>
-              {/*it will map the users according to the role and show the data in the table */}
               {filteredUsers.length > 0 ? (
                 filteredUsers.map((user) => (
                   <tr key={user.id} className="border-t">
@@ -101,7 +99,7 @@ export default function AdminUserList() {
                       {user.first_name} {user.last_name}
                     </td>
                     <td className="p-3">{user.email}</td>
-                    <td className="p-3 capitalise">{user.role}</td>
+                    <td className="p-3 capitalize">{user.role}</td>
                     <td className="p-3 text-center space-x-2">
                       {user.role === "pending" ? (
                         <>

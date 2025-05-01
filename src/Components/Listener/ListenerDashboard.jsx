@@ -37,22 +37,41 @@ export default function ListenerDashboard() {
           <ListenerSidebar userName={firstName} />
         </div>
 
+      <div className="flex-1 p-10">
+        <div className="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+          <h2 className="text-4xl font-bold text-[#1E3A8A] mb-10 text-center">
+            Welcome, Listeners!
+          </h2>
+          <p className="text-gray-700 mb-6 text-lg">
+          Thank you for agreeing to volunteer some of your time as a Listener on our Chat Seats.
+          </p>
+          <p className="text-gray-700 mb-6 text-lg">
+          On this page you will find some information about your role as a Listener.
+          </p>
 
-        <div className="flex-1 flex items-center justify-center p-10">
-          <div className="text-center max-w-[600px]">
-            <h2 className="font-bold text-2xl mb-5 text-[#1E3A8A]">
-              Have a chat seat
-            </h2>
-            <p className="font-medium mb-4 text-gray-700">
-              The purpose behind setting up chat seat is to connect members of
-              the community through conversation.
-            </p>
-            <p className="font-medium mb-4 text-gray-700">
-              You may find a chat seat in a library or shopping centre. You will
-              recognise them by a banner such as one shown.
-            </p>
-          </div>
+          <ul className="list-disc pl-6 text-gray-700 text-lg mb-6 space-y-1">
+            <li>
+              <strong>"Good Listening Skills."</strong>
+            </li>
+            <li><strong>"Good Conversation Skills."</strong></li>
+            <li><strong>"How to make people feel comfortable about joining you on the Chat Seat."</strong> </li>
+          </ul>
+
+          <p className="text-gray-700 mb-2 text-lg">
+          There are also links to other web sites that host information on being an effective Listener. 
+          </p>
+          <p className="text-gray-700 mb-2 text-lg">
+          There is a <strong>Booking tab</strong> where you can select the venue you want to sit on a <strong>Chat Seat</strong> and select what time suits you.
+          </p>
+          <p className="text-gray-700 mb-2 text-lg">
+          A <strong>Chat room</strong> is also available where you can chat with other Listeners to exchange ideas or give support.
+          </p>
+
+          <p className="text-gray-700 mb-4 text-lg">
+          Also if you would like to provide any <strong>Feedback</strong> to us, please go to <strong>Feedback tab</strong>.
+          </p>
         </div>
+      </div>
       </div>
     </>
   );

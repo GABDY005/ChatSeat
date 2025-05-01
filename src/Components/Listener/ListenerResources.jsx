@@ -38,42 +38,37 @@ export default function ListenerResources() {
           <ListenerSidebar userName={firstName} />
         </div>
 
-      <div className="md:ml-[220px] pt-20 px-6 pb-10">
-        <div className="ml-[17%] pt-20 pb-10 px-10">
-          <div className="mw-[90%] m-auto text-left">
-            <p>
-              Thank you for agreeing to volunteer some of your time as a
-              Listener on our Chat Seats.
+        <div className="flex-1 p-10">
+          <div className="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-blue-100">
+            <h2 className="text-3xl font-bold text-[#1E3A8A] mb-6 text-left">
+              Lessons Learned in Establishing Chat Seats
+            </h2>
+
+            <p className="text-gray-700 text-lg mb-4">
+              Below are some of the lessons we have learned when establishing Chat Seats:
             </p>
 
-            <p>On this page you will find some information about:</p>
-            {/* <ul>
-                    <li><Link to="assets/Listener_Guide.pdf" target="_blank">Good Listening Skills</Link></li>
-                    <li><Link to="assets/Conversation_Guide_Sheet.pdf" target="_blank">Good Conversation Skills</li>
-                    <li><Link to="assets/Attracting_Chatters.pdf" target="_blank">How to make people feel comfortable about joining you on the Chat Seat</Link></li> 
-                  </ul>
-        
-                  <p>There are also links to other web sites that host information on being an effective Listener.</p>
-                  <ul>
-                  <li><Link to="https://endingloneliness.com.au/" target="_blank">Ending Loneliness Together</Link></li>
-                    <li><Link to="https://www.rosthomas.com.au/features" target="_blank">Ros Thomas - Research on Loneliness</li>
-                </ul> */}
-            <p>
-              There is a booking tab where you can select the venue you want to
-              sit on a <strong>chat Seat</strong> and select what time suits
-              you.
-            </p>
-            <p>
-              A Chat room is also available where you can chat with other
-              Listeners to exchange ideas or give support.
-            </p>
-            <p>
-              Also if you would like to provide any feedback to us, please
-              contact us.
-            </p>
+            <ul className="list-disc pl-6 space-y-2 text-gray-700 text-lg">
+              <li>Selection of listeners – ensure they are interested in other peoples’ experiences and have well developed listening skills.</li>
+              <li>Have one very experienced listener who sits with less experienced listeners.</li>
+              <li>Listeners work in pairs.</li>
+              <li>It is important that it is about listening and not counselling.</li>
+              <li>Have banners and graphics ready when talking to venue managers.</li>
+              <li>Be prepared to be flexible about location of Chat Seats and setup style.</li>
+              <li>Complete any required induction activities at the venue.</li>
+              <li>Observe all requirements of the venue.</li>
+              <li>Hold required clearances as requested by venue managers.</li>
+              <li>Check in regularly with the venue manager to see if anything needs to be adjusted.</li>
+              <li>Advertise available Chat Seat times on the website for each venue.</li>
+              <li>Hold biannual get-togethers for listeners.</li>
+              <li>Inter-generational listeners are a plus.</li>
+              <li>Provide materials to help develop listening skills.</li>
+              <li>Provide name badges (e.g., "Hello my name is…").</li>
+              <li>It’s a bonus if tea/coffee is available at the venue.</li>
+              <li>It’s great if the venue advertises the availability of Chat Seats.</li>
+            </ul>
           </div>
         </div>
-      </div>
       </div>
     </>
   );

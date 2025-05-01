@@ -36,9 +36,10 @@ export default function About() {
                <ListenerSidebar userName={firstName} />
              </div>
 
-        <div className="flex-1 p-10">
-          <div className="mw-[800px] bg-white p-5 border-r-8 shadow-[0px_0px_10px_rgba(0,0,0,0.1)]">
-            <h4>
+        <div className="flex-1 flex justify-center items-start p-10">
+          <div className="max-w-3xl bg-white p-6 border-r-8 shadow-[0px_0px_10px_rgba(0,0,0,0.1)] space-y-6 leading-relaxed">
+            <section>
+            <h4 className="text-xl font-semibold">
               <strong>Dr Tricia Vilkinas, B.SC., B. Comm., M.Psych.</strong>
             </h4>
             <p>
@@ -59,8 +60,9 @@ export default function About() {
               is a great opportunity to connect members in our community,
               particularly those who may be feeling isolated and lonely.
             </p>
-
-            <h4><strong>Noel Fraser</strong></h4>
+            </section>
+            <section>
+            <h4 className="text-xl font-semibold"><strong>Noel Fraser</strong></h4>
             <p>
               Noel experienced extreme loneliness for most of his life,
               including throughout the entirety of a twenty-year stint in the
@@ -75,6 +77,7 @@ export default function About() {
               volunteered to help plan and initiate Tricia’s Chat Seats idea in
               his local area.
             </p>
+            </section>
           </div>
         </div>
       </div>
