@@ -51,6 +51,14 @@ export default function AdminSidebar({ userName = "" }) {
           Listener Chat room
         </Link>
         <Link
+          to="/AdminSchedulingSetting"
+          className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
+            "/AdminSchedulingSetting"
+          )}`}
+        >
+          Admin Scheduling Setting
+        </Link>
+        <Link
           to="/AdminResources"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
             "/AdminResources"
