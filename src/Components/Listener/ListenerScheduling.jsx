@@ -22,6 +22,7 @@ export default function ListenerScheduling() {
   const [activeTab, setActiveTab] = useState("Book");
   const [editBookingId, setEditBookingId] = useState(null);
   const [editValues, setEditValues] = useState({ date: "", time: "", location: "" });
+  const [editAvailableTimes, setEditAvailableTimes] = useState([]);
 
   useEffect(() => {
     flatpickr("#date-picker", {
@@ -110,6 +111,40 @@ export default function ListenerScheduling() {
   useEffect(() => {
     if (location && date) loadAvailableTimes();
   }, [location, date, loadAvailableTimes]);
+
+  useEffect(() => {
+    const fetchEditTimes = async () => {
+      if (!editValues.location || !editValues.date) return;
+
+      const loc = locations.find((l) => l.name === editValues.location);
+      if (!loc) return;
+
+      const { data: allAvailable } = await supabase
+        .from("availability")
+        .select("*")
+        .eq("location_id", loc.id)
+        .eq("date", editValues.date);
+
+      const { data: allBooked } = await supabase
+        .from("bookings")
+        .select("*")
+        .eq("location", editValues.location)
+        .eq("date", editValues.date);
+
+      const countMap = {};
+      allBooked?.forEach((b) => {
+        countMap[b.time] = (countMap[b.time] || 0) + 1;
+      });
+
+      const filtered = allAvailable
+        ?.map((a) => a.time)
+        .filter((t) => !countMap[t] || countMap[t] < 2);
+
+      setEditAvailableTimes(filtered || []);
+    };
+
+    fetchEditTimes();
+  }, [editValues.date, editValues.location, locations]);
 
   const bookSlot = async () => {
     if (!location || !date || !time) {
@@ -310,7 +345,8 @@ export default function ListenerScheduling() {
                             }
                             className="w-full mb-2 p-2 border rounded"
                           >
-                            {availableTimes.map((t) => (
+                            <option value="">-- Choose Time --</option>
+                            {editAvailableTimes.map((t) => (
                               <option key={t} value={t}>
                                 {t}
                               </option>
