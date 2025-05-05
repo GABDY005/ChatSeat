@@ -37,6 +37,7 @@ import AdminListenerChatroom from "./Components/Admin/AdminListenerChatroom";
 import AdminUserList from "./Components/Admin/AdminUserList";
 import AdminResources from "./Components/Admin/AdminResources";
 import AdminHelp from "./Components/Admin/AdminHelp";
+import AdminSchedulingSetting from "./Components/Admin/AdminSchedulingSetting";
 import AdminFeedback from "./Components/Admin/AdminFeedback";
 import PendingApproval from "./Components/Admin/PendingApproval";
 
@@ -125,6 +126,10 @@ function App() {
             <Route
             path="/AdminListenerChatroom"
             element={<AdminListenerChatroom />}
+            />
+            <Route
+              path="/AdminSchedulingSetting"
+              element={<AdminSchedulingSetting />}
             />
 
             {/* Add other routes here */}
