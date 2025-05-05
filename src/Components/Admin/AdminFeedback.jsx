@@ -9,6 +9,9 @@ export default function Feedback() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [searchName, setSearchName] = useState("");
   const [searchRole, setSearchRole] = useState("");
+  const [searchDate, setSearchDate] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(9); // Number of items per page
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -68,14 +71,30 @@ export default function Feedback() {
     setOpenDropdown((prevId) => (prevId === id ? null : id));
   };
 
-  const filteredFeedback = feedback.filter((item) =>
-    item.name.toLowerCase().includes(searchName.toLowerCase())  
-  )
-  .filter((item) =>
-    !searchRole ? true : item.role?.toLowerCase() === searchRole
-);
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0];
+  };
 
+  const filteredFeedback = feedback
+    .filter((item) =>
+      item.name.toLowerCase().includes(searchName.toLowerCase())
+    )
+    .filter((item) =>
+      !searchRole ? true : item.role?.toLowerCase() === searchRole
+    )
 
+    .filter((item) =>
+      !searchDate ? true : formatDate(item.created_at) === searchDate
+    );
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredFeedback.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(filteredFeedback.length / itemsPerPage);
 
   return (
     <>
@@ -97,22 +116,33 @@ export default function Feedback() {
               onChange={(e) => setSearchName(e.target.value)}
               className="px-3 py-1.5 border border-gray-300 rounded-md w-64 focus:outline-none focus:ring-2 text-sm shadow-sm"
             />
-   
-          
-            <select value={searchRole} onChange={(e) => setSearchRole(e.target.value)} className="px-3 py-1.5 border border-gray-300 rounded-md w-64 focus:outline-none focus:ring-2 text-sm shadow-sm">
-              <option value="" disabled hidden>Search by Role...</option>
+
+            <select
+              value={searchRole}
+              onChange={(e) => setSearchRole(e.target.value)}
+              className="px-3 py-1.5 border border-gray-300 rounded-md w-64 focus:outline-none focus:ring-2 text-sm shadow-sm"
+            >
+              <option value="" disabled hidden>
+                Search by Role...
+              </option>
               <option value="coordinator">Coordinator</option>
               <option value="listener">Listener</option>
-
             </select>
+
+            <input
+              type="date"
+              value={searchDate}
+              onChange={(e) => setSearchDate(e.target.value)}
+              className="px-3 py-1.5 border border-gray-300 rounded-md w-64 focus:outline-none focus-ring-2 text-sm shadow-sm"
+            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredFeedback.map((item) => (
+            {currentItems.map((item) => (
               <div
                 key={item.id}
                 className={`bg-white shadow-md rounded-xl p-6 border-t-4 ${
-                  item.role === "coordinator"
+                  item.role === "Coordinator"
                     ? "border-green-500"
                     : "border-blue-500"
                 } hover:shadow-lg hover:scale-105 transition-transform duration-300`}
@@ -136,19 +166,19 @@ export default function Feedback() {
                 )}
                 <div className="mb-4 space-y-1 text-sm text-gray-600">
                   <p>
-                    <span className="font-semibold">👤 Name:</span>{" "}
+                    <span className="font-semibold"> Name:</span>{" "}
                     {item.name || "N/A"}
                   </p>
                   <p>
-                    <span className="font-semibold">📧 Email:</span>{" "}
+                    <span className="font-semibold">Email:</span>{" "}
                     {item.email || "N/A"}
                   </p>
                   <p>
-                    <span className="font-semibold">🏷️ Role:</span>{" "}
+                    <span className="font-semibold">Role:</span>{" "}
                     {item.role || "N/A"}
                   </p>
                   <p>
-                    <span className="font-semibold">🕒 Submitted:</span>{" "}
+                    <span className="font-semibold">Submitted:</span>{" "}
                     {new Date(item.created_at).toLocaleString()}
                   </p>
                 </div>
@@ -159,6 +189,34 @@ export default function Feedback() {
               </div>
             ))}
           </div>
+
+          {filteredFeedback.length > itemsPerPage && (
+            <div className="flex justify-center mt-8 gap-4">
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:opacity-50"
+              >
+                Previous
+              </button>
+
+              <span className="text-sm mt-1">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) =>
+                    prev < totalPages ? prev + 1 : prev
+                  )
+                }
+                disabled={currentPage === totalPages}
+                className="px-4 py-1 bg-blue-500 text-white rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
