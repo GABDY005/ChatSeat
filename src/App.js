@@ -41,6 +41,9 @@ import AdminSchedulingSetting from "./Components/Admin/AdminSchedulingSetting";
 import AdminFeedback from "./Components/Admin/AdminFeedback";
 import PendingApproval from "./Components/Admin/PendingApproval";
 
+
+import GoodListeningSkills from "./Resources/GoodListeningSkills";
+
 function App() {
   return (
     <div>
@@ -131,6 +134,8 @@ function App() {
               path="/AdminSchedulingSetting"
               element={<AdminSchedulingSetting />}
             />
+
+            <Route path="/Resources/GoodListeningSkills" element={<GoodListeningSkills />} />
 
             {/* Add other routes here */}
           </Routes>

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
+import { Link } from "react-router-dom";
+
 
 export default function ListenerDashboard() {
   const [firstName, setFirstName] = useState("User");
@@ -51,10 +53,20 @@ export default function ListenerDashboard() {
 
           <ul className="list-disc pl-6 text-gray-700 text-lg mb-6 space-y-1">
             <li>
+              <Link to="/Resources/GoodListeningSkills" className="text-black hover:underline" >
               <strong>"Good Listening Skills."</strong>
+              </Link>
             </li>
-            <li><strong>"Good Conversation Skills."</strong></li>
-            <li><strong>"How to make people feel comfortable about joining you on the Chat Seat."</strong> </li>
+            <li>
+            <Link to="/Resources/GoodListeningSkills" className="text-black hover:underline" >
+              <strong>"Good Conversation Skills."</strong>
+              </Link>
+              </li>
+            <li>
+            <Link to="/Resources/GoodListeningSkills" className="text-black hover:underline" >
+              <strong>"How to make people feel comfortable about joining you on the Chat Seat."</strong>
+              </Link>
+               </li>
           </ul>
 
           <p className="text-gray-700 mb-2 text-lg">
