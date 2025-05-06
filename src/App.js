@@ -24,6 +24,7 @@ import CoordinatorChatroom from "./Components/Coordinator/CoordinatorChatroom";
 import CoordinatorListenerChatroom from "./Components/Coordinator/CoordinatorListenerChatroom";
 import CoordinatorAppointments from "./Components/Coordinator/CoordinatorAppointments";
 import CoordinatorAvailability from "./Components/Coordinator/CoordinatorAvailability";
+import CoordinatorImageGallery from "./Components/Coordinator/CoordinatorImageGallery.jsx";
 import LessonCoordinator from "./Components/Coordinator/LessonCoordinator";
 import Logos from "./Components/Coordinator/Logos";
 import CoordinatorFeedback from "./Components/Coordinator/CoordinatorFeedback";
@@ -42,7 +43,6 @@ import AdminFeedback from "./Components/Admin/AdminFeedback";
 import PendingApproval from "./Components/Admin/PendingApproval";
 
 
-import GoodListeningSkills from "./Resources/GoodListeningSkills";
 
 function App() {
   return (
@@ -112,6 +112,10 @@ function App() {
             path="/CoordinatorListenerChatroom"
             element={<CoordinatorListenerChatroom />}
             />
+             <Route
+            path="/CoordinatorImageGallery"
+            element={<CoordinatorImageGallery />}
+            />
             <Route path="/Logos" element={<Logos />} />
             <Route
               path="/CoordinatorFeedback"
@@ -135,7 +139,6 @@ function App() {
               element={<AdminSchedulingSetting />}
             />
 
-            <Route path="/Resources/GoodListeningSkills" element={<GoodListeningSkills />} />
 
             {/* Add other routes here */}
           </Routes>
