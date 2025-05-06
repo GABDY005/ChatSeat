@@ -45,29 +45,41 @@ export default function CoordinatorHelp() {
               effectively.
             </p>
 
-            <div className="bg-[#f9f9f9] p-6 rounded-lg shadow-md space-y-6">
-              <h4 className="font-semibold text-lg">Dashboard</h4>
+            <div className="bg-[#f9f9f9] p-6 rounded-lg shadow-md space-y-3">
+              {/* <h4 className="font-semibold text-lg">Dashboard</h4>
               <p>
-                - The left sidebar allows you to access different pages like
+                The left sidebar allows you to access different pages like
                 booking, chat room, and feedback.
+              </p> */}
+
+              <h4 className="font-semibold text-lg mb-1">Appointments</h4>
+              <p>
+                This page shows all your booked sessions with listeners. If necessary, you can <strong>delete</strong> any slot that’s no longer available or needed.
               </p>
 
-              <h4 className="font-semibold text-lg">Book Your Slot</h4>
-              <p>- Choose an available time slot and confirm your booking.</p>
-
-              <h4 className="font-semibold text-lg">Chat Room</h4>
+              <h4 className="font-semibold text-lg mb-1">Availability</h4>
               <p>
-                - In the chat room, you can start a new discussion by clicking
-                "New Topic", or reply to existing topics.
+                View all scheduled sessions on a calendar. This helps you keep track of your availability and upcoming appointments visually.
               </p>
 
-              <h4 className="font-semibold text-lg">Feedback</h4>
-              <p>- Fill out the feedback form to share your experience.</p>
-
-              <h4 className="font-semibold text-lg">About Us</h4>
+              <h4 className="font-semibold text-lg mb-1">Resources</h4>
               <p>
-                - If you need further assistance, contact the support team
-                through the **"About Us"** page.
+                Access important materials, guides, or session tools curated specifically to help coordinators deliver better support.
+              </p>
+
+              <h4 className="font-semibold text-lg mb-1">Chatrooms</h4>
+              <p>
+                Engage in discussions with either <strong>listeners</strong> or other <strong>coordinators</strong>. These chatrooms offer a safe space to share experiences, tips, or get clarifications.
+              </p>
+
+              <h4 className="font-semibold text-lg mb-1">Banner & Logo</h4>
+              <p>
+                Download official banners and logos from this page. These assets can be used for events or communication material when needed.
+              </p>
+
+              <h4 className="font-semibold text-lg mb-1">Feedback</h4>
+              <p>
+                Just like listeners, coordinators can also share their feedback here. Whether it's about a session or a suggestion for platform improvements, your input is appreciated.
               </p>
             </div>
           </div>

@@ -46,29 +46,36 @@ export default function Help() {
               effectively.
             </p>
 
-            <div className="bg-[#f9f9f9] p-6 rounded-lg shadow-md space-y-6">
-              <h4 className="font-semibold text-lg">Dashboard</h4>
+            <div className="bg-[#f9f9f9] p-6 rounded-lg shadow-md space-y-3">
+              {/* <h4 className="font-semibold text-lg">Dashboard</h4>
               <p>
-                - The left sidebar allows you to access different pages like
-                booking, chat room, and feedback.
+                The left sidebar allows you to access different pages like
+                booking, chat room, and view feedback.
+              </p> */}
+
+              <h4 className="font-semibold text-lg mb-1">Manage Users</h4>
+              <p>This page contains three tabs to help you manage the platform’s users:</p>
+              <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
+                <li>
+                  <strong>Pending:</strong> View users awaiting approval. You can approve them as either <em>listeners</em> or <em>coordinators</em>.
+                </li>
+                <li>
+                  <strong>Listeners:</strong> View all registered listeners. You can <em>delete</em> a listener if necessary.
+                </li>
+                <li>
+                  <strong>Coordinators:</strong> View the list of coordinators. You can <em>delete</em> any coordinator if needed.
+                </li>
+              </ul>
+
+              <h4 className="font-semibold text-lg mb-1">Chatrooms</h4>
+              <p>
+                The Admin can join both the <strong>Listener</strong> and <strong>Coordinator</strong> chatrooms. Use this space to check in, guide users, or respond to any questions or concerns.
               </p>
 
-              <h4 className="font-semibold text-lg">Book Your Slot</h4>
-              <p>- Choose an available time slot and confirm your booking.</p>
-
-              <h4 className="font-semibold text-lg">Chat Room</h4>
+              <h4 className="font-semibold text-lg mb-1">Feedback</h4>
               <p>
-                - In the chat room, you can start a new discussion by clicking
-                "New Topic", or reply to existing topics.
-              </p>
-
-              <h4 className="font-semibold text-lg">Feedback</h4>
-              <p>- Fill out the feedback form to share your experience.</p>
-
-              <h4 className="font-semibold text-lg">About Us</h4>
-              <p>
-                - If you need further assistance, contact the support team
-                through the **"About Us"** page.
+                This page displays all feedback submitted by <strong>listeners</strong> and <strong>coordinators</strong>. 
+                You can use the sorting feature to organise feedback by <em>name</em>, <em>role</em>, or <em>submission date</em>, making it easier to review and track responses over time.
               </p>
             </div>
           </div>

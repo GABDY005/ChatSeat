@@ -58,13 +58,22 @@ export default function AdminSidebar({ userName = "" }) {
         >
           Admin Scheduling Setting
         </Link>
-        <Link
+        {/* <Link
           to="/AdminResources"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
             "/AdminResources"
           )}`}
         >
           Resources
+        </Link> */}
+        
+        <Link
+          to="/AdminFeedback"
+          className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
+            "/AdminFeedback"
+          )}`}
+        >
+          Feedback
         </Link>
         <Link
           to="/AdminHelp"
@@ -73,14 +82,6 @@ export default function AdminSidebar({ userName = "" }) {
           )}`}
         >
           Help
-        </Link>
-        <Link
-          to="/AdminFeedback"
-          className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-            "/AdminFeedback"
-          )}`}
-        >
-          Feedback
         </Link>
       </div>
 

@@ -39,8 +39,8 @@ export default function About() {
         <div className="flex-1 flex justify-center items-start p-10">
           <div className="max-w-3xl bg-white p-6 border-r-8 shadow-[0px_0px_10px_rgba(0,0,0,0.1)] space-y-6 leading-relaxed">
             <section>
-            <h4 className="text-xl font-semibold">
-              <strong>Dr Tricia Vilkinas, B.SC., B. Comm., M.Psych.</strong>
+            <h4 className="text-xl font-bold">
+              Dr Tricia Vilkinas, B.SC., B. Comm., M.Psych.
             </h4>
             <p>
               In my working life, I was the Foundation Professor of Management
@@ -62,7 +62,7 @@ export default function About() {
             </p>
             </section>
             <section>
-            <h4 className="text-xl font-semibold"><strong>Noel Fraser</strong></h4>
+            <h4 className="text-xl font-bold">Noel Fraser</h4>
             <p>
               Noel experienced extreme loneliness for most of his life,
               including throughout the entirety of a twenty-year stint in the

@@ -11,7 +11,8 @@ export default function Feedback() {
   const [searchRole, setSearchRole] = useState("");
   const [searchDate, setSearchDate] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(9); // Number of items per page
+  const [itemsPerPage] = useState(9);
+  const [showMore, setShowMore] = useState(null);
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -21,7 +22,7 @@ export default function Feedback() {
       } = await supabase.auth.getUser();
 
       if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
+        const { data: profile} = await supabase
           .from("profiles")
           .select("first_name")
           .eq("id", user.id)
@@ -96,6 +97,12 @@ export default function Feedback() {
   );
   const totalPages = Math.ceil(filteredFeedback.length / itemsPerPage);
 
+  const toggleShowMore = (id) => {
+    setShowMore((prev) =>
+      (prev === id ? null : id)
+    );
+  };
+
   return (
     <>
       <AdminNavbar title="Feedback from Listener and Coordinators" />
@@ -141,8 +148,8 @@ export default function Feedback() {
             {currentItems.map((item) => (
               <div
                 key={item.id}
-                className={`bg-white shadow-md rounded-xl p-6 border-t-4 ${
-                  item.role === "Coordinator"
+                className={`self-start bg-white shadow-md rounded-xl p-6 border-t-4 ${
+                  item.role === "coordinator"
                     ? "border-green-500"
                     : "border-blue-500"
                 } hover:shadow-lg hover:scale-105 transition-transform duration-300`}
@@ -185,7 +192,22 @@ export default function Feedback() {
 
                 <div className="border-t my-3"></div>
 
-                <p className="text-gray-800 font-medium">{item.message}</p>
+                <p className="text-gray-800 font-medium whitespace-pre-line">
+                  {showMore === item.id
+                    ? item.message
+                    : item.message && item.message.length > 50
+                    ? `${item.message.slice(0, 50)}...`
+                    : item.message}
+                </p>
+
+                {item.message.length > 50 && (
+                  <button
+                    onClick={() => toggleShowMore(item.id)}
+                    className="text-blue-500 text-sm mt-2 hover:underline"
+                  >
+                    {showMore === item.id ? "Less" : "More"}
+                  </button>
+                )}
               </div>
             ))}
           </div>
