@@ -14,6 +14,9 @@ import ListenerChatroom from "./Components/Listener/ListenerChatroom";
 import ListenerFeedback from "./Components/Listener/ListenerFeedback.jsx";
 import ListenerScheduling from "./Components/Listener/ListenerScheduling.jsx";
 import ListenerHelp from "./Components/Listener/ListenerHelp.jsx";
+import ConversationSkills from "./Components/Listener/ConversationSkills.jsx";
+import ListeningSkills from "./Components/Listener/ListeningSkills.jsx";
+import MakePeopleComfortable from "./Components/Listener/MakePeopleComfortable.jsx";
 
 import RequireAuth from "./context/RequireAuth";
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -42,7 +45,7 @@ import AdminFeedback from "./Components/Admin/AdminFeedback";
 import PendingApproval from "./Components/Admin/PendingApproval";
 
 
-import GoodListeningSkills from "./Resources/GoodListeningSkills";
+//import GoodListeningSkills from "./Resources/GoodListeningSkills";
 
 function App() {
   return (
@@ -134,8 +137,10 @@ function App() {
               path="/AdminSchedulingSetting"
               element={<AdminSchedulingSetting />}
             />
-
-            <Route path="/Resources/GoodListeningSkills" element={<GoodListeningSkills />} />
+            <Route path="/listener/conversation-skills" element={<ConversationSkills />} />
+            <Route path="/listener/listener-skills" element={<ListeningSkills />} />
+            <Route path="/listener/make-people-comfortable" element={<MakePeopleComfortable />} />
+            {/* <Route path="/Resources/GoodListeningSkills" element={<GoodListeningSkills />} /> */}
 
             {/* Add other routes here */}
           </Routes>

@@ -53,17 +53,17 @@ export default function ListenerDashboard() {
 
           <ul className="list-disc pl-6 text-gray-700 text-lg mb-6 space-y-1">
             <li>
-              <Link to="/Resources/GoodListeningSkills" className="text-black hover:underline" >
+              <Link to="/listener/listener-skills" className="text-black hover:underline" >
               <strong>"Good Listening Skills."</strong>
               </Link>
             </li>
             <li>
-            <Link to="/Resources/GoodListeningSkills" className="text-black hover:underline" >
+            <Link to="/listener/conversation-skills" className="text-black hover:underline" >
               <strong>"Good Conversation Skills."</strong>
               </Link>
               </li>
             <li>
-            <Link to="/Resources/GoodListeningSkills" className="text-black hover:underline" >
+            <Link to="/listener/make-people-comfortable" className="text-black hover:underline" >
               <strong>"How to make people feel comfortable about joining you on the Chat Seat."</strong>
               </Link>
                </li>
@@ -72,6 +72,22 @@ export default function ListenerDashboard() {
           <p className="text-gray-700 mb-2 text-lg">
           There are also links to other web sites that host information on being an effective Listener. 
           </p>
+
+          <ul className="list-disc pl-6 text-gray-700 text-lg mb-6 space-y-1">
+            <li>
+            <Link to="https://endingloneliness.com.au/" className="text-black hover:underline mb-2 text-lg">
+          <strong>Ending Loneliness together</strong>
+          </Link>
+            </li>
+            <li>
+            <Link to="https://www.rosthomas.com.au/features" className="text-black hover:underline" >
+              <strong>Ros Thomas - Research on Loneliness</strong>
+              </Link>
+              </li>
+         
+          </ul>
+
+         
           <p className="text-gray-700 mb-2 text-lg">
           There is a <strong>Booking tab</strong> where you can select the venue you want to sit on a <strong>Chat Seat</strong> and select what time suits you.
           </p>

@@ -52,10 +52,6 @@ export default function Home() {
           In a bid to tackle social isolation, we would like to establish a series of Chat Seats across Australia. The <strong>Chat Seats</strong> initiative aims to provide a safe and inviting place for people to talk. It will allow members of the community to <strong>“Connect through Conversation.”</strong> For this initiative to be successful, we need people like yourselves to volunteer to be either Listeners and/or Coordinators.
         </p>
 
-        <p className="mb-4">
-          This website is also open to individuals who may have stopped to chat on one of our Chat Seats. If you are looking for when a particular Listener is scheduled to visit your Chat Seat, please sign in and go to the Calendar and find your venue and Listener.
-        </p>
-
         <h3 className="text-xl mt-6 mb-2"><strong>What do we mean by being a Listener or Coordinator?</strong></h3>
 
         <p className="mb-4">

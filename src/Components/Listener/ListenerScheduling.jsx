@@ -235,7 +235,7 @@ export default function ListenerScheduling() {
                 {tab === "Book"
                   ? "📍 Book a Slot"
                   : tab === "Calendar"
-                  ? "📊 Calendar View"
+                  ? "🗓️ Calendar View"
                   : "📆 Upcoming Bookings"}
               </button>
             ))}
