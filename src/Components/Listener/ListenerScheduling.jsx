@@ -19,7 +19,7 @@ export default function ListenerScheduling() {
   const [userName, setUserName] = useState("");
   const [userBookings, setUserBookings] = useState([]);
   const [userId, setUserId] = useState(null);
-  const [activeTab, setActiveTab] = useState("Book");
+  const [activeTab, setActiveTab] = useState("Upcoming");
   const [editBookingId, setEditBookingId] = useState(null);
   const [editValues, setEditValues] = useState({ date: "", time: "", location: "" });
   const [editAvailableTimes, setEditAvailableTimes] = useState([]);
@@ -30,7 +30,7 @@ export default function ListenerScheduling() {
       minDate: "today",
       onChange: (_, dateStr) => setDate(dateStr),
     });
-  }, []);
+  }, [activeTab]);
 
   useEffect(() => {
     if (editBookingId !== null) {
@@ -222,7 +222,7 @@ export default function ListenerScheduling() {
         </div>
         <div className="flex-1 p-8">
           <div className="flex space-x-4 mb-6">
-            {["Book", "Calendar", "Upcoming"].map((tab) => (
+            {["Upcoming", "Book", "Calendar"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
