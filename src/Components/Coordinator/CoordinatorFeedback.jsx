@@ -84,17 +84,17 @@ export default function Feedback() {
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-        <div className="ml-48 flex-1 px-8 py-10">
-          <div className="max-w-[600px] mx-auto text-black">
-            <h2 className="font-bold mb-4">We Value Your Feedback</h2>
-            <p className="mb-6">
+        <div className="flex-1 flex items-center justify-center px-4 py-12">
+          <div className="w-full max-w-2xl bg-white p-6 sm:p-8 rounded-2xl shadow-lg border-t-4 border-blue-600">
+            <h2 className="text-2xl font-bold text-center text-[#1E3A8A] mb-2">We Value Your Feedback</h2>
+            <p className="text-center text-gray-600 mb-6">
               Please let us know your thoughts about your experience.
             </p>
 
-            <div className="bg-white p-5 rounded-lg shadow-md">
+            {/* <div className="bg-white p-5 rounded-lg shadow-md"> */}
               <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="block font-medium mb-1">
+                <div className="mb-4">
+                  <label className="block font-semibold mb-1 text-gray-700">
                     {" "}
                     Your Feedback
                   </label>
@@ -102,16 +102,16 @@ export default function Feedback() {
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    rows="4"
+                    rows="6"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
                 >
                   {loading ? "Submitting..." : "Submit Feedback"}
                 </button>
@@ -119,7 +119,7 @@ export default function Feedback() {
             </div>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 }

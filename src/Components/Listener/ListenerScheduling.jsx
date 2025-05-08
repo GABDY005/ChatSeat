@@ -171,26 +171,70 @@ export default function ListenerScheduling() {
     loadAvailableTimes();
   };
 
+  // const fetchCalendarEvents = async (locName) => {
+  //   const { data:bookings , error} = await supabase
+  //     .from("bookings")
+  //     .select("date, time, user_id")
+  //     .eq("location", locName);
+
+  //   const grouped = data?.reduce((acc, cur) => {
+  //     const key = `${cur.date}T${cur.time}`;
+  //     acc[key] = (acc[key] || 0) + 1;
+  //     return acc;
+  //   }, {});
+
+  //   const events = Object.entries(grouped || {}).map(([start, count]) => ({
+  //     title: `${start.slice(11)} (${count}/2)`,
+  //     start,
+  //     allDay: false,
+  //   }));
+
+  //   setCalendarEvents(events);
+  // };
+
   const fetchCalendarEvents = async (locName) => {
-    const { data } = await supabase
+    const { data: bookings, error } = await supabase
       .from("bookings")
-      .select("*")
+      .select("date, time, user_id")
       .eq("location", locName);
-
-    const grouped = data?.reduce((acc, cur) => {
-      const key = `${cur.date}T${cur.time}`;
-      acc[key] = (acc[key] || 0) + 1;
-      return acc;
-    }, {});
-
-    const events = Object.entries(grouped || {}).map(([start, count]) => ({
-      title: `${start.slice(11)} (${count}/2)`,
-      start,
-      allDay: false,
-    }));
-
-    setCalendarEvents(events);
+  
+    if (error) {
+      console.error("Error fetching bookings:", error);
+      return;
+    }
+  
+    const grouped = {};
+  
+    for (const booking of bookings || []) {
+      const key = `${booking.date}T${booking.time}`;
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(booking.user_id);
+    }
+  
+    const enrichedEvents = await Promise.all(
+      Object.entries(grouped).map(async ([start, userIds]) => {
+        const names = await Promise.all(
+          userIds.map(async (id) => {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("first_name")
+              .eq("id", id)
+              .single();
+            return profile?.first_name || "Unknown";
+          })
+        );
+  
+        return {
+          title: names.join(", "), 
+          start,
+          allDay: false,
+        };
+      })
+    );
+  
+    setCalendarEvents(enrichedEvents);
   };
+  
 
   useEffect(() => {
     if (calendarLocation) fetchCalendarEvents(calendarLocation);
@@ -203,6 +247,10 @@ export default function ListenerScheduling() {
       .eq("id", id);
     if (!error) {
       fetchUserBookings(userId);
+      
+      if (calendarLocation) {
+        fetchCalendarEvents(calendarLocation);
+      }
       setEditBookingId(null);
     }
   };

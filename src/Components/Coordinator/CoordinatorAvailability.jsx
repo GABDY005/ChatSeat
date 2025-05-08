@@ -3,46 +3,79 @@ import CoordinatorSidebar from "./CoordinatorSidebar";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import CoordinatorNavbar from "./CoordinatorNavbar";
+import supabase from "../../supabase";
 
-const dummyCalendarData = [
-  { date: "2025-04-15", time: "09:00", count: 2 },
-  { date: "2025-04-15", time: "10:00", count: 1 },
-  { date: "2025-04-16", time: "11:00", count: 0 },
-];
+
+// const dummyCalendarData = [
+//   { date: "2025-04-15", time: "09:00", count: 2 },
+//   { date: "2025-04-15", time: "10:00", count: 1 },
+//   { date: "2025-04-16", time: "11:00", count: 0 },
+// ];
 
 export default function CoordinatorAvailability() {
   const [calendarEvents, setCalendarEvents] = useState([]);
 
-  //it willtake the dummy data and set the calendar events
   useEffect(() => {
-    const allTimeSlots = [];
-    const timeslots = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00"];
-    const days = ["2025-04-15", "2025-04-16"];
+    const fetchCalendarEvents = async () => {
+      const {data: bookings, error} = await supabase
+        .from("bookings")
+        .select("date, time, user_id, location")
+        
 
-    //it will loop through the days and timeslots to get the dummy data and then it will set the color accordingly
-    days.forEach((date) => {
-      timeslots.forEach((time) => {
-        const match = dummyCalendarData.find(
-          (slot) => slot.date === date && slot.time === time
-        );
-        const count = match ? match.count : 0;
+        if (error) {
+          console.error("Error fetching bookings:", error);
+          return;
+        }
 
-        let color = "#86efac";
-        if (count === 1) color = "#fde047";
-        if (count === 2) color = "#f87171";
+        const grouped = {};
 
-        //it will push the data to the allTimeSlots array
-        allTimeSlots.push({
-          title: `${time} (${count}/2)`,
-          start: `${date}T${time}`,
-          backgroundColor: color,
-          textColor: "#000",
-        });
-      });
-    });
+        for (const booking of bookings || []) {
+          const key = `${booking.date}T${booking.time}`;
+          if (!grouped[key]) grouped[key] = [];
+grouped[key].push({ user_id: booking.user_id, location: booking.location });
+        
+          }
 
-    setCalendarEvents(allTimeSlots);
-  }, []);
+          const enrichedEvents = await Promise.all(
+            Object.entries(grouped).map(async ([start, entries]) => {
+              const names = await Promise.all(
+                entries.map(async (entry) => {
+                  const { data: profile} = await supabase
+                    .from("profiles")
+                    .select("first_name, last_name")
+                    .eq("id", entry.user_id)
+                    .single();
+
+                    return profile?.first_name || "Unknown";
+
+                })
+              );
+
+              const location = entries[0]?.location || "Unknown";
+              const count = names.length;
+
+              let bgColor = "#86efac"; 
+              if (count === 1) bgColor = "#fde047";
+              if (count >= 2) bgColor = "#f87171";
+
+              return {
+                title: `${location} - ${names.join(", ")}`,
+                start,
+                backgroundColor: bgColor,
+                textColor: "#000"
+              };
+            })
+          );
+
+          setCalendarEvents(enrichedEvents);
+
+        };
+
+        fetchCalendarEvents();
+      }, []);
+
+
+
 
   return (
     <>
@@ -78,6 +111,7 @@ export default function CoordinatorAvailability() {
               initialView="timeGridWeek"
               height={550}
               events={calendarEvents}
+            
             />
           </div>
         </div>

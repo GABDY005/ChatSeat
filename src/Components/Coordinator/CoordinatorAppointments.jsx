@@ -90,7 +90,7 @@ export default function CoordinatorAppointments() {
             Confirmed Listener Bookings
           </h2>
 
-          <div className="grid gap-0.5 grid-cols-2 sm:grid-cols-2 md:grid-cols-5">
+          <div className="grid gap-y-6 gap-x-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-5">
             {appointments.length === 0 ? (
               <p>No bookings found.</p>
             ) : (
