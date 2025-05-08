@@ -41,7 +41,7 @@ export default function ConversationSkills() {
         <div className="flex-1 px-10 py-12 w-full">
           <div className="max-w-[800px] mx-auto text-black">
             <h2 className="text-2xl font-bold mb-4 text-center">Chat Seats – Conversation Guide</h2>
-            <p className="mb-6 text-lg text-gray-700 font-medium">
+            <p className="mb-6 text-lg text-gray-700 font-medium text-center">
               Connecting Through Conversation
             </p>
 

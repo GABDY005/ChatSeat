@@ -97,7 +97,7 @@ export default function CoordinatorAppointments() {
               appointments.map((appointment) => (
                 <div
                   key={appointment.id}
-                  className="relative bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500 hover:shadow-lg transition w-[220px]" 
+                  className="relative bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500 hover:shadow-lg transition w-[220px]"
                 >
                   <div className="absolute top-3 right-3">
                     <button
@@ -120,23 +120,26 @@ export default function CoordinatorAppointments() {
                   </div>
 
                   <div className="mb-3">
-    <h3 className="text-xl font-bold text-[#003366] flex items-center gap-2">
-       {appointment.listenerName}
-    </h3>
-  </div>
+                    <h3 className="text-xl font-bold text-[#003366] flex items-center gap-2">
+                      {appointment.listenerName}
+                    </h3>
+                  </div>
 
-  <div className="text-sm space-y-1 text-gray-700">
-    <p className="flex items-center gap-2">
-      <span className="font-medium">Time:</span> {appointment.time}
-    </p>
-    <p className="flex items-center gap-2">
-       <span className="font-medium">Date:</span> {appointment.date}
-    </p>
-    <p className="flex items-center gap-2">
-       <span className="font-medium">Location:</span> {appointment.location}
-    </p>
-  </div>
-</div>
+                  <div className="text-sm space-y-1 text-gray-700">
+                    <p className="flex items-center gap-2">
+                      <span className="font-medium">Time:</span>{" "}
+                      {appointment.time}
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <span className="font-medium">Date:</span>{" "}
+                      {appointment.date}
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <span className="font-medium">Location:</span>{" "}
+                      {appointment.location}
+                    </p>
+                  </div>
+                </div>
               ))
             )}
           </div>

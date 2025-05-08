@@ -46,7 +46,7 @@ import AdminFeedback from "./Components/Admin/AdminFeedback";
 import PendingApproval from "./Components/Admin/PendingApproval";
 
 
-import GoodListeningSkills from "./Resources/GoodListeningSkills";
+
 
 function App() {
   return (
@@ -142,8 +142,18 @@ function App() {
               path="/AdminSchedulingSetting"
               element={<AdminSchedulingSetting />}
             />
+            <Route
+              path="/listener/conversation-skills"
+              element={<ConversationSkills />} />
 
-            <Route path="/Resources/GoodListeningSkills" element={<GoodListeningSkills />} />
+            <Route
+              path="/listener/listening-skills"
+              element={<ListeningSkills />} />
+
+            <Route
+              path="/listener/make-people-comfortable"
+              element={<MakePeopleComfortable />} />
+            
 
             {/* Add other routes here */}
           </Routes>

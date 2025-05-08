@@ -53,7 +53,7 @@ export default function ListenerDashboard() {
 
           <ul className="list-disc pl-6 text-gray-700 text-lg mb-6 space-y-1">
             <li>
-              <Link to="/listener/listener-skills" className="text-black hover:underline" >
+              <Link to="/listener/listening-skills" className="text-black hover:underline" >
               <strong>"Good Listening Skills."</strong>
               </Link>
             </li>

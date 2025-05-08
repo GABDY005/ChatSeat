@@ -1,71 +1,66 @@
 import React from "react";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
+import { Link } from "react-router-dom";
 
 function LessonCoordinator() {
   return (
     <>
-      <CoordinatorNavbar title="Resources" />
+     <CoordinatorNavbar title="Resources" />
 
-      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-      <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName="" />
-        </div>
-        <div className="flex-1 p-10">
-          <div className="bg-white p-6 rounded-lg shadow max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-[#1E3A8A] mb-4">
-              Welcome, Coordinator!
-            </h2>
+<div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+  <div className="sticky top-16 h-[calc(100vh-64px)]">
+    <CoordinatorSidebar userName="Tricia" />
+  </div>
 
-            <p className="mb-4">
-              Thank you for agreeing to volunteer your time as a Coordinator of
-              one of our Chat Seats locations.
-            </p>
+  <div className="flex-1 px-10 py-12">
+    <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-md text-gray-800 space-y-6">
+      <h2 className="text-2xl font-bold text-[#1E3A8A] text-center mb-4">
+        Volunteer Callout – Chat Seats
+      </h2>
 
-            <p className="mb-4">
-              Coordinators are individuals who are also volunteers and may also
-              choose to be Listeners. They will:
-            </p>
+      <p>
+        We are looking for volunteers who enjoy listening to other people’s stories.
+      </p>
 
-            <ul className="list-disc pl-6 mb-4 space-y-1">
-              <li>Identify venues where to place Chat Seats</li>
-              <li>Gain the permission of the venue “owner/manager”</li>
-              <li>Attract Listeners</li>
-              <li>Assess the Listeners’ suitability</li>
-              <li>
-                Advise them of the clearances they may need (e.g., Working with
-                Children Certificate)
-              </li>
-              <li>
-                Advise them of the website and resources available to Listeners
-              </li>
-              <li>
-                Advise them that there is a calendar available on the website to
-                nominate their times
-              </li>
-              <li>
-                Advise them that there is a Chat Room on the website to talk
-                with other volunteers
-              </li>
-            </ul>
+      <p>
+        We will be setting up a <strong>Chat Seat</strong> in <em>“Name your Venue”</em> over the next few weeks.
+        The purpose of the Chat Seat is to connect members of the community through conversation.
+      </p>
 
-            <p className="mb-4">
-              On this page you will find some information about “Lessons
-              Learned,” which is what we and other coordinators have learned
-              when setting up a Chat Seat. There is also some information on
-              what we said when attracting Listeners. There are graphics that we
-              used on the banner, name tags, and logos. You are very welcome to
-              use them.
-            </p>
+      <p>
+        <strong>So, what will be involved?</strong> People such as yourself can be a volunteer, acting as a listener,
+        by spending some time at a Chat Seat within <em>“The Venue”</em>. The purpose is to encourage members
+        of our community to come and chat. Some members may be experiencing loneliness and isolation.
+        We hope these individuals will sit down, feel listened to, and start to feel connected to their community.
+      </p>
 
-            <p className="mb-4">
-              A Chat Room is also available where you can chat with other
-              Coordinators to exchange ideas or give support.
-            </p>
-          </div>
-        </div>
-      </div>
-    </>
+      <p>
+        <strong>So, who do we need?</strong> Individuals who enjoy listening to others and have two hours a week
+        to commit to such an activity.
+      </p>
+
+      <p>
+        At this stage, we only need <strong>five</strong> such people.
+      </p>
+
+      <p>
+        If you are interested, you can look at our webpage:{" "}
+
+        <Link to="https://chatseats.com.au" className="text-blue-600 underline">
+          chatseats.com.au
+        </Link>{" "}
+        
+        to find out more.
+      </p>
+
+      <p>
+        If you’re still interested, message me so we can talk further and explain in more detail what’s involved.
+      </p>
+    </div>
+  </div>
+</div>
+</>
   );
 }
 

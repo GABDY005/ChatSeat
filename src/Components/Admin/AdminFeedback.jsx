@@ -22,7 +22,7 @@ export default function Feedback() {
       } = await supabase.auth.getUser();
 
       if (user && !authError) {
-        const { data: profile} = await supabase
+        const { data: profile } = await supabase
           .from("profiles")
           .select("first_name")
           .eq("id", user.id)
@@ -98,9 +98,7 @@ export default function Feedback() {
   const totalPages = Math.ceil(filteredFeedback.length / itemsPerPage);
 
   const toggleShowMore = (id) => {
-    setShowMore((prev) =>
-      (prev === id ? null : id)
-    );
+    setShowMore((prev) => (prev === id ? null : id));
   };
 
   return (
@@ -137,10 +135,15 @@ export default function Feedback() {
             </select>
 
             <input
-              type="date"
+              type="text"
+              placeholder="Search by Date..."
               value={searchDate}
+              onFocus={(e) => (e.target.type = "date")}
+              onBlur={(e) => {
+                if (!e.target.value) e.target.type = "text";
+              }}
               onChange={(e) => setSearchDate(e.target.value)}
-              className="px-3 py-1.5 border border-gray-300 rounded-md w-64 focus:outline-none focus-ring-2 text-sm shadow-sm"
+              className="px-3 py-1.5 border border-gray-300 rounded-md w-64 focus:outline-none focus:ring-2 text-sm shadow-sm"
             />
           </div>
 

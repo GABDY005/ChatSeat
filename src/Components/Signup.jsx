@@ -6,6 +6,7 @@ export default function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      await signupUser({ email, password, firstName, lastName });
+      await signupUser({ email, password, firstName, lastName, phoneNumber });
       alert("Signup successful!");
       navigate("/Login");
     } catch (error) {
@@ -69,6 +70,19 @@ export default function Signup() {
               className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
               required
             />
+          
+          <div className="mt-4">
+            <label className="block text-sm font-semibold mb-1 text-gray-700">
+              Phone Number 
+              </label>
+
+            <input
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
+              required />
+          </div>
           </div>
 
           <div className="mt-4">

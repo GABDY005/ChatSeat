@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
+
+
 export default function CoordinatorSidebar({ userName = "Coordinator" }) {
   const location = useLocation();
   
@@ -13,7 +15,7 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
   return (
     <div className="w-64 bg-[#A8E4F2] h-[calc(100vh-64px)] sticky top-16 flex flex-col px-4 py-6 overflow-y-auto">
       <div className="text-[#1E3A8A] font-bold text-xl mb-12 text-center">
-        Hello, {userName}
+      Hello, {userName}!
       </div>
 
       <div className="flex flex-col space-y-3 mb-auto">

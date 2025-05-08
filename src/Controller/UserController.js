@@ -1,6 +1,12 @@
 import supabase from "../supabase";
 
-export const signupUser = async ({ email, password, firstName, lastName }) => {
+export const signupUser = async ({
+  email,
+  password,
+  firstName,
+  lastName,
+  phoneNumber,
+}) => {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -18,6 +24,7 @@ export const signupUser = async ({ email, password, firstName, lastName }) => {
       email,
       first_name: firstName,
       last_name: lastName,
+      phone_number: phoneNumber,
       role: "pending", // default role is 'pending' for admin approval
     },
   ]);
@@ -125,7 +132,10 @@ export const getCurrentUser = async () => {
 };
 
 export const checkUserRole = async (requiredRole) => {
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
   if (authError || !user) throw new Error("User not authenticated");
 
   const { data: profile, error: profileError } = await supabase
@@ -138,3 +148,5 @@ export const checkUserRole = async (requiredRole) => {
 
   return profile.role === requiredRole;
 };
+
+
