@@ -2,9 +2,11 @@ import React, { useState , useEffect } from "react";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
+import AdminNavbar from "../Admin/AdminNavbar";
 
 function CoordinatorDashboard() {
   const [firstName, setFirstName] = useState("User");
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -16,12 +18,13 @@ function CoordinatorDashboard() {
       if (user && !authError) {
         const { data: profile, error: profileError } = await supabase
           .from("profiles")
-          .select("first_name")
+          .select("first_name, role")
           .eq("id", user.id)
           .single();
 
         if (profile?.first_name) {
           setFirstName(profile.first_name);
+          setUserRole(profile.role);
         }
       }
 
@@ -31,7 +34,11 @@ function CoordinatorDashboard() {
   }, []);
   return (
     <>
-      <CoordinatorNavbar title="Dashboard" />
+      {userRole === "admin" ? (
+        <AdminNavbar title="Coordinator Dashboard" />
+      ) : (
+        <CoordinatorNavbar title="Coordinator Dashboard" />
+      )}
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">

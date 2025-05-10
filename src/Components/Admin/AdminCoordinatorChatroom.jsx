@@ -15,6 +15,31 @@ export default function AdminCoordinatorChatroom() {
   const [userId, setUserId] = useState("");
   const [role, setRole] = useState("admin");
   const [searchQuery, setSearchQuery] = useState("");
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+
+    };
+
+    fetchUserName();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -124,7 +149,7 @@ export default function AdminCoordinatorChatroom() {
       <AdminNavbar title="Admin - Coordinator Chatroom" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <AdminSidebar userName={username} />
+          <AdminSidebar userName={firstName} />
         </div>
 
         <div className="main-content p-6 w-full bg-[#ffe5e5]">

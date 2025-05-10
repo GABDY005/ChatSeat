@@ -2,11 +2,37 @@ import React, { useEffect, useState } from "react";
 import { fetchAllUsers } from "../../Controller/UserController";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
+import supabase from "../../supabase";
 
 export default function AdminDashboard() {
-  const [firstName, setFirstName] = useState("User");
+ 
   const [pendingCount, setPendingCount] = useState(0);
   // const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+
+    };
+
+    fetchUserName();
+  }, []);
 
   //it will fetch the pending approvals of the user in the dashboard
   useEffect(() => {

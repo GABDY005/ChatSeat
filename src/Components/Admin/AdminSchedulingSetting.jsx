@@ -13,6 +13,31 @@ export default function AdminSchedulingSetting() {
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [existingTimes, setExistingTimes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+
+    };
+
+    fetchUserName();
+  }, []);
 
   const timeslots = [
     "08:00", "09:00", "10:00", "11:00", "12:00", "13:00",
@@ -129,7 +154,7 @@ export default function AdminSchedulingSetting() {
       <AdminNavbar title="Scheduling Settings" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <AdminSidebar userName="Admin" />
+          <AdminSidebar userName={firstName} />
         </div>
 
         <div className="p-8 flex-1">

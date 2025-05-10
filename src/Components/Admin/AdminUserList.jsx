@@ -6,10 +6,36 @@ import {
   updateUserRole,
   deleteUserById,
 } from "../../Controller/UserController";
+import supabase from "../../supabase";
 
 export default function AdminUserList() {
   const [users, setUsers] = useState([]);
   const [activeTab, setActiveTab] = useState("pending");
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+
+    };
+
+    fetchUserName();
+  }, []);
 
   //it will run when the page is load 
   useEffect(() => {
@@ -61,7 +87,7 @@ export default function AdminUserList() {
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
       <div className="sticky top-16 h-[calc(100vh-64px)]" />
-        <AdminSidebar userName="" />
+        <AdminSidebar userName={firstName} />
 
         <div className="flex-1 p-8">
           {/* <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">All Users</h2> */}
