@@ -4,10 +4,34 @@ import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 
 export default function Feedback() {
-  const [firstName, setFirstName] = useState("User");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+
+    };
+
+    fetchUserName();
+  }, []);
 
   //To prevent the page from reloading when the feedback is submitted
   const handleSubmit = async (e) => {

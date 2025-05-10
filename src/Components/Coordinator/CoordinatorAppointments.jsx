@@ -30,6 +30,31 @@ import supabase from "../../supabase";
 export default function CoordinatorAppointments() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [appointments, setAppointments] = useState([]);
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+
+    };
+
+    fetchUserName();
+  }, []);
 
   //it will toggle the dropdown button when it is clicked
   const toggleDropdown = (id) => {
@@ -82,7 +107,7 @@ export default function CoordinatorAppointments() {
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName="" />
+          <CoordinatorSidebar userName={firstName} />
         </div>
 
         <div className="flex-1 p-10">

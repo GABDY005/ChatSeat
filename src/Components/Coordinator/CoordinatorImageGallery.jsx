@@ -8,6 +8,31 @@ export default function CoordinatorImageGallery() {
   const [uploading, setUploading] = useState(false);
   const [userRole, setUserRole] = useState("");
   const [userName, setUserName] = useState("");
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+
+    };
+
+    fetchUserName();
+  }, []);
 
   useEffect(() => {
     const getUser = async () => {
@@ -89,7 +114,7 @@ export default function CoordinatorImageGallery() {
       <CoordinatorNavbar title="Image Gallery" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName={userName || "User"} />
+          <CoordinatorSidebar userName={firstName} />
         </div>
 
         <div className="flex-1 p-8">

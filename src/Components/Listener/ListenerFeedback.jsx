@@ -5,7 +5,7 @@ import ListenerNavbar from "./ListenerNavbar";
 
 export default function Feedback() {
   const [firstName, setFirstName] = useState("User");
-
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 

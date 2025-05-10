@@ -2,15 +2,42 @@ import React from "react";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import supabase from "../../supabase";
 
 function LessonCoordinator() {
+  const [firstName, setFirstName] = useState("User");
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+      }
+
+    };
+
+    fetchUserName();
+  }, []);
   return (
     <>
      <CoordinatorNavbar title="Resources" />
 
 <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
   <div className="sticky top-16 h-[calc(100vh-64px)]">
-    <CoordinatorSidebar userName="Tricia" />
+    <CoordinatorSidebar userName={firstName}/>
   </div>
 
   <div className="flex-1 px-10 py-12">
