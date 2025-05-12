@@ -6,6 +6,8 @@ import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
 import { checkUserRole } from "../../Controller/UserController";
+import AdminNavbar from "../Admin/AdminNavbar";
+
 
 export default function CoordinatorChatroom() {
   const [threads, setThreads] = useState({});
@@ -16,6 +18,7 @@ export default function CoordinatorChatroom() {
   const [role, setRole] = useState("listener");
   const [searchQuery, setSearchQuery] = useState("");
   const [firstName, setFirstName] = useState("User");
+const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -27,12 +30,13 @@ export default function CoordinatorChatroom() {
       if (user && !authError) {
         const { data: profile, error: profileError } = await supabase
           .from("profiles")
-          .select("first_name")
+          .select("first_name, role")
           .eq("id", user.id)
           .single();
 
         if (profile?.first_name) {
           setFirstName(profile.first_name);
+          setUserRole(profile.role);
         }
       }
 
@@ -150,7 +154,12 @@ export default function CoordinatorChatroom() {
 
   return (
     <>
-      <CoordinatorNavbar title="Coordinator Chat" />
+    {userRole === "admin" ? (
+                <AdminNavbar title="Coordinator Dashboard" />
+              ) : (
+                     <CoordinatorNavbar title="Coordinator Chat" />
+              )}
+ 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />

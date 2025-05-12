@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import supabase from "../../supabase";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
+import AdminNavbar from "../Admin/AdminNavbar";
 
 export default function Feedback() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("User");
+const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -19,12 +21,13 @@ export default function Feedback() {
       if (user && !authError) {
         const { data: profile, error: profileError } = await supabase
           .from("profiles")
-          .select("first_name")
+          .select("first_name, role")
           .eq("id", user.id)
           .single();
 
         if (profile?.first_name) {
           setFirstName(profile.first_name);
+          setUserRole(profile.role);
         }
       }
 
@@ -102,7 +105,12 @@ export default function Feedback() {
 
   return (
     <>
-      <CoordinatorNavbar title="Your Feedback Matters" />
+    {userRole === "admin" ? (
+                <AdminNavbar title="Coordinator Dashboard" />
+              ) : (  <CoordinatorNavbar title="Your Feedback Matters" />
+
+              )}
+    
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />

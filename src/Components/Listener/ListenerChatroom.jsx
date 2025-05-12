@@ -4,6 +4,7 @@ import { ref, push, onValue, set, remove } from "firebase/database";
 import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
+import AdminNavbar from "../Admin/AdminNavbar";
 
 export default function ListenerChatroom() {
   const [threads, setThreads] = useState({});
@@ -13,30 +14,32 @@ export default function ListenerChatroom() {
   const [userId, setUserId] = useState("");
   const [role, setRole] = useState("listener");
   const [searchQuery, setSearchQuery] = useState("");
+const [userRole, setUserRole] = useState("");
+  const [firstName, setFirstName] = useState("User");
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-      if (user) {
-        setUserId(user.id);
-
-        const { data: profile } = await supabase
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("first_name, role")
           .eq("id", user.id)
           .single();
 
-        if (profile) {
-          setUsername(profile.first_name);
-          setRole(profile.role);
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+          setUserRole(profile.role);
         }
       }
     };
 
     fetchUser();
   }, []);
-
   useEffect(() => {
     const threadsRef = ref(database, "threads");
     onValue(threadsRef, (snapshot) => {
@@ -99,7 +102,12 @@ export default function ListenerChatroom() {
 
   return (
     <>
-      <ListenerNavbar title="Let's Chat" />
+    {userRole === "admin" ? (
+        <AdminNavbar title="Listener Dashboard" />
+      ) : (
+         <ListenerNavbar title="Let's Chat" />
+      )}
+    
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={username} />

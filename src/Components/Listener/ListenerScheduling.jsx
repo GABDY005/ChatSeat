@@ -6,6 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import supabase from "../../supabase";
 import ListenerSidebar from "./ListenerSidebar";
 import ListenerNavbar from "./ListenerNavbar";
+import AdminNavbar from "../Admin/AdminNavbar";
 
 export default function ListenerScheduling() {
   const [locations, setLocations] = useState([]);
@@ -23,6 +24,8 @@ export default function ListenerScheduling() {
   const [editBookingId, setEditBookingId] = useState(null);
   const [editValues, setEditValues] = useState({ date: "", time: "", location: "" });
   const [editAvailableTimes, setEditAvailableTimes] = useState([]);
+  const [userRole, setUserRole] = useState(""); 
+  const [firstName, setFirstName] = useState("User");
 
   useEffect(() => {
     flatpickr("#date-picker", {
@@ -51,23 +54,29 @@ export default function ListenerScheduling() {
     fetchLocations();
   }, []);
 
+  
   useEffect(() => {
-    const getUser = async () => {
+    const fetchUser = async () => {
       const {
         data: { user },
+        error: authError,
       } = await supabase.auth.getUser();
-      if (user) {
-        setUserId(user.id);
-        const { data: profile } = await supabase
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
-          .select("first_name")
+          .select("first_name, role")
           .eq("id", user.id)
           .single();
-        if (profile) setUserName(profile.first_name);
-        fetchUserBookings(user.id);
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+          setUserRole(profile.role);
+        }
       }
     };
-    getUser();
+
+    fetchUser();
   }, []);
 
   const fetchUserBookings = async (uid) => {
@@ -263,7 +272,12 @@ export default function ListenerScheduling() {
 
   return (
     <>
-      <ListenerNavbar title="Book Your Slot" />
+    {userRole === "admin" ? (
+        <AdminNavbar title="Listener Dashboard" />
+      ) : (
+         <ListenerNavbar title="Book Your Slot" />
+      )}
+     
       <div className="flex min-h-screen bg-[#e6f4f9] pt-16">
         <div className="sticky top-16 h-[calc(100vh-64px)] z-10">
           <ListenerSidebar userName={userName || "Guest"} />

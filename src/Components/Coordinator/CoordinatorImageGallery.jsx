@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import supabase from "../../supabase";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import CoordinatorSidebar from "./CoordinatorSidebar";
+import AdminNavbar from "../Admin/AdminNavbar";
 
 export default function CoordinatorImageGallery() {
   const [files, setFiles] = useState([]);
@@ -9,6 +10,7 @@ export default function CoordinatorImageGallery() {
   const [userRole, setUserRole] = useState("");
   const [userName, setUserName] = useState("");
   const [firstName, setFirstName] = useState("User");
+
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -20,12 +22,13 @@ export default function CoordinatorImageGallery() {
       if (user && !authError) {
         const { data: profile, error: profileError } = await supabase
           .from("profiles")
-          .select("first_name")
+          .select("first_name, role")
           .eq("id", user.id)
           .single();
 
         if (profile?.first_name) {
           setFirstName(profile.first_name);
+          setUserRole(profile.role);
         }
       }
 
@@ -111,7 +114,13 @@ export default function CoordinatorImageGallery() {
 
   return (
     <>
-      <CoordinatorNavbar title="Image Gallery" />
+     {userRole === "admin" ? (
+                <AdminNavbar title="Coordinator Dashboard" />
+              ) : (
+                    <CoordinatorNavbar title="Image Gallery" />
+              )}
+        
+  
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />

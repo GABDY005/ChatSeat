@@ -3,36 +3,44 @@ import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import { Link } from "react-router-dom";
+import AdminNavbar from "../Admin/AdminNavbar";
 
 export default function ConversationSkills() {
   const [firstName, setFirstName] = useState("User");
+const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
-    const fetchUserName = async () => {
+    const fetchUser = async () => {
       const {
         data: { user },
         error: authError,
       } = await supabase.auth.getUser();
 
       if (user && !authError) {
-        const { data: profile } = await supabase
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
-          .select("first_name")
+          .select("first_name, role")
           .eq("id", user.id)
           .single();
 
         if (profile?.first_name) {
           setFirstName(profile.first_name);
+          setUserRole(profile.role);
         }
       }
     };
 
-    fetchUserName();
+    fetchUser();
   }, []);
 
   return (
     <>
-      <ListenerNavbar title="Good Conversation Skills" />
+    {userRole === "admin" ? (
+        <AdminNavbar title="Listener Dashboard" />
+      ) : (
+        <ListenerNavbar title="Good Conversation Skills" />
+      )}
+      
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />

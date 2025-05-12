@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
+import AdminNavbar from "../Admin/AdminNavbar";
 
 export default function Feedback() {
   const [firstName, setFirstName] = useState("User");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [userRole, setUserRole] = useState("");
 
   //It prevents the page from reloading when the feedback is submitted
   const handleSubmit = async (e) => {
@@ -58,27 +60,39 @@ export default function Feedback() {
   };
 
   //it will get the user data from database
-   useEffect(() => {
-     const fetchUserProfile = async () => {
-       const { data: { user } } = await supabase.auth.getUser();
+  
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-       if (user) {
-         const { data: profile } = await supabase
-           .from("profiles")
-           .select("first_name, email")
-           .eq("id", user.id)
-           .single();
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name, role")
+          .eq("id", user.id)
+          .single();
 
-         if (profile?.first_name) setFirstName(profile.first_name);
-         if (profile?.email) setEmail(profile.email);
-       }
-     };
-     fetchUserProfile();
-   }, []);
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+          setUserRole(profile.role);
+        }
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <>
-      <ListenerNavbar title="Your Feedback Matters" />
+    {userRole === "admin" ? (
+        <AdminNavbar title="Listener Dashboard" />
+      ) : (
+   <ListenerNavbar title="Your Feedback Matters" />
+      )}
+     
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
