@@ -44,7 +44,7 @@ import AdminHelp from "./Components/Admin/AdminHelp";
 import AdminSchedulingSetting from "./Components/Admin/AdminSchedulingSetting";
 import AdminFeedback from "./Components/Admin/AdminFeedback";
 import PendingApproval from "./Components/Admin/PendingApproval";
-
+import AdminCoordinatorList from "./Components/Admin/AdminCoordinatorList.jsx";
 
 
 
@@ -138,6 +138,8 @@ function App() {
             path="/AdminListenerChatroom"
             element={<AdminListenerChatroom />}
             />
+
+            <Route path="/AdminCoordinatorList" element={<AdminCoordinatorList />} />
             <Route
               path="/AdminSchedulingSetting"
               element={<AdminSchedulingSetting />}
