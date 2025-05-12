@@ -5,6 +5,8 @@ import Home from "./Components/Home";
 import About from "./Components/Listener/About.jsx";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
+import ResetPassword from "./Components/ResetPassword";
+import ResetRequest from "./Components/ResetRequest";
 
 //Listener components
 import ListenerDashboard from "./Components/Listener/ListenerDashboard";
@@ -59,6 +61,8 @@ function App() {
             <Route path="/About" element={<About />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/Signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ResetRequest />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route
               path="/ListenerDashboard"
               element={

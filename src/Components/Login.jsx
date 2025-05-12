@@ -1,41 +1,41 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { loginUser } from "../Controller/UserController";
+  import React, { useState } from "react";
+  import { useNavigate } from "react-router-dom";
+  import { loginUser } from "../Controller/UserController";
 
-export default function LoginPage() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  export default function LoginPage() {
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
-  // Function will run when the login button is clicked
-  // It will call the loginUser function from UserController and navigate to the dashboard based on the role approved by admin
-    const handleLogin = async (e) => {
-    e.preventDefault();
+    // Function will run when the login button is clicked
+    // It will call the loginUser function from UserController and navigate to the dashboard based on the role approved by admin
+      const handleLogin = async (e) => {
+      e.preventDefault();
 
-    try {
-      const { role } = await loginUser({ email, password });
+      try {
+        const { role } = await loginUser({ email, password });
 
-      if (role === "admin") {
-        navigate("/AdminDashboard");
-      } else if (role === "listener") {
-        navigate("/ListenerDashboard");
-      } else if (role === "coordinator") {
-        navigate("/CoordinatorDashboard");
-      } else if (role === "pending") {
-        navigate("/PendingApproval");
-      } else {
-        alert("Unknown role. Please contact admin.");
+        if (role === "admin") {
+          navigate("/AdminDashboard");
+        } else if (role === "listener") {
+          navigate("/ListenerDashboard");
+        } else if (role === "coordinator") {
+          navigate("/CoordinatorDashboard");
+        } else if (role === "pending") {
+          navigate("/PendingApproval");
+        } else {
+          alert("Unknown role. Please contact admin.");
+        }
+      } catch (err) {
+        alert("Login failed: " + err.message);
       }
-    } catch (err) {
-      alert("Login failed: " + err.message);
-    }
-  };
+    };
 
-  return (
+    return (
     <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4 ">
       <div className="bg-white p-10 shadow-lg w-full max-w-sm rounded-lg">
-        <h2 className="text-3xl font-bold text-center text-[#003366] mb-8 ">
+        <h2 className="text-3xl font-bold text-center text-[#003366] mb-8">
           Login
         </h2>
         <form onSubmit={handleLogin} className="space-y-6">
@@ -92,9 +92,19 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => navigate("/signup")}
-              className="hover:underline text-[#003366]"
+              className="hover:underline"
             >
               Sign Up
+            </button>
+          </div>
+
+          <div className="text-center mt-4">
+            <button
+              type="button"
+              onClick={() => navigate("/forgot-password")}
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Forgot Password?
             </button>
           </div>
         </form>
