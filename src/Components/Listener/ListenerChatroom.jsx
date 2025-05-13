@@ -5,6 +5,7 @@ import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
+import { useNavigate } from "react-router-dom";
 
 export default function ListenerChatroom() {
   const [threads, setThreads] = useState({});
@@ -12,10 +13,12 @@ export default function ListenerChatroom() {
   const [content, setContent] = useState("");
   const [username, setUsername] = useState("User");
   const [userId, setUserId] = useState("");
-  const [role, setRole] = useState("listener");
+  const [role, setRole] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState("");
   const [firstName, setFirstName] = useState("User");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,22 +27,41 @@ const [userRole, setUserRole] = useState("");
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+      setUserId(user.id);
+      setUsername(profile.first_name);
+      setRole(profile.role);
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
+
   useEffect(() => {
     const threadsRef = ref(database, "threads");
     onValue(threadsRef, (snapshot) => {
@@ -60,6 +82,7 @@ const [userRole, setUserRole] = useState("");
       content,
       username,
       user_id: userId,
+      role,
       timestamp: Date.now(),
     });
 
@@ -91,9 +114,7 @@ const [userRole, setUserRole] = useState("");
   };
 
   const canDeleteReply = (replyUserId, replyUserRole) => {
-    if (userId === replyUserId) return true;
-    if (role === "admin") return true;
-    return false;
+    return userId === replyUserId || role === "admin";
   };
 
   const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
@@ -102,12 +123,12 @@ const [userRole, setUserRole] = useState("");
 
   return (
     <>
-    {userRole === "admin" ? (
+      {userRole === "admin" ? (
         <AdminNavbar title="Listener Dashboard" />
       ) : (
-         <ListenerNavbar title="Let's Chat" />
+        <ListenerNavbar title="Let's Chat" />
       )}
-    
+
       <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={username} />

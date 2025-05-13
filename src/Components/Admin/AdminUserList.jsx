@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import {
@@ -12,6 +13,7 @@ export default function AdminUserList() {
   const [users, setUsers] = useState([]);
   const [activeTab, setActiveTab] = useState("pending");
   const [firstName, setFirstName] = useState("User");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -20,27 +22,29 @@ export default function AdminUserList() {
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
 
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError || !profile || profile.role !== "admin") {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
     };
 
     fetchUserName();
-  }, []);
-
-  //it will run when the page is load 
-  useEffect(() => {
     getUsers();
-  }, []);
+  }, [navigate]);
+
 
   //it will fetch the users from database
   const getUsers = async () => {
@@ -83,15 +87,13 @@ export default function AdminUserList() {
 
   return (
     <>
-      <AdminNavbar title="All users"/>
+      <AdminNavbar title="All users" />
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-      <div className="sticky top-16 h-[calc(100vh-64px)]" />
+        <div className="sticky top-16 h-[calc(100vh-64px)]" />
         <AdminSidebar userName={firstName} />
 
         <div className="flex-1 p-8">
-          {/* <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">All Users</h2> */}
-
           <div className="flex space-x-4 mb-6">
             {["pending", "listener", "coordinator"].map((tab) => (
               <button
@@ -161,7 +163,7 @@ export default function AdminUserList() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="p-4 text-center text-gray-500">
+                  <td colSpan="6" className="p-4 text-center text-gray-500">
                     No users found for this category.
                   </td>
                 </tr>

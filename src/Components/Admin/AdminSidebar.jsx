@@ -1,18 +1,23 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import supabase from "../../supabase";
 
 export default function AdminSidebar({ userName = "" }) {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  //it is used to get the current path of the page and also to highlight the option on the sidebar
   const getLinkStyle = (path) =>
     location.pathname === path
       ? "bg-[#003366] text-white font-semibold"
       : "bg-white text-[#1E3A8A] hover:bg-[#d9eefe]";
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
+
   return (
     <div className="w-64 bg-[#A8E4F2] h-[calc(100vh-64px)] sticky top-16 flex flex-col px-4 py-6 overflow-y-auto">
-      
       <div className="text-[#1E3A8A] font-bold text-xl mb-12 text-center">
         Hello, {userName}
       </div>
@@ -86,13 +91,14 @@ export default function AdminSidebar({ userName = "" }) {
         </Link>
       </div>
 
+      {/* Logout */}
       <div className="mt-4">
-        <Link
-          to="/"
-          className="block bg-white text-[#1E3A8A] font-medium px-4 py-2 rounded-full text-center hover:bg-[#d9eefe] transition"
+        <button
+          onClick={handleLogout}
+          className="w-full bg-white text-[#1E3A8A] font-medium px-4 py-2 rounded-full text-center hover:bg-[#d9eefe] transition"
         >
           Logout
-        </Link>
+        </button>
       </div>
     </div>
   );

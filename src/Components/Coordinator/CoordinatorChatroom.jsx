@@ -5,9 +5,7 @@ import { ref, push, onValue, set, remove } from "firebase/database";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
-import { checkUserRole } from "../../Controller/UserController";
 import AdminNavbar from "../Admin/AdminNavbar";
-
 
 export default function CoordinatorChatroom() {
   const [threads, setThreads] = useState({});
@@ -15,77 +13,46 @@ export default function CoordinatorChatroom() {
   const [content, setContent] = useState("");
   const [username, setUsername] = useState("User");
   const [userId, setUserId] = useState("");
-  const [role, setRole] = useState("listener");
+  const [role, setRole] = useState("coordinator");
   const [searchQuery, setSearchQuery] = useState("");
   const [firstName, setFirstName] = useState("User");
-const [userRole, setUserRole] = useState("");
-
-  useEffect(() => {
-    const fetchUserName = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
-
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
-      }
-
-    };
-
-    fetchUserName();
-  }, []);
+  const [userRole, setUserRole] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (error || !user) {
-          navigate("/");
-          return;
-        }
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-        setUserId(user.id);
-
-        const isCoordinator = await checkUserRole("coordinator");
-        const isAdmin = await checkUserRole("admin");
-
-        if (!isCoordinator && !isAdmin) {
-          alert("Access denied. Coordinators and Admins only.");
-          navigate("/");
-          return;
-        }
-
-        setRole(isAdmin ? "admin" : "coordinator");
-
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
-
-        if (profileError || !profile) {
-          alert("Failed to load user profile.");
-          navigate("/");
-          return;
-        }
-
-        setUsername(profile.first_name);
-      } catch (err) {
-        console.error("Error verifying user:", err);
+      if (!user || authError) {
         navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (profile.role !== "coordinator" && profile.role !== "admin") {
+        navigate("/");
+        return;
+      }
+
+      setUserId(user.id);
+      setUsername(profile.first_name);
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+      setRole(profile.role);
     };
 
     fetchUser();
@@ -154,12 +121,12 @@ const [userRole, setUserRole] = useState("");
 
   return (
     <>
-    {userRole === "admin" ? (
-                <AdminNavbar title="Coordinator Dashboard" />
-              ) : (
-                     <CoordinatorNavbar title="Coordinator Chat" />
-              )}
- 
+      {userRole === "admin" ? (
+        <AdminNavbar title="Coordinator Dashboard" />
+      ) : (
+        <CoordinatorNavbar title="Coordinator Chat" />
+      )}
+
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />

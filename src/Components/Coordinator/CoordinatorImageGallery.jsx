@@ -3,74 +3,70 @@ import supabase from "../../supabase";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
+import { useNavigate } from "react-router-dom";
 
 export default function CoordinatorImageGallery() {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [userRole, setUserRole] = useState("");
-  const [userName, setUserName] = useState("");
   const [firstName, setFirstName] = useState("User");
-
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserName = async () => {
+    const fetchUserInfo = async () => {
       const {
         data: { user },
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
 
-    };
-
-    fetchUserName();
-  }, []);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data: profile } = await supabase
+      const { data: profile, error: profileError } = await supabase
         .from("profiles")
         .select("first_name, role")
         .eq("id", user.id)
         .single();
 
-      if (profile) {
-        setUserName(profile.first_name);
-        setUserRole(profile.role);
-        fetchImages();
+      if (!profile || profileError) {
+        navigate("/");
+        return;
       }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+
+      if (profile.role !== "admin" && profile.role !== "coordinator") {
+        navigate("/");
+        return;
+      }
+
+      fetchImages();
     };
-    getUser();
-  }, []);
+
+    fetchUserInfo();
+  }, [navigate]);
 
   const fetchImages = async () => {
-    const { data, error } = await supabase
-      .storage
+    const { data, error } = await supabase.storage
       .from("coordinator-images")
-      .list("", { limit: 100, sortBy: { column: "created_at", order: "desc" } });
+      .list("", {
+        limit: 100,
+        sortBy: { column: "created_at", order: "desc" },
+      });
 
-    if (error) return console.error("Failed to list images:", error);
+    if (error) {
+      console.error("Failed to list images:", error);
+      return;
+    }
 
     const signed = await Promise.all(
       data.map(async (file) => {
-        const { data: signedUrl } = await supabase
-          .storage
+        const { data: signedUrl } = await supabase.storage
           .from("coordinator-images")
-          .createSignedUrl(file.name, 300); // valid for 5 minutes
+          .createSignedUrl(file.name, 300);
 
         return { name: file.name, url: signedUrl?.signedUrl };
       })
@@ -95,6 +91,7 @@ export default function CoordinatorImageGallery() {
     } else {
       fetchImages();
     }
+
     setUploading(false);
   };
 
@@ -114,20 +111,21 @@ export default function CoordinatorImageGallery() {
 
   return (
     <>
-     {userRole === "admin" ? (
-                <AdminNavbar title="Coordinator Dashboard" />
-              ) : (
-                    <CoordinatorNavbar title="Image Gallery" />
-              )}
-        
-  
+      {userRole === "admin" ? (
+        <AdminNavbar title="Coordinator Dashboard" />
+      ) : (
+        <CoordinatorNavbar title="Image Gallery" />
+      )}
+
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
         </div>
 
         <div className="flex-1 p-8">
-          <h2 className="text-2xl font-bold text-[#003366] mb-4">Image Gallery</h2>
+          <h2 className="text-2xl font-bold text-[#003366] mb-4">
+            Image Gallery
+          </h2>
           <input
             type="file"
             onChange={handleUpload}
@@ -138,9 +136,16 @@ export default function CoordinatorImageGallery() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {files.length === 0 && <p>No images found.</p>}
-            {files.map(file => (
-              <div key={file.name} className="border p-3 rounded bg-white shadow">
-                <img src={file.url} alt={file.name} className="mb-2 max-w-full h-auto" />
+            {files.map((file) => (
+              <div
+                key={file.name}
+                className="border p-3 rounded bg-white shadow"
+              >
+                <img
+                  src={file.url}
+                  alt={file.name}
+                  className="mb-2 max-w-full h-auto"
+                />
                 <p className="text-sm break-words">{file.name}</p>
                 <div className="flex space-x-4 mt-2">
                   <a

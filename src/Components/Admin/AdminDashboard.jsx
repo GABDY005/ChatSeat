@@ -3,12 +3,14 @@ import { fetchAllUsers } from "../../Controller/UserController";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import supabase from "../../supabase";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminDashboard() {
  
   const [pendingCount, setPendingCount] = useState(0);
   // const [dropdownOpen, setDropdownOpen] = useState(false);
   const [firstName, setFirstName] = useState("User");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -17,23 +19,28 @@ export default function AdminDashboard() {
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
 
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError || !profile || profile.role !== "admin") {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
     };
 
     fetchUserName();
-  }, []);
-
+  }, [navigate]);
+  
   //it will fetch the pending approvals of the user in the dashboard
   useEffect(() => {
     const fetchPending = async () => {

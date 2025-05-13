@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
@@ -34,36 +35,33 @@ export default function CoordinatorAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserName = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
-
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+    const fetchUser = async () => {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (!user || error) {
+        navigate("/");
+        return;
       }
 
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
     };
 
-    fetchUserName();
-  }, []);
-
-  //it will toggle the dropdown button when it is clicked
-  const toggleDropdown = (id) => {
-    setOpenDropdown(openDropdown === id ? null : id);
-  };
+    fetchUser();
+  }, [navigate]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -99,12 +97,18 @@ export default function CoordinatorAppointments() {
     fetchAppointments();
   }, []);
 
+  //it will toggle the dropdown button when it is clicked
+  const toggleDropdown = (id) => {
+    setOpenDropdown(openDropdown === id ? null : id);
+  };
+
   const handleDelete = async (id) => {
     const { error } = await supabase.from("bookings").delete().eq("id", id);
     if (!error) {
       setAppointments((prev) => prev.filter((a) => a.id !== id));
     }
   };
+
   return (
     <>
       {userRole === "admin" ? (

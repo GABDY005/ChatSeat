@@ -5,7 +5,6 @@ import { ref, push, onValue, set, remove } from "firebase/database";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import supabase from "../../supabase";
-import { checkUserRole } from "../../Controller/UserController";
 
 export default function AdminCoordinatorChatroom() {
   const [threads, setThreads] = useState({});
@@ -13,74 +12,42 @@ export default function AdminCoordinatorChatroom() {
   const [content, setContent] = useState("");
   const [username, setUsername] = useState("Admin");
   const [userId, setUserId] = useState("");
-  const [role, setRole] = useState("admin");
+  const [userRole, setUserRole] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [firstName, setFirstName] = useState("User");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const fetchUserName = async () => {
+    const verifyUser = async () => {
       const {
         data: { user },
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-        }
-      }
-
-    };
-
-    fetchUserName();
-  }, []);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (error || !user) {
-          navigate("/");
-          return;
-        }
-
-        setUserId(user.id);
-
-        const isCoordinator = await checkUserRole("coordinator");
-        const isAdmin = await checkUserRole("admin");
-
-        if (!isCoordinator && !isAdmin) {
-          alert("Access denied. Coordinators and Admins only.");
-          navigate("/");
-          return;
-        }
-
-        setRole(isAdmin ? "admin" : "coordinator");
-
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
-
-        if (profile) {
-          setUsername(profile.first_name);
-        }
-      } catch (err) {
-        console.error("Error verifying user:", err);
+      if (!user || authError) {
         navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError || profile.role !== "admin") {
+        navigate("/");
+        return;
+      }
+
+      setUserId(user.id);
+      setUsername(profile.first_name);
+      setFirstName(profile.first_name);
+      setUserRole("admin");
     };
 
-    fetchUser();
+    verifyUser();
   }, [navigate]);
 
   useEffect(() => {
@@ -118,7 +85,7 @@ export default function AdminCoordinatorChatroom() {
       text: replyText,
       username,
       user_id: userId,
-      role,
+      role: userRole,
       timestamp: Date.now(),
     });
   };
@@ -133,11 +100,8 @@ export default function AdminCoordinatorChatroom() {
     remove(replyRef);
   };
 
-  const canDeleteReply = (replyUserId, replyUserRole) => {
-    if (userId === replyUserId) return true;
-    if (role === "coordinator" && replyUserRole === "listener") return true;
-    if (role === "admin" && (replyUserRole === "listener" || replyUserRole === "coordinator")) return true;
-    return false;
+  const canDeleteReply = (replyUserId) => {
+    return userId === replyUserId || userRole === "admin";
   };
 
   const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
@@ -196,7 +160,7 @@ export default function AdminCoordinatorChatroom() {
                     {new Date(thread.timestamp).toLocaleString()}
                   </small>
 
-                  {(thread.user_id === userId || role === "admin") && (
+                  {canDeleteReply(thread.user_id) && (
                     <button
                       onClick={() => handleDeleteThread(id)}
                       className="text-red-500 ml-4"
@@ -226,11 +190,11 @@ export default function AdminCoordinatorChatroom() {
                         >
                           <div>
                             <b>{reply.username}</b> at{" "}
-                              {new Date(reply.timestamp).toLocaleString()} <br />
-                              {reply.text}
+                            {new Date(reply.timestamp).toLocaleString()} <br />
+                            {reply.text}
                           </div>
 
-                          {canDeleteReply(reply.user_id, reply.role) && (
+                          {canDeleteReply(reply.user_id) && (
                             <button
                               onClick={() => handleDeleteReply(id, key)}
                               className="text-red-500 ml-4"

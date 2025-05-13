@@ -3,10 +3,12 @@ import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
+import { useNavigate } from "react-router-dom";
 
 export default function ListenerResources() {
   const [firstName, setFirstName] = useState("User");
-const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -15,31 +17,46 @@ const [userRole, setUserRole] = useState("");
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   return (
     <>
-    {userRole === "admin" ? (
+      {userRole === "admin" ? (
         <AdminNavbar title="Listener Dashboard" />
       ) : (
-         <ListenerNavbar title="Resources" />
+        <ListenerNavbar title="Resources" />
       )}
-    
+
       <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />

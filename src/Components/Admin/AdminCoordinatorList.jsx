@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import supabase from "../../supabase";
@@ -12,6 +13,7 @@ export default function AdminCoordinatorList() {
     place: "",
   });
   const [coordinators, setCoordinators] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -20,22 +22,28 @@ export default function AdminCoordinatorList() {
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError || !profile || profile.role !== "admin") {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
     };
 
     fetchUserName();
     fetchCoordinators();
-  }, []);
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -62,9 +70,7 @@ export default function AdminCoordinatorList() {
 
   const handleDelete = async (id) => {
     const { error } = await supabase.from("coordinators").delete().eq("id", id);
-    if (error) {
-      alert("Error deleting coordinator: " + error.message);
-    } else {
+    if (!error) {
       fetchCoordinators();
     }
   };

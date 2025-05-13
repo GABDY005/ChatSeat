@@ -1,66 +1,54 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import AdminSidebar from "../Admin/AdminSidebar";
-import AdminNavbar from "../Admin/AdminNavbar";   
+import AdminNavbar from "../Admin/AdminNavbar";
 import supabase from "../../supabase";
 
 export default function AdminListenerChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [username, setUsername] = useState("User");
+  const [username, setUsername] = useState("Admin");
   const [userId, setUserId] = useState("");
-  const [role, setRole] = useState("admin");
+  const [userRole, setUserRole] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [firstName, setFirstName] = useState("User");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const fetchUserName = async () => {
+    const verifyUser = async () => {
       const {
         data: { user },
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
 
-    };
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
 
-    fetchUserName();
-  }, []);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (user) {
-        setUserId(user.id);
-
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile) {
-          setUsername(profile.first_name);
-          setRole(profile.role);
-        }
+      if (!profile || profileError || profile.role !== "admin") {
+        navigate("/");
+        return;
       }
+
+      setUserId(user.id);
+      setUsername(profile.first_name);
+      setFirstName(profile.first_name);
+      setUserRole("admin");
     };
 
-    fetchUser();
-  }, []);
+    verifyUser();
+  }, [navigate]);
 
   useEffect(() => {
     const threadsRef = ref(database, "threads");
@@ -97,7 +85,7 @@ export default function AdminListenerChatroom() {
       text: replyText,
       username,
       user_id: userId,
-      role,
+      role: userRole,
       timestamp: Date.now(),
     });
   };
@@ -112,11 +100,8 @@ export default function AdminListenerChatroom() {
     remove(replyRef);
   };
 
-  const canDeleteReply = (replyUserId, replyUserRole) => {
-    if (userId === replyUserId) return true;
-    if (role === "coordinator" && replyUserRole === "listener") return true;
-    if (role === "admin" && (replyUserRole === "listener" || replyUserRole === "coordinator")) return true;
-    return false;
+  const canDeleteReply = (replyUserId) => {
+    return replyUserId === userId || userRole === "admin";
   };
 
   const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
@@ -175,7 +160,7 @@ export default function AdminListenerChatroom() {
                     {new Date(thread.timestamp).toLocaleString()}
                   </small>
 
-                  {(thread.user_id === userId || role === "admin") && (
+                  {canDeleteReply(thread.user_id) && (
                     <button
                       onClick={() => handleDeleteThread(id)}
                       className="text-red-500 ml-4"
@@ -209,7 +194,7 @@ export default function AdminListenerChatroom() {
                             {reply.text}
                           </div>
 
-                          {canDeleteReply(reply.user_id, reply.role) && (
+                          {canDeleteReply(reply.user_id) && (
                             <button
                               onClick={() => handleDeleteReply(id, key)}
                               className="text-red-500 ml-4"

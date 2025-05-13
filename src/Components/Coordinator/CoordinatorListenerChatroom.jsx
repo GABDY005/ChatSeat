@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import CoordinatorSidebar from "./CoordinatorSidebar";
-import CoordinatorNavbar from "./CoordinatorNavbar";   
+import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
 
@@ -12,57 +13,49 @@ export default function CoordinatorListenerChatroom() {
   const [content, setContent] = useState("");
   const [username, setUsername] = useState("User");
   const [userId, setUserId] = useState("");
-  const [role, setRole] = useState("listener");
+  const [role, setRole] = useState("coordinator");
   const [searchQuery, setSearchQuery] = useState("");
   const [firstName, setFirstName] = useState("User");
-const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserName = async () => {
+    const verifyUser = async () => {
       const {
         data: { user },
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
 
-    };
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
 
-    fetchUserName();
-  }, []);
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (user) {
-        setUserId(user.id);
-
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile) {
-          setUsername(profile.first_name);
-          setRole(profile.role);
-        }
+      if (!profile || profileError) {
+        navigate("/");
+        return;
       }
+
+      if (profile.role !== "coordinator" && profile.role !== "admin") {
+        navigate("/");
+        return;
+      }
+
+      setUserId(user.id);
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+      setUsername(profile.first_name);
+      setRole(profile.role);
     };
 
-    fetchUser();
-  }, []);
+    verifyUser();
+  }, [navigate]);
 
   useEffect(() => {
     const threadsRef = ref(database, "threads");
@@ -127,13 +120,12 @@ const [userRole, setUserRole] = useState("");
 
   return (
     <>
-     {userRole === "admin" ? (
-                <AdminNavbar title="Coordinator Dashboard" />
-              ) : (
-                 <CoordinatorNavbar title="Coordinator & Listener Chat" />
-              )}
-        
-     
+      {userRole === "admin" ? (
+        <AdminNavbar title="Coordinator Dashboard" />
+      ) : (
+        <CoordinatorNavbar title="Coordinator & Listener Chat" />
+      )}
+
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />

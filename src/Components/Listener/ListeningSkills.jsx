@@ -3,11 +3,12 @@ import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
-
+import { useNavigate } from "react-router-dom";
 
 export default function ListeningSkills() {
   const [firstName, setFirstName] = useState("User");
-const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -16,33 +17,48 @@ const [userRole, setUserRole] = useState("");
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   return (
     <>
-    {userRole === "admin" ? (
+      {userRole === "admin" ? (
         <AdminNavbar title="Listener Dashboard" />
       ) : (
-    <ListenerNavbar title="Listener Guide" />
+        <ListenerNavbar title="Listener Guide" />
       )}
-      
+
       <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="lg:sticky top-16h-auto lg:h-[calc(100vh-64px)]">
+        <div className="lg:sticky top-16 h-auto lg:h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
         </div>
 
@@ -54,7 +70,6 @@ const [userRole, setUserRole] = useState("");
             </p>
 
             <div className="bg-[#f9f9f9] p-6 rounded-lg shadow-md space-y-4 text-gray-800">
-
               <h4 className="font-semibold text-lg">1. Active Listening</h4>
               <ul className="list-disc list-inside ml-4 space-y-1">
                 <li>Listen attentively without interrupting.</li>
@@ -87,9 +102,7 @@ const [userRole, setUserRole] = useState("");
                 <li>If needed, contact local crisis services or emergency contacts for immediate support.</li>
               </ul>
 
-              <p>
-                We hope that you find this guide sheet helpful.
-              </p>
+              <p>We hope that you find this guide sheet helpful.</p>
               <p>
                 Thank you for taking the time to support your local community through chatting with some of its members. We hope that you will be able to commit to further “Chat” time in the future.
               </p>

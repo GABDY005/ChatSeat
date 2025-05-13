@@ -1,51 +1,60 @@
 import React, { useEffect, useState } from "react";
-import CoordinatorSidebar from "./CoordinatorSidebar";
+import { useNavigate } from "react-router-dom";
 import supabase from "../../supabase";
+import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 
 export default function CoordinatorHelp() {
   const [firstName, setFirstName] = useState("User");
-
-
   const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserName = async () => {
+    const fetchUser = async () => {
       const {
         data: { user },
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
 
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (profile.role !== "coordinator" && profile.role !== "admin") {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
     };
 
-    fetchUserName();
-  }, []);
+    fetchUser();
+  }, [navigate]);
+
   return (
     <>
-     {userRole === "admin" ? (
-                <AdminNavbar title="Coordinator Dashboard" />
-              ) : (
-                    <CoordinatorNavbar title="Help" />
-              )}
-        
- 
+      {userRole === "admin" ? (
+        <AdminNavbar title="Coordinator Dashboard" />
+      ) : (
+        <CoordinatorNavbar title="Help" />
+      )}
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-      <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
         </div>
         <div className="flex-1 px-10 py-12 w-full">
@@ -57,12 +66,6 @@ export default function CoordinatorHelp() {
             </p>
 
             <div className="bg-[#f9f9f9] p-6 rounded-lg shadow-md space-y-3">
-              {/* <h4 className="font-semibold text-lg">Dashboard</h4>
-              <p>
-                The left sidebar allows you to access different pages like
-                booking, chat room, and feedback.
-              </p> */}
-
               <h4 className="font-semibold text-lg mb-1">Appointments</h4>
               <p>
                 This page shows all your booked sessions with listeners. If necessary, you can <strong>delete</strong> any slot that’s no longer available or needed.

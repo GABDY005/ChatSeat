@@ -3,6 +3,7 @@ import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
+import { useNavigate } from "react-router-dom";
 
 export default function Feedback() {
   const [firstName, setFirstName] = useState("User");
@@ -10,6 +11,8 @@ export default function Feedback() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [userRole, setUserRole] = useState("");
+
+  const navigate = useNavigate();
 
   //It prevents the page from reloading when the feedback is submitted
   const handleSubmit = async (e) => {
@@ -61,6 +64,7 @@ export default function Feedback() {
 
   //it will get the user data from database
   
+  
   useEffect(() => {
     const fetchUser = async () => {
       const {
@@ -68,22 +72,37 @@ export default function Feedback() {
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   return (
     <>

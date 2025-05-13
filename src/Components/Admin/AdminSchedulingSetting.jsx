@@ -4,6 +4,7 @@ import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminSchedulingSetting() {
   const [locations, setLocations] = useState([]);
@@ -14,6 +15,13 @@ export default function AdminSchedulingSetting() {
   const [existingTimes, setExistingTimes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("User");
+  const navigate = useNavigate();
+
+  const timeslots = [
+    "08:00", "09:00", "10:00", "11:00", "12:00", "13:00",
+    "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+    "20:00", "21:00"
+  ];
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -22,28 +30,27 @@ export default function AdminSchedulingSetting() {
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
 
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError || !profile || profile.role !== "admin") {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
     };
 
     fetchUserName();
-  }, []);
-
-  const timeslots = [
-    "08:00", "09:00", "10:00", "11:00", "12:00", "13:00",
-    "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-    "20:00", "21:00"
-  ];
+  }, [navigate]);
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -214,7 +221,6 @@ export default function AdminSchedulingSetting() {
               readOnly
             />
 
-            {/* Existing times with delete buttons */}
             {existingTimes.length > 0 && (
               <div className="mb-4">
                 <h4 className="font-semibold mb-2 text-[#003366]">Existing Times:</h4>
@@ -234,7 +240,6 @@ export default function AdminSchedulingSetting() {
               </div>
             )}
 
-            {/* New time selection */}
             <div className="grid grid-cols-4 gap-2 mb-4">
               {timeslots.map(t => (
                 <label key={t} className="flex items-center gap-2">

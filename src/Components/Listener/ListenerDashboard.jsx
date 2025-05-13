@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AdminNavbar from "../Admin/AdminNavbar";
 
 export default function ListenerDashboard() {
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -16,22 +17,37 @@ export default function ListenerDashboard() {
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   return (
     <>

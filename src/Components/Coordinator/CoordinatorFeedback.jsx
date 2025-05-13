@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import supabase from "../../supabase";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
@@ -9,32 +10,45 @@ export default function Feedback() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("User");
-const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    const fetchUserName = async () => {
+    const fetchUserInfo = async () => {
       const {
         data: { user },
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
 
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role, email")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (profile.role !== "admin" && profile.role !== "coordinator") {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+      setEmail(profile.email);
     };
 
-    fetchUserName();
-  }, []);
+    fetchUserInfo();
+  }, [navigate]);
 
   //To prevent the page from reloading when the feedback is submitted
   const handleSubmit = async (e) => {
@@ -83,25 +97,6 @@ const [userRole, setUserRole] = useState("");
       setMessage("");
     }
   };
-
-  //It will get the user data from database
-   useEffect(() => {
-    const fetchUserProfile = async () => {
-       const { data: { user } } = await supabase.auth.getUser();
-
-      if (user) {
-      const { data: profile } = await supabase
-           .from("profiles")
-           .select("first_name, email")
-           .eq("id", user.id)
-           .single();
-
-         if (profile?.first_name) setFirstName(profile.first_name);
-         if (profile?.email) setEmail(profile.email);
-       }
-     };
-     fetchUserProfile();
-   }, []);
 
   return (
     <>

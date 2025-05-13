@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AdminNavbar from "../Admin/AdminNavbar";
 
 export default function ConversationSkills() {
   const [firstName, setFirstName] = useState("User");
-const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -16,31 +17,46 @@ const [userRole, setUserRole] = useState("");
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   return (
     <>
-    {userRole === "admin" ? (
+      {userRole === "admin" ? (
         <AdminNavbar title="Listener Dashboard" />
       ) : (
         <ListenerNavbar title="Good Conversation Skills" />
       )}
-      
+
       <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="lg:sticky top-16 lg:h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
@@ -91,9 +107,8 @@ const [userRole, setUserRole] = useState("");
               <p>
                 Tip sheet from Ending Loneliness Together:{" "}
                 <Link to="https://endingloneliness.com.au/wp-content/uploads/2024/11/Conversation-Starters.pdf">
-                   <strong> View PDF </strong>
+                  <strong> View PDF </strong>
                 </Link>
-                  
               </p>
 
               <p>

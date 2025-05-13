@@ -7,6 +7,7 @@ import supabase from "../../supabase";
 import ListenerSidebar from "./ListenerSidebar";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
+import { useNavigate } from "react-router-dom";
 
 export default function ListenerScheduling() {
   const [locations, setLocations] = useState([]);
@@ -27,57 +28,49 @@ export default function ListenerScheduling() {
   const [userRole, setUserRole] = useState(""); 
   const [firstName, setFirstName] = useState("User");
 
-  useEffect(() => {
-    flatpickr("#date-picker", {
-      dateFormat: "Y-m-d",
-      minDate: "today",
-      onChange: (_, dateStr) => setDate(dateStr),
-    });
-  }, [activeTab]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (editBookingId !== null) {
-      flatpickr("#edit-date-picker", {
-        dateFormat: "Y-m-d",
-        defaultDate: editValues.date,
-        onChange: (_, dateStr) =>
-          setEditValues((prev) => ({ ...prev, date: dateStr })),
-      });
-    }
-  }, [editBookingId]);
-
-  useEffect(() => {
-    const fetchLocations = async () => {
-      const { data } = await supabase.from("locations").select("*");
-      setLocations(data || []);
-    };
-    fetchLocations();
-  }, []);
-
-  
-  useEffect(() => {
+   useEffect(() => {
     const fetchUser = async () => {
       const {
         data: { user },
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+      setUserId(user.id);
+      setUserName(profile.first_name);
+      fetchUserBookings(user.id);
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   const fetchUserBookings = async (uid) => {
     const { data } = await supabase

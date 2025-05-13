@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import supabase from "../../supabase";
 import AdminNavbar from "./AdminNavbar";
 
 export default function Help() {
   const [firstName, setFirstName] = useState("User");
+  const navigate = useNavigate();
 
-  
   useEffect(() => {
     const fetchUserName = async () => {
       const {
@@ -14,28 +15,34 @@ export default function Help() {
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError || !profile || profile.role !== "admin") {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
     };
 
     fetchUserName();
-  }, []);
+  }, [navigate]);
 
   return (
     <>
-      <AdminNavbar title="Help"/>
+      <AdminNavbar title="Help" />
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-      <div className="sticky top-16 h-[calc(100vh-64px)]" />
+        <div className="sticky top-16 h-[calc(100vh-64px)]" />
         <AdminSidebar userName={firstName} />
 
         <div className="flex-1 px-10 py-12 w-full">
@@ -47,12 +54,6 @@ export default function Help() {
             </p>
 
             <div className="bg-[#f9f9f9] p-6 rounded-lg shadow-md space-y-3">
-              {/* <h4 className="font-semibold text-lg">Dashboard</h4>
-              <p>
-                The left sidebar allows you to access different pages like
-                booking, chat room, and view feedback.
-              </p> */}
-
               <h4 className="font-semibold text-lg mb-1">Manage Users</h4>
               <p>This page contains three tabs to help you manage the platform’s users:</p>
               <ul className="list-disc list-inside ml-4 mt-2 space-y-1">

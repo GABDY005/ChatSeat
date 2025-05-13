@@ -3,11 +3,12 @@ import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
-
+import { useNavigate } from "react-router-dom";
 
 export default function ListenerHelp() {
   const [firstName, setFirstName] = useState("User");
-const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -16,31 +17,46 @@ const [userRole, setUserRole] = useState("");
         error: authError,
       } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
+      if (!user || authError) {
+        navigate("/");
+        return;
       }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   return (
     <>
-    {userRole === "admin" ? (
+      {userRole === "admin" ? (
         <AdminNavbar title="Listener Dashboard" />
       ) : (
         <ListenerNavbar title="Attracting Chatters" />
       )}
-     
+
       <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="lg:sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
@@ -48,10 +64,7 @@ const [userRole, setUserRole] = useState("");
 
         <div className="flex-1 px-6 md:px-10 py-12 w-full">
           <div className="max-w-[800px] mx-auto text-black">
-            
-
             <div className="bg-[#f9f9f9] p-6 rounded-lg shadow-md space-y-6 text-gray-800">
-
               <div>
                 <h4 className="font-semibold text-lg">1. Open Seating</h4>
                 <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
@@ -87,7 +100,6 @@ const [userRole, setUserRole] = useState("");
           </div>
         </div>
       </div>
-  
     </>
   );
 }
