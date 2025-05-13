@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ListenerSidebar from "./ListenerSidebar";
-// import supabase from "../supabase";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
@@ -41,22 +40,22 @@ const [userRole, setUserRole] = useState("");
          <ListenerNavbar title="Resources" />
       )}
     
-      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+      <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 p-10">
-          <div className="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-blue-100">
-            <h2 className="text-3xl font-bold text-[#1E3A8A] mb-6 text-left">
+        <div className="flex-1 p-4 sm:p-10">
+          <div className="max-w-4xl mx-auto bg-white px-6 py-8 sm:p-8 rounded-2xl shadow-lg border border-blue-100">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#1E3A8A] mb-6 text-left">
               Lessons Learned in Establishing Chat Seats
             </h2>
 
-            <p className="text-gray-700 text-lg mb-4">
+            <p className="text-gray-700 text-base sm:text-lg mb-4">
               Below are some of the lessons we have learned when establishing Chat Seats:
             </p>
 
-            <ul className="list-disc pl-6 space-y-2 text-gray-700 text-lg">
+            <ul className="list-disc pl-6 space-y-2 text-gray-700 text-base sm:text-lg">
               <li>Selection of listeners – ensure they are interested in other peoples’ experiences and have well developed listening skills.</li>
               <li>Have one very experienced listener who sits with less experienced listeners.</li>
               <li>Listeners work in pairs.</li>

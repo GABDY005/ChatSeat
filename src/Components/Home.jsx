@@ -13,10 +13,10 @@ export default function Home() {
 
   return (
     <>
-      <nav className="flex items-center justify-between bg-[#003366] px-8 py-5 shadow-lg">
+      <nav className="flex flex-col sm:flex-row items-center justify-between bg-[#003366] px-4 sm:px-8 py-4 sm:py-5 shadow-lg">
         <div
           onClick={handleLogoClick}
-          className="flex items-center space-x-2 cursor-pointer"
+          className="flex items-center space-x-2 cursor-pointer mb-2 sm:mb-0"
         >
           <img
             src={logo}
@@ -25,7 +25,7 @@ export default function Home() {
           />
         </div>
 
-        <h1 className="text-white font-extrabold text-2xl sm:text-3xl tracking-wide">
+        <h1 className="text-white font-extrabold text-xl sm:text-2xl md:text-3xl tracking-wide text-center sm:text-left">
           Have a Chat Seat
         </h1>
 
@@ -45,8 +45,8 @@ export default function Home() {
         </div>
       </nav>
 
-      <div className="max-w-5xl mx-auto mt-12 px-6 py-8 bg-white rounded-2xl shadow-md text-gray-800 text-lg leading-relaxed">
-        <h2 className="text-3xl font-bold text-[#1E3A8A] mb-6 text-center">
+      <div className="max-w-5xl mx-auto mt-8 sm:mt-12 px-4 sm:px-6 py-6 sm:py-8 bg-white rounded-2xl shadow-md text-gray-800 text-base sm:text-lg leading-relaxed">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#1E3A8A] mb-6 text-center">
           Welcome to “Chat Seats”
         </h2>
 
@@ -54,7 +54,7 @@ export default function Home() {
           In a bid to tackle social isolation, we would like to establish a series of Chat Seats across Australia. The <strong>Chat Seats</strong> initiative aims to provide a safe and inviting place for people to talk. It will allow members of the community to <strong>“Connect through Conversation.”</strong> For this initiative to be successful, we need people like yourselves to volunteer to be either Listeners and/or Coordinators.
         </p>
 
-        <h3 className="text-xl mt-6 mb-2"><strong>What do we mean by being a Listener or Coordinator?</strong></h3>
+        <h3 className="text-lg sm:text-xl mt-6 mb-2 font-semibold"><strong>What do we mean by being a Listener or Coordinator?</strong></h3>
 
         <p className="mb-4">
           Listeners are individuals who volunteer their time to sit on a Chat Seat and listen to members of the community who may join them. Some of these members of the community may also be lonely and/or isolated. We are hoping to connect them back into their community through conversation.
@@ -76,7 +76,7 @@ export default function Home() {
           If you would like to volunteer as a Coordinator, then you will need to sign in and proceed to the page for Coordinators. On this page you will find some helpful information, and a place where you can chat with other Coordinators.
         </p>
 
-        <p className="text-xl mt-6 mb-2">
+        <p className="text-lg sm:text-xl mt-6 mb-2 font-semibold">
           <strong>Does this sound like something that you would be interested in doing?</strong>
         </p>
 
@@ -84,7 +84,7 @@ export default function Home() {
           If you would like to volunteer as a Coordinator, then you will need to sign in and proceed to the page for Coordinators. On this page you will find information about “Lessons learned” which describes some of the lessons we and others have learned when they established Chat Seats. There are also files of the graphics that have been used previously: banner, logo, name tags.
         </p>
 
-        <p className="text-xl mt-6 mb-2">
+        <p className="text-lg sm:text-xl mt-6 mb-2 font-semibold">
           <strong>How do you identify a Chat Seat?</strong> 
           
         </p>
@@ -92,20 +92,20 @@ export default function Home() {
         It will have a banner like the one below, at one of our Chat Seats locations.
         </p>
       
-        <div className="my-10 text-center">
+        <div className="my-8 sm:my-10 text-center">
           <img
             src={new_banner}
             alt="Chat Seat Banner"
-            className="mx-auto max-w-xs rounded-xl shadow-lg"
+            className="mx-auto w-full max-w-xs sm:max-w-sm rounded-xl shadow-lg"
           />
         </div>
 
         
-        <div className="my-10 text-center">
+        <div className="my-8 sm:my-10 text-center">
           <img
             src={Seat}
             alt="Chat Seat Banner"
-            className="mx-auto max-w-xs rounded-xl shadow-lg"
+            className="mx-auto w-full max-w-xs sm:max-w-sm rounded-xl shadow-lg"
           />
         </div>
         <p className="mb-2">

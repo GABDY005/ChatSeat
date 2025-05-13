@@ -38,7 +38,7 @@ export default function BookedListener() {
   return (
     <>
       <div className="min-h-sceen bg-white">
-        <nav className="flex items-center justify-between bg-[#1E3A8A] px-6 py-4 shadow-md">
+        <nav className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-[#1E3A8A] px-6 py-4 shadow-md gap-2">
           <div>
             <Link
               to="/"
@@ -48,19 +48,19 @@ export default function BookedListener() {
             </Link>
           </div>
 
-          <h1 className="text-white font-bold text-2xl tracking-wide text-center">
+          <h1 className="text-white font-bold text-xl sm:text-2xl tracking-wide text-center">
             Who's at the Seat?
           </h1>
           <div className="w-20" />
         </nav>
 
-        <div className="px-6 py-10 max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="px-4 sm:px-6 py-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {bookings.length > 0 ? (
             bookings.map((b) => (
               <div
                 key={b.id}
-                className="bg-white rounded-xl shadow-md p-5 border-t-4 border-blue-500 hover:shadow-xl transition-all duration-300"
+                className="bg-white rounded-xl shadow-md p-4 sm:p-5 border-t-4 border-blue-500 hover:shadow-xl transition-all duration-300"
               >
                 <p className="text-gray-700 text-sm mb-1">
                   <em>📍{b.location}</em>

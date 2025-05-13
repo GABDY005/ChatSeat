@@ -41,8 +41,8 @@ const [userRole, setUserRole] = useState("");
     <ListenerNavbar title="Listener Guide" />
       )}
       
-      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+      <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
+        <div className="lg:sticky top-16h-auto lg:h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
         </div>
 

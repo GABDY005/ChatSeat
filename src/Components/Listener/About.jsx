@@ -39,15 +39,15 @@ const [userRole, setUserRole] = useState("");
        <ListenerNavbar title="About Us"/>
       )}
      
-           <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+           <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
              <div className="sticky top-16 h-[calc(100vh-64px)]">
                <ListenerSidebar userName={firstName} />
              </div>
 
-        <div className="flex-1 flex justify-center items-start p-10">
-          <div className="max-w-3xl bg-white p-6 border-r-8 shadow-[0px_0px_10px_rgba(0,0,0,0.1)] space-y-6 leading-relaxed">
+        <div className="flex-1 flex justify-center items-start p-4 sm:p-6 md:p-10">
+          <div className="max-w-3xl bg-white p-6 rounded-xl shadow space-y-6 leading-relaxed">
             <section>
-            <h4 className="text-xl font-bold">
+            <h4 className="text-xl font-bold mb-2">
               Dr Tricia Vilkinas, B.SC., B. Comm., M.Psych.
             </h4>
             <p>
@@ -70,7 +70,7 @@ const [userRole, setUserRole] = useState("");
             </p>
             </section>
             <section>
-            <h4 className="text-xl font-bold">Noel Fraser</h4>
+            <h4 className="text-xl font-bold mb-2">Noel Fraser</h4>
             <p>
               Noel experienced extreme loneliness for most of his life,
               including throughout the entirety of a twenty-year stint in the

@@ -27,13 +27,13 @@ export default function Signup() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-[#1E3A8A] mb-6">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#1E3A8A] mb-6">
           Create an Account
         </h2>
 
         <form onSubmit={handleSignup}>
-          <div className="flex gap-4">
-            <div className="w-1/2">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="w-full sm:w-1/2">
               <label className="block text-sm font-semibold mb-1 text-gray-700">
                 First Name
               </label>

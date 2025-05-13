@@ -6,7 +6,7 @@ import AdminNavbar from "../Admin/AdminNavbar";
 
 export default function Feedback() {
   const [firstName, setFirstName] = useState("User");
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [userRole, setUserRole] = useState("");
@@ -93,7 +93,7 @@ export default function Feedback() {
    <ListenerNavbar title="Your Feedback Matters" />
       )}
      
-      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+      <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
         </div>

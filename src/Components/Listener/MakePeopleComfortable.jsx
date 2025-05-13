@@ -41,12 +41,12 @@ const [userRole, setUserRole] = useState("");
         <ListenerNavbar title="Attracting Chatters" />
       )}
      
-      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+      <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
+        <div className="lg:sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 px-10 py-12 w-full">
+        <div className="flex-1 px-6 md:px-10 py-12 w-full">
           <div className="max-w-[800px] mx-auto text-black">
             
 

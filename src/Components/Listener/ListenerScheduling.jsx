@@ -278,12 +278,12 @@ export default function ListenerScheduling() {
          <ListenerNavbar title="Book Your Slot" />
       )}
      
-      <div className="flex min-h-screen bg-[#e6f4f9] pt-16">
+      <div className="flex flex-col lg:flex-row min-h-screen bg-[#e6f4f9] pt-16">
         <div className="sticky top-16 h-[calc(100vh-64px)] z-10">
           <ListenerSidebar userName={userName || "Guest"} />
         </div>
-        <div className="flex-1 p-8">
-          <div className="flex space-x-4 mb-6">
+        <div className="flex-1 p-4 sm:p-6">
+          <div className="flex flex-wrap gap-4 mb-6">
             {["Upcoming", "Book", "Calendar"].map((tab) => (
               <button
                 key={tab}
@@ -305,7 +305,7 @@ export default function ListenerScheduling() {
 
           {activeTab === "Book" && (
             <div className="flex justify-center items-center min-h-[calc(100vh-200px)]">
-              <div className="bg-white w-full max-w-xl p-8 rounded-xl shadow-lg">
+              <div className="bg-white w-full max-w-xl p-6 sm:p-8 rounded-xl shadow-lg">
                 <label className="block font-semibold mb-1">Select Place:</label>
                 <select
                   value={location}
@@ -357,7 +357,7 @@ export default function ListenerScheduling() {
           )}
 
           {activeTab === "Calendar" && (
-            <div className="bg-white p-6 rounded shadow w-full">
+            <div className="bg-white p-4 sm:p-6 rounded shadow w-full overflow-auto">
               <select
                 value={calendarLocation}
                 onChange={(e) => setCalendarLocation(e.target.value)}
@@ -380,7 +380,7 @@ export default function ListenerScheduling() {
           )}
 
           {activeTab === "Upcoming" && (
-            <div className="bg-white p-6 rounded shadow w-full">
+            <div className="bg-white p-4 sm:p-6 rounded shadow w-full">
               <h3 className="text-xl font-bold mb-3">Your Upcoming Bookings</h3>
               {userBookings.length === 0 ? (
                 <p>No bookings yet.</p>

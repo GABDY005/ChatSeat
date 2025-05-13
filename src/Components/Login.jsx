@@ -33,12 +33,12 @@
     };
 
     return (
-    <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4 ">
-      <div className="bg-white p-10 shadow-lg w-full max-w-sm rounded-lg">
-        <h2 className="text-3xl font-bold text-center text-[#003366] mb-8">
+    <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4 sm:px-6">
+      <div className="bg-white px-6 py-8 sm:p-10 shadow-lg w-full max-w-sm rounded-lg">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#003366] mb-6 sm:mb-8">
           Login
         </h2>
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-5 sm:space-y-6">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Email Address

@@ -39,13 +39,13 @@ const [userRole, setUserRole] = useState("");
        <ListenerNavbar title="Help" />
       )}
       
-      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+      <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
+        <div className="sticky top-16 lg:w-64 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
         </div>
 
         <div className="flex-1 px-10 py-12 w-full">
-          <div className="max-w-[800px] mx-auto text-black">
+          <div className="max-w-3xl mx-auto text-black">
             <h2 className="text-2xl font-bold mb-4">How to Use the Website</h2>
             <p className="mb-6">
               Follow these instructions to navigate and use the website
