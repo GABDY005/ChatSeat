@@ -95,13 +95,13 @@ export default function Feedback() {
       )}
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
           <div className="w-full max-w-2xl bg-white p-6 sm:p-8 rounded-2xl shadow-lg border-t-4 border-blue-600">
-            <h2 className="text-2xl font-bold text-center text-[#1E3A8A] mb-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-center text-[#1E3A8A] mb-2">
               We Value Your Feedback
             </h2>
             <p className="text-center text-gray-600 mb-6">

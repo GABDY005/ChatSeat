@@ -38,7 +38,7 @@ export default function BookedListener() {
   return (
     <>
       <div className="min-h-sceen bg-white">
-        <nav className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-[#1E3A8A] px-6 py-4 shadow-md gap-2">
+        <nav className="sticky top-0 z-50 flex flex-col sm:flex-row items-center justify-between bg-[#003366] sm:px-8 py-4 sm:py-5 shadow-lg w-full">
           <div>
             <Link
               to="/"

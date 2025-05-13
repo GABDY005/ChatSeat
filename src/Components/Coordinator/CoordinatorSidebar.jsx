@@ -44,9 +44,9 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
         <Link to="/CoordinatorImageGallery" className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle("/CoordinatorImageGallery")}`}>
           Image Gallery
         </Link>
-        <Link to="/Logos" className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle("/Logos")}`}>
+        {/* <Link to="/Logos" className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle("/Logos")}`}>
           Banners and Logo
-        </Link>
+        </Link> */}
         <Link to="/CoordinatorFeedback" className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle("/CoordinatorFeedback")}`}>
           Feedback
         </Link>

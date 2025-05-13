@@ -94,11 +94,11 @@ export default function AdminDashboard() {
       </div> */}
 
 <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-<div className="sticky top-16 h-[calc(100vh-64px)]" />
+<div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]" />
         <AdminSidebar userName={firstName}/>
 
-        <div className="flex-1 p-8">
-          <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">
+        <div className="flex-1 p-4 sm:p-6 md:p-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1E3A8A] mb-6">
             Welcome
           </h2>
 

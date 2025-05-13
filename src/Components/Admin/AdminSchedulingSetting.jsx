@@ -160,11 +160,11 @@ export default function AdminSchedulingSetting() {
     <>
       <AdminNavbar title="Scheduling Settings" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <AdminSidebar userName={firstName} />
         </div>
 
-        <div className="p-8 flex-1">
+        <div className="p-4 sm:p-6 md:p-8 flex-1">
           <h2 className="text-2xl font-bold text-[#003366] mb-6">
             Admin Scheduling Settings
           </h2>
@@ -224,7 +224,7 @@ export default function AdminSchedulingSetting() {
             {existingTimes.length > 0 && (
               <div className="mb-4">
                 <h4 className="font-semibold mb-2 text-[#003366]">Existing Times:</h4>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                   {existingTimes.map(t => (
                     <div key={t.id} className="flex items-center justify-between border rounded px-2 py-1 bg-gray-50">
                       <span>{t.time}</span>
@@ -240,7 +240,7 @@ export default function AdminSchedulingSetting() {
               </div>
             )}
 
-            <div className="grid grid-cols-4 gap-2 mb-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-4">
               {timeslots.map(t => (
                 <label key={t} className="flex items-center gap-2">
                   <input

@@ -105,11 +105,11 @@ export default function Feedback() {
     <>
       <AdminNavbar title="Feedback from Listener and Coordinators" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]" />
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]" />
         <AdminSidebar userName={firstName} />
 
-        <div className="flex-1 px-8 py-10">
-          <div className="mb-6 flex flex-wrap items-center gap-4">
+        <div className="flex-1 px-4 sm:px-6 md:px-8 py-6 sm:py-10">
+          <div className="mb-6 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4">
             <input
               type="text"
               placeholder="Search by Name.."

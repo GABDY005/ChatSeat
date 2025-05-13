@@ -127,14 +127,14 @@ export default function CoordinatorAppointments() {
             Confirmed Listener Bookings
           </h2>
 
-          <div className="grid gap-y-6 gap-x-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {appointments.length === 0 ? (
               <p>No bookings found.</p>
             ) : (
               appointments.map((appointment) => (
                 <div
                   key={appointment.id}
-                  className="relative bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500 hover:shadow-lg transition w-[220px]"
+                  className="relative bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500 hover:shadow-lg transition w-full"
                 >
                   <div className="absolute top-3 right-3">
                     <button

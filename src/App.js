@@ -31,7 +31,7 @@ import CoordinatorAppointments from "./Components/Coordinator/CoordinatorAppoint
 import CoordinatorAvailability from "./Components/Coordinator/CoordinatorAvailability";
 import CoordinatorImageGallery from "./Components/Coordinator/CoordinatorImageGallery.jsx";
 import LessonCoordinator from "./Components/Coordinator/LessonCoordinator";
-import Logos from "./Components/Coordinator/Logos";
+// import Logos from "./Components/Coordinator/Logos";
 import CoordinatorFeedback from "./Components/Coordinator/CoordinatorFeedback";
 import CoordinatorHelp from "./Components/Coordinator/CoordinatorHelp.jsx";
 import BookedListener from "./Components/BookedListener.jsx";
@@ -124,7 +124,7 @@ function App() {
             path="/CoordinatorImageGallery"
             element={<CoordinatorImageGallery />}
             />
-            <Route path="/Logos" element={<Logos />} />
+            {/* <Route path="/Logos" element={<Logos />} /> */}
             <Route
               path="/CoordinatorFeedback"
               element={<CoordinatorFeedback />}

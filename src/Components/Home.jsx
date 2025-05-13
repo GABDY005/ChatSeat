@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/Logo.jpg";
-import new_banner from "../assets/new_banner.jpg"; 
 import Seat from "../assets/Seat.JPG";
 
 
@@ -13,7 +12,7 @@ export default function Home() {
 
   return (
     <>
-      <nav className="flex flex-col sm:flex-row items-center justify-between bg-[#003366] px-4 sm:px-8 py-4 sm:py-5 shadow-lg">
+      <nav className="sticky top-0 z-50 flex flex-col sm:flex-row items-center justify-between bg-[#003366] sm:px-8 py-4 sm:py-5 shadow-lg w-full">
         <div
           onClick={handleLogoClick}
           className="flex items-center space-x-2 cursor-pointer mb-2 sm:mb-0"

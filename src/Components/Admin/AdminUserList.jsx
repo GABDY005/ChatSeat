@@ -90,11 +90,11 @@ export default function AdminUserList() {
       <AdminNavbar title="All users" />
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]" />
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]" />
         <AdminSidebar userName={firstName} />
 
-        <div className="flex-1 p-8">
-          <div className="flex space-x-4 mb-6">
+        <div className="flex-1 p-4 sm:p-6 md:p-8">
+          <div className="flex flex-wrap gap-2 mb-6">
             {["pending", "listener", "coordinator"].map((tab) => (
               <button
                 key={tab}
@@ -110,7 +110,8 @@ export default function AdminUserList() {
             ))}
           </div>
 
-          <table className="w-full border rounded shadow bg-white">
+          <div className="overflow-x-auto">
+  <table className="min-w-[600px] w-full border rounded shadow bg-white">
             <thead className="bg-[#e6f0ff]">
               <tr className="text-left">
                 <th className="p-3">Name</th>
@@ -170,6 +171,7 @@ export default function AdminUserList() {
               )}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </>

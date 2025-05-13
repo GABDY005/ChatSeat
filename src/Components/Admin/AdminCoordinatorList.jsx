@@ -45,7 +45,9 @@ export default function AdminCoordinatorList() {
   };
 
   const handleAdd = async () => {
-    const { data, error } = await supabase.from("coordinators").insert([{ ...formData }]);
+    const { data, error } = await supabase
+      .from("coordinators")
+      .insert([{ ...formData }]);
     if (error) {
       alert("Error adding coordinator: " + error.message);
     } else {
@@ -77,12 +79,12 @@ export default function AdminCoordinatorList() {
     <div className="min-h-screen bg-[#e6f4f9] pt-16">
       <AdminNavbar title="Coordinator List" />
       <div className="flex">
-        <div className="w-64 sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-64 sticky top-16 h-[calc(100vh-64px)]">
           <AdminSidebar userName={firstName} />
         </div>
-        <div className="flex-1 p-4 md:p-6 overflow-auto">
-          <div className="overflow-x-auto bg-white rounded shadow">
-            <table className="w-full table-auto border-collapse text-left">
+        <div className="flex-1 p-4 sm:p-6 overflow-auto">
+          <div className="w-full overflow-x-auto">
+            <table className="min-w-[600px] table-auto border-collapse text-left">
               <thead className="bg-blue-100">
                 <tr>
                   <th className="p-2 border">

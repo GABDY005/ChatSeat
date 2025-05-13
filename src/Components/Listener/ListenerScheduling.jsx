@@ -1,5 +1,5 @@
 import React, { use, useCallback, useEffect, useState } from "react";
-// import flatpickr from "flatpickr";
+import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -30,7 +30,7 @@ export default function ListenerScheduling() {
   const [firstName, setFirstName] = useState("User");
   const navigate = useNavigate();
 
-<<<<<<< HEAD
+
   useEffect(() => { 
     const fetchLocations = async () => {
       const { data, error } = await supabase.from("locations").select("*");
@@ -43,10 +43,10 @@ export default function ListenerScheduling() {
     fetchLocations();
   }, []);
 
-   useEffect(() => {
-=======
+  
+
   useEffect(() => {
->>>>>>> ea43b36166f4099ab56049f714515fb64340b5f0
+
     const fetchUser = async () => {
       const {
         data: { user },
@@ -525,4 +525,4 @@ export default function ListenerScheduling() {
       </div>
     </>
   );
-}
+} 

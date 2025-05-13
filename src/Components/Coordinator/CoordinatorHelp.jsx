@@ -54,12 +54,12 @@ export default function CoordinatorHelp() {
       )}
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
         </div>
-        <div className="flex-1 px-10 py-12 w-full">
-          <div className="max-w-[800px] mx-auto text-black">
-            <h2 className="text-2xl font-bold mb-4">How to Use the Website</h2>
+        <div className="flex-1 px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-12 w-full">
+          <div className="w-full max-w-[800px] mx-auto text-black">
+            <h2 className="text-xl sm:text-2xl font-bold mb-">How to Use the Website</h2>
             <p className="mb-6">
               Follow these instructions to navigate and use the website
               effectively.

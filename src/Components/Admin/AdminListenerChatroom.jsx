@@ -112,11 +112,11 @@ export default function AdminListenerChatroom() {
     <>
       <AdminNavbar title="Admin - Listener Chatroom" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <AdminSidebar userName={firstName} />
         </div>
 
-        <div className="main-content p-6 w-full">
+        <div className="flex-1 p-4 sm:p-6 w-full">
           <h2 className="text-xl font-bold text-[#1E3A8A] mb-4">Discussion Forum</h2>
 
           <div className="mb-6">
@@ -185,7 +185,7 @@ export default function AdminListenerChatroom() {
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (
                         <div
-                          className="bg-blue-100 p-2 rounded text-sm flex justify-between"
+                          className="bg-blue-100 p-2 rounded text-sm flex flex-col sm:flex-row justify-between w-full break-words"
                           key={key}
                         >
                           <div>

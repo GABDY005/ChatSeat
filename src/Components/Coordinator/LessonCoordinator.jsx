@@ -62,13 +62,13 @@ function LessonCoordinator() {
       )}
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 px-10 py-12">
-          <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-md text-gray-800 space-y-6">
-            <h2 className="text-2xl font-bold text-[#1E3A8A] text-center mb-4">
+        <div className="flex-1 px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-12">
+          <div className="w-full max-w-3xl mx-auto bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-md text-gray-800 space-y-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#1E3A8A] text-center mb-4">
               Volunteer Callout – Chat Seats
             </h2>
 

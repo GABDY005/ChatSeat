@@ -49,13 +49,13 @@ function CoordinatorDashboard() {
       )}
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 p-10">
-          <div className="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-md border border-blue-100 text-gray-800 text-md space-y-4">
-            <h2 className="text-4xl font-bold text-[#1E3A8A] mb-10 text-center">
+        <div className="flex-1 p-4 sm:p-6 md:p-10">
+          <div className="w-full max-w-4xl mx-auto bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-md border border-blue-100 text-gray-800 text-base sm:text-md space-y-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E3A8A] mb-6 sm:mb-10 text-center">
               Welcome, Coordinators!
             </h2>
             <p>

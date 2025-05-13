@@ -99,16 +99,16 @@ export default function CoordinatorAvailability() {
       )}
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 p-10">
+        <div className="flex-1 p-4 sm:p-6 md:p-10">
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">
             View All Slots
           </h2>
 
-          <div className="flex gap-6 mb-4">
+          <div className="flex flex-wrap gap-4 sm:gap-6 mb-4">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-[#86efac] rounded-sm"></div> Available
             </div>
@@ -120,7 +120,7 @@ export default function CoordinatorAvailability() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded shadow">
+          <div className="bg-white p-4 sm:p-6 rounded shadow overflow-auto w-full">
             <FullCalendar
               plugins={[timeGridPlugin]}
               initialView="timeGridWeek"

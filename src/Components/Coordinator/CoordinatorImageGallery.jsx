@@ -96,8 +96,7 @@ export default function CoordinatorImageGallery() {
   };
 
   const handleDelete = async (fileName) => {
-    const { error } = await supabase
-      .storage
+    const { error } = await supabase.storage
       .from("coordinator-images")
       .remove([fileName]);
 
@@ -118,20 +117,22 @@ export default function CoordinatorImageGallery() {
       )}
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 p-8">
-          <h2 className="text-2xl font-bold text-[#003366] mb-4">
+        <div className="flex-1 p-4 sm:p-6 md:p-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#003366] mb-4">
             Image Gallery
           </h2>
-          <input
-            type="file"
-            onChange={handleUpload}
-            disabled={uploading}
-            className="mb-4"
-          />
+          <div className="mb-4">
+            <input
+              type="file"
+              onChange={handleUpload}
+              disabled={uploading}
+              className="block w-full text-sm text-gray-600"
+            />
+          </div>
           {uploading && <p className="text-blue-500">Uploading...</p>}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -139,7 +140,7 @@ export default function CoordinatorImageGallery() {
             {files.map((file) => (
               <div
                 key={file.name}
-                className="border p-3 rounded bg-white shadow"
+                className="w-full border p-3 rounded bg-white shadow"
               >
                 <img
                   src={file.url}

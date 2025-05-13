@@ -127,12 +127,12 @@ export default function CoordinatorListenerChatroom() {
       )}
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-        <div className="main-content p-6 w-full">
-          <h2 className="text-xl text-[#1E3A8A] font-bold mb-4">Discussion Forum</h2>
+        <div className="main-content p-4 sm:p-6 w-full">
+          <h2 className="text-lg sm:text-xl text-[#1E3A8A] font-bold mb-4">Discussion Forum</h2>
 
           <div className="mb-6">
             <input
@@ -167,7 +167,7 @@ export default function CoordinatorListenerChatroom() {
           <div className="space-y-4">
             {filteredThreads.length > 0 ? (
               filteredThreads.reverse().map(([id, thread]) => (
-                <div className="bg-white p-4 rounded shadow" key={id}>
+                <div className="bg-white p-4 rounded shadow w-full break-words" key={id}>
                   <h4 className="font-bold text-[#003366]">{thread.title}</h4>
                   <p>{thread.content}</p>
                   <small>
@@ -200,7 +200,7 @@ export default function CoordinatorListenerChatroom() {
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (
                         <div
-                          className="bg-blue-100 p-2 rounded text-sm flex justify-between"
+                          className="bg-blue-100 p-2 rounded text-sm flex flex-col sm:flex-row justify-between w-full break-words"
                           key={key}
                         >
                           <div>

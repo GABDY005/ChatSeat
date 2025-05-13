@@ -6,7 +6,7 @@ export default function PendingApproval() {
   return (
     <>
       <div className="min-h-screen flex flex-col items-center justify-center bg-white px-6 text-center">
-        <div className="bg-blue-50 border border-blue-300 shadow-lg rounded-lg p-8 max-w-md w-full">
+        <div className="bg-blue-50 border border-blue-300 shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-md">
           <h1 className="text-3xl font-bold text-blue-700 mb-4">
             Awaiting Admin Approval
           </h1>

@@ -88,7 +88,9 @@ export default function CoordinatorChatroom() {
   const handleReply = (threadID, replyText) => {
     if (!replyText) return;
 
-    const newReply = push(ref(database, `coordinator_threads/${threadID}/replies`));
+    const newReply = push(
+      ref(database, `coordinator_threads/${threadID}/replies`)
+    );
     set(newReply, {
       text: replyText,
       username,
@@ -104,14 +106,21 @@ export default function CoordinatorChatroom() {
   };
 
   const handleDeleteReply = (threadId, replyKey) => {
-    const replyRef = ref(database, `coordinator_threads/${threadId}/replies/${replyKey}`);
+    const replyRef = ref(
+      database,
+      `coordinator_threads/${threadId}/replies/${replyKey}`
+    );
     remove(replyRef);
   };
 
   const canDeleteReply = (replyUserId, replyUserRole) => {
     if (userId === replyUserId) return true;
     if (role === "coordinator" && replyUserRole === "listener") return true;
-    if (role === "admin" && (replyUserRole === "listener" || replyUserRole === "coordinator")) return true;
+    if (
+      role === "admin" &&
+      (replyUserRole === "listener" || replyUserRole === "coordinator")
+    )
+      return true;
     return false;
   };
 
@@ -132,115 +141,114 @@ export default function CoordinatorChatroom() {
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-<<<<<<< HEAD
         <div className="main-content p-6 w-full bg-emerald-50">
-          <h2 className="text-xl font-bold text-[#1E3A8A] mb-4">Discussion Forum</h2>
-=======
-        <div className="main-content p-6 w-full bg-[#cfffa5]">
-          <h2 className="text-xl font-bold text-green-800 mb-4">Discussion Forum</h2>
->>>>>>> ea43b36166f4099ab56049f714515fb64340b5f0
+          <h2 className="text-xl font-bold text-[#1E3A8A] mb-4">
+            Discussion Forum
+          </h2>
 
-          <div className="mb-6">
-            <input
-              type="text"
-              placeholder="Search discussions..."
-              className="form-control w-full p-2 mb-4 border rounded"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+          <div className="main-content p-6 w-full bg-[#cfffa5]">
+            <h2 className="text-xl font-bold text-green-800 mb-4">
+              Discussion Forum
+            </h2>
 
-            <input
-              type="text"
-              className="form-control w-full p-2 mb-2 border rounded"
-              placeholder="Enter topic title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <textarea
-              className="form-control w-full p-2 mb-2 border rounded"
-              placeholder="Write your discussion"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-            <button
-              className="w-full bg-[#003366] text-white py-2 rounded"
-              onClick={handlePost}
-            >
-              Post Discussion
-            </button>
-          </div>
+            <div className="mb-6">
+              <input
+                type="text"
+                placeholder="Search discussions..."
+                className="form-control w-full p-2 mb-4 border rounded"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
 
-          <div className="space-y-4">
-            {filteredThreads.length > 0 ? (
-              filteredThreads.reverse().map(([id, thread]) => (
-                <div className="bg-white p-4 rounded shadow" key={id}>
-<<<<<<< HEAD
-                  <h4 className="font-bold text-black">{thread.title}</h4>
-=======
-                  <h4 className="font-bold text-green-700">{thread.title}</h4>
->>>>>>> ea43b36166f4099ab56049f714515fb64340b5f0
-                  <p>{thread.content}</p>
-                  <small>
-                    Posted by <b>{thread.username}</b> at{" "}
-                    {new Date(thread.timestamp).toLocaleString()}
-                  </small>
+              <input
+                type="text"
+                className="form-control w-full p-2 mb-2 border rounded"
+                placeholder="Enter topic title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <textarea
+                className="form-control w-full p-2 mb-2 border rounded"
+                placeholder="Write your discussion"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+              <button
+                className="w-full bg-[#003366] text-white py-2 rounded"
+                onClick={handlePost}
+              >
+                Post Discussion
+              </button>
+            </div>
 
-                  {(thread.user_id === userId || role === "admin") && (
-                    <button
-                      onClick={() => handleDeleteThread(id)}
-                      className="text-green-500 ml-4"
-                    >
-                      Delete
-                    </button>
-                  )}
+            <div className="space-y-4">
+              {filteredThreads.length > 0 ? (
+                filteredThreads.reverse().map(([id, thread]) => (
+                  <div className="bg-white p-4 rounded shadow" key={id}>
+                    <h4 className="font-bold text-black">{thread.title}</h4>
 
-                  <input
-                    type="text"
-                    className="form-control mt-2 p-2 border rounded w-full"
-                    placeholder="Write a reply..."
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleReply(id, e.target.value);
-                        e.target.value = "";
-                      }
-                    }}
-                  />
+                    <h4 className="font-bold text-green-700">{thread.title}</h4>
 
-                  <div className="mt-3 space-y-2">
-                    {thread.replies &&
-                      Object.entries(thread.replies).map(([key, reply]) => (
-                        <div
-<<<<<<< HEAD
-                          className="bg-emerald-50 p-2 rounded text-sm flex justify-between"
-=======
-                          className="bg-green-100 p-2 rounded text-sm flex justify-between"
->>>>>>> ea43b36166f4099ab56049f714515fb64340b5f0
-                          key={key}
-                        >
-                          <div>
-                            <b>{reply.username}</b> at{" "}
-                            {new Date(reply.timestamp).toLocaleString()} <br />
-                            {reply.text}
+                    <p>{thread.content}</p>
+                    <small>
+                      Posted by <b>{thread.username}</b> at{" "}
+                      {new Date(thread.timestamp).toLocaleString()}
+                    </small>
+
+                    {(thread.user_id === userId || role === "admin") && (
+                      <button
+                        onClick={() => handleDeleteThread(id)}
+                        className="text-green-500 ml-4"
+                      >
+                        Delete
+                      </button>
+                    )}
+
+                    <input
+                      type="text"
+                      className="form-control mt-2 p-2 border rounded w-full"
+                      placeholder="Write a reply..."
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleReply(id, e.target.value);
+                          e.target.value = "";
+                        }
+                      }}
+                    />
+
+                    <div className="mt-3 space-y-2">
+                      {thread.replies &&
+                        Object.entries(thread.replies).map(([key, reply]) => (
+                          <div
+                            className="bg-emerald-50 p-2 rounded text-sm flex justify-between"
+                            key={key}
+                          >
+                            <div>
+                              <b>{reply.username}</b> at{" "}
+                              {new Date(reply.timestamp).toLocaleString()}{" "}
+                              <br />
+                              {reply.text}
+                            </div>
+
+                            {canDeleteReply(reply.user_id, reply.role) && (
+                              <button
+                                onClick={() => handleDeleteReply(id, key)}
+                                className="text-green-500 ml-4"
+                              >
+                                ❌
+                              </button>
+                            )}
                           </div>
-
-                          {canDeleteReply(reply.user_id, reply.role) && (
-                            <button
-                              onClick={() => handleDeleteReply(id, key)}
-                              className="text-green-500 ml-4"
-                            >
-                              ❌
-                            </button>
-                          )}
-                        </div>
-                      ))}
+                        ))}
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="text-center text-gray-500">
+                  No discussions found.
                 </div>
-              ))
-            ) : (
-              <div className="text-center text-gray-500">
-                No discussions found.
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
