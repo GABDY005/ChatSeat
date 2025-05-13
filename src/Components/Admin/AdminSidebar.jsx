@@ -59,14 +59,14 @@ export default function AdminSidebar({ userName = "" }) {
           Admin Scheduling Setting
         </Link>
         
-        <Link to="/AdminCoordinatorList"
+        {/* <Link to="/AdminCoordinatorList"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
             "/AdminCoordinatorList"
           )}`}>
         
         Coordinator List
         
-        </Link>
+        </Link> */}
         
         <Link
           to="/AdminFeedback"

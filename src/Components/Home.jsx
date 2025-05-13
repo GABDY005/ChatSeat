@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/Logo.jpg";
-import Banner_1 from "../assets/Banner_1.jpg";
+import new_banner from "../assets/new_banner.jpg"; 
+import Seat from "../assets/Seat.JPG";
+
 
 export default function Home() {
 
@@ -92,20 +94,28 @@ export default function Home() {
       
         <div className="my-10 text-center">
           <img
-            src={Banner_1}
+            src={new_banner}
             alt="Chat Seat Banner"
-            className="mx-auto rounded-xl shadow-lg max-w-full"
+            className="mx-auto max-w-xs rounded-xl shadow-lg"
           />
         </div>
 
+        
+        <div className="my-10 text-center">
+          <img
+            src={Seat}
+            alt="Chat Seat Banner"
+            className="mx-auto max-w-xs rounded-xl shadow-lg"
+          />
+        </div>
         <p className="mb-2">
           We hope you have the passion and the time to be part of this initiative.
         </p>
 
         <p className="mb-2">Thank you for taking the time to visit our website. We welcome any suggestions.</p>
 
-        <p className="font-semibold mt-6">Warm regards,</p>
-        <p className="font-bold">Tricia and Noel</p>
+        <p className="font-bold mt-6">Warm regards,</p>
+        <p className="font-medium">Tricia and Noel</p>
       </div>
     </>
   );

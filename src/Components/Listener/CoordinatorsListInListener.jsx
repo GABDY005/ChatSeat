@@ -36,7 +36,10 @@ const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     const fetchCoordinators = async () => {
-      const { data, error } = await supabase.from("coordinators").select("*");
+      const { data, error } = await supabase
+      .from("profiles")
+      .select("id, first_name, email, phone_number, place")
+      .eq("role", "coordinator");
       if (!error) setCoordinators(data);
     };
     fetchCoordinators();
@@ -54,18 +57,18 @@ const [userRole, setUserRole] = useState("");
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
         </div>
-        <div className="flex-1 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="flex-1 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-2 auto-rows-min">
           {coordinators.length === 0 ? (
             <p className="text-gray-500">No coordinators available.</p>
           ) : (
             coordinators.map((c) => (
               <div
                 key={c.id}
-                className="bg-white p-4 rounded-xl shadow-md border-t-4 border-blue-400 h-fit max-w-sm"
+                className="bg-white p-3 rounded-xl shadow-md border-t-4 border-blue-400 h-fit"
               >
                 <p className="text-base text-gray-700 mb-1">
                   <span className="text-lg">📌</span>{" "}
-                  <span className="font-semibold">{c.name}</span>
+                  <span className="font-semibold">{c.first_name}</span>
                 </p>
                 <p className="text-sm text-gray-600 mb-1">
                   <span className="text-lg">📍</span> {c.place}
@@ -74,7 +77,7 @@ const [userRole, setUserRole] = useState("");
                   <span className="text-lg">✉️</span> {c.email}
                 </p>
                 <p className="text-sm text-gray-600">
-                  <span className="text-lg">📞</span> {c.phone}
+                  <span className="text-lg">📞</span> {c.phone_number}
                 </p>
               </div>
             ))
