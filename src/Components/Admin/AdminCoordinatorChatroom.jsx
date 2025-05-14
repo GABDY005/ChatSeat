@@ -116,8 +116,8 @@ export default function AdminCoordinatorChatroom() {
           <AdminSidebar userName={firstName} />
         </div>
 
-        <div className="main-content p-6 w-full bg-[#ffe5e5]">
-          <h2 className="text-xl font-bold text-red-800 mb-4">Discussion Forum</h2>
+        <div className="main-content p-6 w-full bg-[#cfffa5]">
+          <h2 className="text-xl font-bold text-green-800 mb-4">Discussion Forum</h2>
 
           <div className="mb-6">
             <input
@@ -153,7 +153,7 @@ export default function AdminCoordinatorChatroom() {
             {filteredThreads.length > 0 ? (
               filteredThreads.reverse().map(([id, thread]) => (
                 <div className="bg-white p-4 rounded shadow" key={id}>
-                  <h4 className="font-bold text-red-700">{thread.title}</h4>
+                  <h4 className="font-bold text-green-700">{thread.title}</h4>
                   <p>{thread.content}</p>
                   <small>
                     Posted by <b>{thread.username}</b> at{" "}
@@ -163,7 +163,7 @@ export default function AdminCoordinatorChatroom() {
                   {canDeleteReply(thread.user_id) && (
                     <button
                       onClick={() => handleDeleteThread(id)}
-                      className="text-red-500 ml-4"
+                      className="text-green-500 ml-4"
                     >
                       Delete
                     </button>
@@ -185,7 +185,7 @@ export default function AdminCoordinatorChatroom() {
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (
                         <div
-                          className="bg-red-100 p-2 rounded text-sm flex justify-between"
+                          className="bg-green-100 p-2 rounded text-sm flex justify-between"
                           key={key}
                         >
                           <div>
@@ -197,7 +197,7 @@ export default function AdminCoordinatorChatroom() {
                           {canDeleteReply(reply.user_id) && (
                             <button
                               onClick={() => handleDeleteReply(id, key)}
-                              className="text-red-500 ml-4"
+                              className="text-green-500 ml-4"
                             >
                               ❌
                             </button>

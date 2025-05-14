@@ -9,6 +9,7 @@ import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { useNavigate } from "react-router-dom";
 
+
 export default function ListenerScheduling() {
   const [locations, setLocations] = useState([]);
   const [location, setLocation] = useState("");
@@ -27,10 +28,9 @@ export default function ListenerScheduling() {
   const [editAvailableTimes, setEditAvailableTimes] = useState([]);
   const [userRole, setUserRole] = useState(""); 
   const [firstName, setFirstName] = useState("User");
-
   const navigate = useNavigate();
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchUser = async () => {
       const {
         data: { user },
@@ -71,6 +71,58 @@ export default function ListenerScheduling() {
 
     fetchUser();
   }, [navigate]);
+
+  useEffect(() => {
+    flatpickr("#date-picker", {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      onChange: (_, dateStr) => setDate(dateStr),
+    });
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (editBookingId !== null) {
+      flatpickr("#edit-date-picker", {
+        dateFormat: "Y-m-d",
+        defaultDate: editValues.date,
+        onChange: (_, dateStr) =>
+          setEditValues((prev) => ({ ...prev, date: dateStr })),
+      });
+    }
+  }, [editBookingId]);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      const { data } = await supabase.from("locations").select("*");
+      setLocations(data || []);
+    };
+    fetchLocations();
+  }, []);
+
+  
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (user && !authError) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("first_name, role")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+          setUserRole(profile.role);
+        }
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const fetchUserBookings = async (uid) => {
     const { data } = await supabase
