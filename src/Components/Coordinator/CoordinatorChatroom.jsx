@@ -132,8 +132,13 @@ export default function CoordinatorChatroom() {
           <CoordinatorSidebar userName={firstName} />
         </div>
 
+<<<<<<< HEAD
         <div className="main-content p-6 w-full bg-emerald-50">
           <h2 className="text-xl font-bold text-[#1E3A8A] mb-4">Discussion Forum</h2>
+=======
+        <div className="main-content p-6 w-full bg-[#cfffa5]">
+          <h2 className="text-xl font-bold text-green-800 mb-4">Discussion Forum</h2>
+>>>>>>> ea43b36166f4099ab56049f714515fb64340b5f0
 
           <div className="mb-6">
             <input
@@ -169,7 +174,11 @@ export default function CoordinatorChatroom() {
             {filteredThreads.length > 0 ? (
               filteredThreads.reverse().map(([id, thread]) => (
                 <div className="bg-white p-4 rounded shadow" key={id}>
+<<<<<<< HEAD
                   <h4 className="font-bold text-black">{thread.title}</h4>
+=======
+                  <h4 className="font-bold text-green-700">{thread.title}</h4>
+>>>>>>> ea43b36166f4099ab56049f714515fb64340b5f0
                   <p>{thread.content}</p>
                   <small>
                     Posted by <b>{thread.username}</b> at{" "}
@@ -179,7 +188,7 @@ export default function CoordinatorChatroom() {
                   {(thread.user_id === userId || role === "admin") && (
                     <button
                       onClick={() => handleDeleteThread(id)}
-                      className="text-red-500 ml-4"
+                      className="text-green-500 ml-4"
                     >
                       Delete
                     </button>
@@ -201,7 +210,11 @@ export default function CoordinatorChatroom() {
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (
                         <div
+<<<<<<< HEAD
                           className="bg-emerald-50 p-2 rounded text-sm flex justify-between"
+=======
+                          className="bg-green-100 p-2 rounded text-sm flex justify-between"
+>>>>>>> ea43b36166f4099ab56049f714515fb64340b5f0
                           key={key}
                         >
                           <div>
@@ -213,7 +226,7 @@ export default function CoordinatorChatroom() {
                           {canDeleteReply(reply.user_id, reply.role) && (
                             <button
                               onClick={() => handleDeleteReply(id, key)}
-                              className="text-red-500 ml-4"
+                              className="text-green-500 ml-4"
                             >
                               ❌
                             </button>
