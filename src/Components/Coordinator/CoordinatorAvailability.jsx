@@ -7,13 +7,6 @@ import CoordinatorNavbar from "./CoordinatorNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import supabase from "../../supabase";
 
-
-// const dummyCalendarData = [
-//   { date: "2025-04-15", time: "09:00", count: 2 },
-//   { date: "2025-04-15", time: "10:00", count: 1 },
-//   { date: "2025-04-16", time: "11:00", count: 0 },
-// ];
-
 export default function CoordinatorAvailability() {
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [firstName, setFirstName] = useState("User");
@@ -133,6 +126,10 @@ export default function CoordinatorAvailability() {
               initialView="timeGridWeek"
               height={550}
               events={calendarEvents}
+              eventDidMount={(info) => {
+                const tooltip = `${info.event.title}\n${info.event.start.toLocaleString()}`;
+                info.el.setAttribute("title", tooltip);
+              }}
             />
           </div>
         </div>

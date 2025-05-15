@@ -132,8 +132,8 @@ export default function CoordinatorChatroom() {
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-        <div className="main-content p-6 w-full bg-[#ffe5e5]">
-          <h2 className="text-xl font-bold text-red-800 mb-4">Discussion Forum</h2>
+        <div className="main-content p-6 w-full bg-emerald-50">
+          <h2 className="text-xl font-bold text-[#1E3A8A] mb-4">Discussion Forum</h2>
 
           <div className="mb-6">
             <input
@@ -169,7 +169,7 @@ export default function CoordinatorChatroom() {
             {filteredThreads.length > 0 ? (
               filteredThreads.reverse().map(([id, thread]) => (
                 <div className="bg-white p-4 rounded shadow" key={id}>
-                  <h4 className="font-bold text-red-700">{thread.title}</h4>
+                  <h4 className="font-bold text-black">{thread.title}</h4>
                   <p>{thread.content}</p>
                   <small>
                     Posted by <b>{thread.username}</b> at{" "}
@@ -201,7 +201,7 @@ export default function CoordinatorChatroom() {
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (
                         <div
-                          className="bg-red-100 p-2 rounded text-sm flex justify-between"
+                          className="bg-emerald-50 p-2 rounded text-sm flex justify-between"
                           key={key}
                         >
                           <div>

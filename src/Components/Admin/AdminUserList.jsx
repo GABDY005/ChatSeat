@@ -116,7 +116,7 @@ export default function AdminUserList() {
                 <th className="p-3">Name</th>
                 <th className="p-3">Email</th>
                 <th className="p-3">Phone</th>
-                <th className="p-3">Place</th>
+                {/* <th className="p-3">Place</th> */}
                 <th className="p-3">Role</th>
                 <th className="p-3 text-center">Actions</th>
               </tr>
@@ -130,7 +130,7 @@ export default function AdminUserList() {
                     </td>
                     <td className="p-3">{user.email}</td>
                     <td className="p-3">{user.phone_number}</td>
-                    <td className="p-3">{user.place}</td>
+                    {/* <td className="p-3">{user.place}</td> */}
                     <td className="p-3 capitalize">{user.role}</td>
                     <td className="p-3 text-center space-x-2">
                       {user.role === "pending" ? (

@@ -11,8 +11,8 @@ export default function Feedback() {
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
+  const [userId, setUserId] = useState("");
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -32,19 +32,19 @@ export default function Feedback() {
         .eq("id", user.id)
         .single();
 
-      if (!profile || profileError) {
+      if (!profile ||
+        profileError ||
+        !["admin", "coordinator"].includes(profile.role)
+      ) {
         navigate("/");
         return;
       }
 
-      if (profile.role !== "admin" && profile.role !== "coordinator") {
-        navigate("/");
-        return;
-      }
 
       setFirstName(profile.first_name);
       setUserRole(profile.role);
       setEmail(profile.email);
+      setUserId(user.id);
     };
 
     fetchUserInfo();
@@ -55,34 +55,22 @@ export default function Feedback() {
     e.preventDefault();
     setLoading(true);
 
-    //It will get the user data from database
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
 
-    //it will check whether the user is log in or not
-    if (!user || authError) {
+
+    if (!userId) {
       alert("You must be logged in to submit feedback.");
       setLoading(false);
       return;
     }
 
-    //To get the details of user from database
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("first_name, email")
-      .eq("id", user.id)
-      .single();
-
     //It will take the inserted feedback to the database
     const { error } = await supabase.from("feedback").insert([
       {
-        user_id: user.id,
+        user_id: userId,
         message: message,
         role: "Coordinator",
-        name: (profile && profile.first_name) || "Unknown",
-        email: (profile && profile.email) || "Unknown",
+        name: firstName || "Unknown",
+        email: email || "Unknown",
       },
     ]);
 
@@ -100,12 +88,12 @@ export default function Feedback() {
 
   return (
     <>
-    {userRole === "admin" ? (
-                <AdminNavbar title="Coordinator Dashboard" />
-              ) : (  <CoordinatorNavbar title="Your Feedback Matters" />
+      {userRole === "admin" ? (
+        <AdminNavbar title="Coordinator Dashboard" />
+      ) : (
+        <CoordinatorNavbar title="Your Feedback Matters" />
+      )}
 
-              )}
-    
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
@@ -113,39 +101,41 @@ export default function Feedback() {
 
         <div className="flex-1 flex items-center justify-center px-4 py-12">
           <div className="w-full max-w-2xl bg-white p-6 sm:p-8 rounded-2xl shadow-lg border-t-4 border-blue-600">
-            <h2 className="text-2xl font-bold text-center text-[#1E3A8A] mb-2">We Value Your Feedback</h2>
+            <h2 className="text-2xl font-bold text-center text-[#1E3A8A] mb-2">
+              We Value Your Feedback
+            </h2>
             <p className="text-center text-gray-600 mb-6">
               Please let us know your thoughts about your experience.
             </p>
 
             {/* <div className="bg-white p-5 rounded-lg shadow-md"> */}
-              <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  <label className="block font-semibold mb-1 text-gray-700">
-                    {" "}
-                    Your Feedback
-                  </label>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label className="block font-semibold mb-1 text-gray-700">
+                  {" "}
+                  Your Feedback
+                </label>
 
-                  <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    rows="6"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  rows="6"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
-                >
-                  {loading ? "Submitting..." : "Submit Feedback"}
-                </button>
-              </form>
-            </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
+              >
+                {loading ? "Submitting..." : "Submit Feedback"}
+              </button>
+            </form>
           </div>
         </div>
+      </div>
       {/* </div> */}
     </>
   );

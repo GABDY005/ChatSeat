@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import flatpickr from "flatpickr";
+import React, { use, useCallback, useEffect, useState } from "react";
+// import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -29,6 +29,18 @@ export default function ListenerScheduling() {
   const [firstName, setFirstName] = useState("User");
 
   const navigate = useNavigate();
+
+  useEffect(() => { 
+    const fetchLocations = async () => {
+      const { data, error } = await supabase.from("locations").select("*");
+      if (error) {
+        console.error("Error fetching locations:", error);
+        return;
+      }
+      setLocations(data);
+    };
+    fetchLocations();
+  }, []);
 
    useEffect(() => {
     const fetchUser = async () => {
@@ -173,26 +185,7 @@ export default function ListenerScheduling() {
     loadAvailableTimes();
   };
 
-  // const fetchCalendarEvents = async (locName) => {
-  //   const { data:bookings , error} = await supabase
-  //     .from("bookings")
-  //     .select("date, time, user_id")
-  //     .eq("location", locName);
-
-  //   const grouped = data?.reduce((acc, cur) => {
-  //     const key = `${cur.date}T${cur.time}`;
-  //     acc[key] = (acc[key] || 0) + 1;
-  //     return acc;
-  //   }, {});
-
-  //   const events = Object.entries(grouped || {}).map(([start, count]) => ({
-  //     title: `${start.slice(11)} (${count}/2)`,
-  //     start,
-  //     allDay: false,
-  //   }));
-
-  //   setCalendarEvents(events);
-  // };
+ 
 
   const fetchCalendarEvents = async (locName) => {
     const { data: bookings, error } = await supabase
@@ -273,7 +266,7 @@ export default function ListenerScheduling() {
      
       <div className="flex flex-col lg:flex-row min-h-screen bg-[#e6f4f9] pt-16">
         <div className="sticky top-16 h-[calc(100vh-64px)] z-10">
-          <ListenerSidebar userName={userName || "Guest"} />
+          <ListenerSidebar userName={firstName} />
         </div>
         <div className="flex-1 p-4 sm:p-6">
           <div className="flex flex-wrap gap-4 mb-6">

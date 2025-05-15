@@ -92,13 +92,13 @@ export default function Home() {
         It will have a banner like the one below, at one of our Chat Seats locations.
         </p>
       
-        <div className="my-8 sm:my-10 text-center">
+        {/* <div className="my-8 sm:my-10 text-center">
           <img
             src={new_banner}
             alt="Chat Seat Banner"
             className="mx-auto w-full max-w-xs sm:max-w-sm rounded-xl shadow-lg"
           />
-        </div>
+        </div> */}
 
         
         <div className="my-8 sm:my-10 text-center">

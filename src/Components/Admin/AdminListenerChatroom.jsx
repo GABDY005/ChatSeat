@@ -117,7 +117,7 @@ export default function AdminListenerChatroom() {
         </div>
 
         <div className="main-content p-6 w-full">
-          <h2 className="text-xl font-bold mb-4">Discussion Forum</h2>
+          <h2 className="text-xl font-bold text-[#1E3A8A] mb-4">Discussion Forum</h2>
 
           <div className="mb-6">
             <input
