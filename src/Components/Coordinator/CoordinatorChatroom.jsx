@@ -17,6 +17,7 @@ export default function CoordinatorChatroom() {
   const [searchQuery, setSearchQuery] = useState("");
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
+  const [replyTexts, setReplyTexts] = useState({});
 
   const navigate = useNavigate();
 
@@ -137,7 +138,7 @@ export default function CoordinatorChatroom() {
       )}
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-        <div className="sticky top-16 h-[calc(100vh-64px)]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar userName={firstName} />
         </div>
 
@@ -146,10 +147,10 @@ export default function CoordinatorChatroom() {
             Discussion Forum
           </h2>
 
-          <div className="main-content p-6 w-full bg-[#cfffa5]">
-            <h2 className="text-xl font-bold text-green-800 mb-4">
+          {/* <div className="main-content p-6 w-full bg-emerald-50"> */}
+            {/* <h2 className="text-xl font-bold text-blue-800 mb-4">
               Discussion Forum
-            </h2>
+            </h2> */}
 
             <div className="mb-6">
               <input
@@ -187,7 +188,7 @@ export default function CoordinatorChatroom() {
                   <div className="bg-white p-4 rounded shadow" key={id}>
                     <h4 className="font-bold text-black">{thread.title}</h4>
 
-                    <h4 className="font-bold text-green-700">{thread.title}</h4>
+                    <h4 className="font-bold text-emerald-50">{thread.title}</h4>
 
                     <p>{thread.content}</p>
                     <small>
@@ -198,13 +199,38 @@ export default function CoordinatorChatroom() {
                     {(thread.user_id === userId || role === "admin") && (
                       <button
                         onClick={() => handleDeleteThread(id)}
-                        className="text-green-500 ml-4"
+                        className="text-red-500 ml-4"
                       >
                         Delete
                       </button>
                     )}
 
+                    <div className="flex items-stretch gap-2 mt-2">
                     <input
+                      type="text"
+                      className="flex-1 px-4 py-2 border rounded text-sm"
+                      placeholder="Write a reply..."
+                      value={replyTexts[id] || ""}
+                      onChange={(e) =>
+                        setReplyTexts((prev) => ({
+                          ...prev,
+                          [id]: e.target.value,
+                        }))
+                      }
+                    />
+
+                    <button
+                      onClick={() => {
+                        handleReply(id, replyTexts[id]);
+                        setReplyTexts((prev) => ({ ...prev, [id]: "" }));
+                      }}
+                      className="bg-[#003366] text-white px-4 rounded text-sm"
+                    >
+                      Post
+                    </button>
+                  </div>
+
+                    {/* <input
                       type="text"
                       className="form-control mt-2 p-2 border rounded w-full"
                       placeholder="Write a reply..."
@@ -214,7 +240,7 @@ export default function CoordinatorChatroom() {
                           e.target.value = "";
                         }
                       }}
-                    />
+                    /> */}
 
                     <div className="mt-3 space-y-2">
                       {thread.replies &&
@@ -233,9 +259,9 @@ export default function CoordinatorChatroom() {
                             {canDeleteReply(reply.user_id, reply.role) && (
                               <button
                                 onClick={() => handleDeleteReply(id, key)}
-                                className="text-green-500 ml-4"
+                                className="text-red-800 ml-4"
                               >
-                                ❌
+                                Delete
                               </button>
                             )}
                           </div>
@@ -251,7 +277,7 @@ export default function CoordinatorChatroom() {
             </div>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 }

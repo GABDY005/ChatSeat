@@ -17,6 +17,7 @@ export default function CoordinatorListenerChatroom() {
   const [searchQuery, setSearchQuery] = useState("");
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
+  const [replyTexts, setReplyTexts] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -184,7 +185,31 @@ export default function CoordinatorListenerChatroom() {
                     </button>
                   )}
 
-                  <input
+                    <div className="flex items-stretch gap-2 mt-2">
+                    <input
+                      type="text"
+                      className="flex-1 px-4 py-2 border rounded text-sm"
+                      placeholder="Write a reply..."
+                      value={replyTexts[id] || ""}
+                      onChange={(e) =>
+                        setReplyTexts((prev) => ({
+                          ...prev,
+                          [id]: e.target.value,
+                        }))
+                      }
+                    />
+
+                    <button
+                      onClick={() => {
+                        handleReply(id, replyTexts[id]);
+                        setReplyTexts((prev) => ({ ...prev, [id]: "" }));
+                      }}
+                      className="bg-[#003366] text-white px-4 rounded text-sm"
+                    >
+                      Post
+                    </button>
+                  </div>
+                  {/* <input
                     type="text"
                     className="form-control mt-2 p-2 border rounded w-full"
                     placeholder="Write a reply..."
@@ -194,7 +219,7 @@ export default function CoordinatorListenerChatroom() {
                         e.target.value = "";
                       }
                     }}
-                  />
+                  /> */}
 
                   <div className="mt-3 space-y-2">
                     {thread.replies &&
@@ -214,7 +239,7 @@ export default function CoordinatorListenerChatroom() {
                               onClick={() => handleDeleteReply(id, key)}
                               className="text-red-500 ml-4"
                             >
-                              ❌
+                              Delete
                             </button>
                           )}
                         </div>

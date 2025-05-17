@@ -57,14 +57,14 @@ export default function CoordinatorsListInListener() {
           <ListenerSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="flex-1 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {coordinators.length === 0 ? (
             <p className="text-gray-500">No coordinators available.</p>
           ) : (
             coordinators.map((coordinator) => (
               <div
                 key={coordinator.id}
-                className="bg-white px-4 py-3 rounded-xl shadow-md border-t-4 border-blue-400 w-full max-w-sm"
+                className="bg-white px-4 py-3 rounded-xl shadow-md border-t-4 border-blue-400 w-full sm:w-[290px] h-[210px]"
               >
                 <p className="text-base text-gray-700 mb-1">
                   <span className="text-lg">📌</span>{" "}

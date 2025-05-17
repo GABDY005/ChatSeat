@@ -15,6 +15,7 @@ export default function AdminListenerChatroom() {
   const [userRole, setUserRole] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [firstName, setFirstName] = useState("User");
+  const [replyTexts, setReplyTexts] = useState({});
 
   const navigate = useNavigate();
 
@@ -116,7 +117,7 @@ export default function AdminListenerChatroom() {
           <AdminSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 p-4 sm:p-6 w-full">
+        <div className="main-content p-6 w-full bg-emerald-50">
           <h2 className="text-xl font-bold text-[#1E3A8A] mb-4">Discussion Forum</h2>
 
           <div className="mb-6">
@@ -168,8 +169,32 @@ export default function AdminListenerChatroom() {
                       Delete
                     </button>
                   )}
+                  <div className="flex items-stretch gap-2 mt-2">
+                    <input
+                      type="text"
+                      className="flex-1 px-4 py-2 border rounded text-sm"
+                      placeholder="Write a reply..."
+                      value={replyTexts[id] || ""}
+                      onChange={(e) =>
+                        setReplyTexts((prev) => ({
+                          ...prev,
+                          [id]: e.target.value,
+                        }))
+                      }
+                    />
 
-                  <input
+                    <button
+                      onClick={() => {
+                        handleReply(id, replyTexts[id]);
+                        setReplyTexts((prev) => ({ ...prev, [id]: "" }));
+                      }}
+                      className="bg-[#003366] text-white px-4 rounded text-sm"
+                    >
+                      Post
+                    </button>
+                  </div>
+
+                  {/* <input
                     type="text"
                     className="form-control mt-2 p-2 border rounded w-full"
                     placeholder="Write a reply..."
@@ -179,7 +204,8 @@ export default function AdminListenerChatroom() {
                         e.target.value = "";
                       }
                     }}
-                  />
+                  /> */}
+
 
                   <div className="mt-3 space-y-2">
                     {thread.replies &&
@@ -199,7 +225,7 @@ export default function AdminListenerChatroom() {
                               onClick={() => handleDeleteReply(id, key)}
                               className="text-red-500 ml-4"
                             >
-                              ❌
+                              Delete
                             </button>
                           )}
                         </div>

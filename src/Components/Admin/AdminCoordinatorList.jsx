@@ -84,10 +84,10 @@ export default function AdminCoordinatorList() {
         </div>
         <div className="flex-1 p-4 sm:p-6 overflow-auto">
           <div className="w-full overflow-x-auto">
-            <table className="min-w-[600px] table-auto border-collapse text-left">
+            <table className="min-w-full table-auto border-collapse text-left">
               <thead className="bg-blue-100">
                 <tr>
-                  <th className="p-2 border">
+                  <th className="p-2 border w-[20%]">
                     <input
                       type="text"
                       name="name"
@@ -98,7 +98,7 @@ export default function AdminCoordinatorList() {
                       required
                     />
                   </th>
-                  <th className="p-2 border">
+                  <th className="p-2 border w-[25%]">
                     <input
                       type="email"
                       name="email"
@@ -109,7 +109,7 @@ export default function AdminCoordinatorList() {
                       required
                     />
                   </th>
-                  <th className="p-2 border">
+                  <th className="p-2 border w-[20%]">
                     <input
                       type="text"
                       name="phone"
@@ -119,7 +119,7 @@ export default function AdminCoordinatorList() {
                       className="border p-1 rounded w-full font-medium"
                     />
                   </th>
-                  <th className="p-2 border">
+                  <th className="p-2 border w-[25%]">
                     <input
                       type="text"
                       name="place"
@@ -129,7 +129,7 @@ export default function AdminCoordinatorList() {
                       className="border p-1 rounded w-full font-medium"
                     />
                   </th>
-                  <th className="p-2 border">
+                  <th className="p-2 border w-[10%]">
                     <button
                       onClick={handleAdd}
                       className="bg-blue-600 text-white px-3 py-1 rounded"
@@ -138,8 +138,9 @@ export default function AdminCoordinatorList() {
                     </button>
                   </th>
                 </tr>
+                 <tr><td colSpan="5" className="h-2"></td></tr> 
               </thead>
-              <tbody>
+              <tbody className="align-top">
                 {coordinators.length === 0 ? (
                   <tr>
                     <td colSpan="5" className="text-center text-gray-500 p-4">

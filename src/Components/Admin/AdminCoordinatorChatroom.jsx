@@ -15,6 +15,7 @@ export default function AdminCoordinatorChatroom() {
   const [userRole, setUserRole] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [firstName, setFirstName] = useState("User");
+  const [replyTexts, setReplyTexts] = useState({});
 
   const navigate = useNavigate();
 
@@ -80,7 +81,9 @@ export default function AdminCoordinatorChatroom() {
   const handleReply = (threadID, replyText) => {
     if (!replyText) return;
 
-    const newReply = push(ref(database, `coordinator_threads/${threadID}/replies`));
+    const newReply = push(
+      ref(database, `coordinator_threads/${threadID}/replies`)
+    );
     set(newReply, {
       text: replyText,
       username,
@@ -96,7 +99,10 @@ export default function AdminCoordinatorChatroom() {
   };
 
   const handleDeleteReply = (threadId, replyKey) => {
-    const replyRef = ref(database, `coordinator_threads/${threadId}/replies/${replyKey}`);
+    const replyRef = ref(
+      database,
+      `coordinator_threads/${threadId}/replies/${replyKey}`
+    );
     remove(replyRef);
   };
 
@@ -116,13 +122,13 @@ export default function AdminCoordinatorChatroom() {
           <AdminSidebar userName={firstName} />
         </div>
 
+        <div className="flex-1 p-4 sm:p-6 w-full bg-emerald-50">
+          <h2 className="text-lg sm:text-xl font-bold text-blue-900 mb-4">
+            Discussion Forum
+          </h2>
 
-        <div className="flex-1 p-4 sm:p-6 w-full bg-[#cfffa5]">
-          <h2 className="text-lg sm:text-xl font-bold text-green-800 mb-4">Discussion Forum</h2>
-
-        {/* <div className="main-content p-6 w-full bg-[#cfffa5]">
+          {/* <div className="main-content p-6 w-full bg-[#cfffa5]">
           <h2 className="text-xl font-bold text-green-800 mb-4">Discussion Forum</h2> */}
-
 
           <div className="mb-6">
             <input
@@ -157,11 +163,13 @@ export default function AdminCoordinatorChatroom() {
           <div className="space-y-4">
             {filteredThreads.length > 0 ? (
               filteredThreads.reverse().map(([id, thread]) => (
-                <div className="bg-white p-4 rounded shadow w-full break-words" key={id}>
-
+                <div
+                  className="bg-white p-4 rounded shadow w-full break-words"
+                  key={id}
+                >
                   <h4 className="font-bold text-black">{thread.title}</h4>
 
-                  <h4 className="font-bold text-green-700">{thread.title}</h4>
+                  {/* <h4 className="font-bold text-green-700">{thread.title}</h4> */}
 
                   <p>{thread.content}</p>
                   <small>
@@ -172,13 +180,37 @@ export default function AdminCoordinatorChatroom() {
                   {canDeleteReply(thread.user_id) && (
                     <button
                       onClick={() => handleDeleteThread(id)}
-                      className="text-green-500 ml-4"
+                      className="text-red-700 ml-4"
                     >
                       Delete
                     </button>
                   )}
 
-                  <input
+                  <div className="flex items-stretch gap-2 mt-2">
+                    <input
+                      type="text"
+                      className="flex-1 px-4 py-2 border rounded text-sm"
+                      placeholder="Write a reply..."
+                      value={replyTexts[id] || ""}
+                      onChange={(e) =>
+                        setReplyTexts((prev) => ({
+                          ...prev,
+                          [id]: e.target.value,
+                        }))
+                      }
+                    />
+
+                    <button
+                      onClick={() => {
+                        handleReply(id, replyTexts[id]);
+                        setReplyTexts((prev) => ({ ...prev, [id]: "" }));
+                      }}
+                      className="bg-[#003366] text-white px-4 rounded text-sm"
+                    >
+                      Post
+                    </button>
+                  </div>
+                  {/* <input
                     type="text"
                     className="form-control mt-2 p-2 border rounded w-full"
                     placeholder="Write a reply..."
@@ -188,17 +220,13 @@ export default function AdminCoordinatorChatroom() {
                         e.target.value = "";
                       }
                     }}
-                  />
+                  /> */}
 
                   <div className="mt-3 space-y-2">
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (
                         <div
-
                           className="bg-emerald-50 p-2 rounded text-sm flex flex-col sm:flex-row justify-between w-full break-words"
-
-                         
-
                           key={key}
                         >
                           <div>
@@ -210,12 +238,9 @@ export default function AdminCoordinatorChatroom() {
                           {canDeleteReply(reply.user_id) && (
                             <button
                               onClick={() => handleDeleteReply(id, key)}
-
-                              className="text-black ml-4"
-
-                              
+                              className="ml-4 text-red-700"
                             >
-                              ❌
+                             Delete
                             </button>
                           )}
                         </div>
@@ -231,7 +256,6 @@ export default function AdminCoordinatorChatroom() {
           </div>
         </div>
       </div>
-      
     </>
- );
+  );
 }

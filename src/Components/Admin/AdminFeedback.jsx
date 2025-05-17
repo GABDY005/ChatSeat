@@ -86,7 +86,7 @@ export default function Feedback() {
       item.name.toLowerCase().includes(searchName.toLowerCase())
     )
     .filter((item) =>
-      !searchRole ? true : item.role?.toLowerCase() === searchRole
+      searchRole === "" || searchRole === "all" ? true : item.role?.toLowerCase() === searchRole
     )
     .filter((item) =>
       !searchDate ? true : formatDate(item.created_at) === searchDate
@@ -109,7 +109,7 @@ export default function Feedback() {
         <AdminSidebar userName={firstName} />
 
         <div className="flex-1 px-4 sm:px-6 md:px-8 py-6 sm:py-10">
-          <div className="mb-6 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4">
+          <div className="mb-6 flex flex-wrap items-center gap-4">
             <input
               type="text"
               placeholder="Search by Name.."
@@ -123,9 +123,10 @@ export default function Feedback() {
               onChange={(e) => setSearchRole(e.target.value)}
               className="px-3 py-1.5 border border-gray-300 rounded-md w-64 focus:outline-none focus:ring-2 text-sm shadow-sm"
             >
-              <option value="" disabled hidden>Search by Role...</option>
+              <option value="" disabled selected hidden>Search by Role...</option>
               <option value="coordinator">Coordinator</option>
               <option value="listener">Listener</option>
+              <option value="all">All Users</option>
             </select>
 
             <input
@@ -139,7 +140,21 @@ export default function Feedback() {
               onChange={(e) => setSearchDate(e.target.value)}
               className="px-3 py-1.5 border border-gray-300 rounded-md w-64 focus:outline-none focus:ring-2 text-sm shadow-sm"
             />
+
+            <button type="button" onClick={() => {
+            setSearchName("");
+            setSearchRole("");
+            setSearchDate("");
+            setCurrentPage(1);
+          }}
+          className="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 rounded-md text-sm font-medium text-gray-700">
+
+            Clear All
+
+          </button>
           </div>
+
+          
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentItems.map((item) => (
