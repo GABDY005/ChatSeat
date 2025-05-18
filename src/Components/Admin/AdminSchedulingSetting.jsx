@@ -15,6 +15,7 @@ export default function AdminSchedulingSetting() {
   const [existingTimes, setExistingTimes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("User");
+  const [dropdownOpenId, setDropdownOpenId] = useState(null);
   const navigate = useNavigate();
 
   const timeslots = [
@@ -67,20 +68,20 @@ export default function AdminSchedulingSetting() {
     });
   }, []);
 
-  useEffect(() => {
-    const loadAvailability = async () => {
-      if (!selectedLocationId || !selectedDate) {
-        setExistingTimes([]);
-        return;
-      }
-      const { data } = await supabase
-        .from("availability")
-        .select("id, time")
-        .eq("location_id", selectedLocationId)
-        .eq("date", selectedDate);
-      setExistingTimes(data || []);
-    };
+  const loadAvailability = async () => {
+    if (!selectedLocationId || !selectedDate) {
+      setExistingTimes([]);
+      return;
+    }
+    const { data } = await supabase
+      .from("availability")
+      .select("id, time")
+      .eq("location_id", selectedLocationId)
+      .eq("date", selectedDate);
+    setExistingTimes(data || []);
+  };
 
+  useEffect(() => {
     loadAvailability();
   }, [selectedLocationId, selectedDate]);
 
@@ -95,12 +96,11 @@ export default function AdminSchedulingSetting() {
 
     const newLocationId = inserted.id;
     const now = new Date();
-    const availabilityRows = [];
+    const end = new Date(now.getFullYear(), 5, 30); 
 
-    for (let i = 0; i < 90; i++) {
-      const date = new Date(now);
-      date.setDate(date.getDate() + i);
-      const dateStr = date.toISOString().split("T")[0];
+    const availabilityRows = [];
+    while (now <= end) {
+      const dateStr = now.toISOString().split("T")[0];
       timeslots.forEach((time) => {
         availabilityRows.push({
           location_id: newLocationId,
@@ -108,10 +108,11 @@ export default function AdminSchedulingSetting() {
           time,
         });
       });
+      now.setDate(now.getDate() + 1);
     }
 
     await supabase.from("availability").insert(availabilityRows);
-    alert("Location and 3 months availability added!");
+    alert("Location and availability added!");
     setNewLocation("");
     const { data } = await supabase.from("locations").select("*");
     setLocations(data || []);
@@ -123,6 +124,73 @@ export default function AdminSchedulingSetting() {
     const { data } = await supabase.from("locations").select("*");
     setLocations(data || []);
   };
+
+  const handleBatchAvailability = async (locId, days, action) => {
+  const { data } = await supabase
+    .from("availability")
+    .select("date")
+    .eq("location_id", locId);
+
+  if (!data || data.length === 0) return;
+
+  const uniqueDates = [...new Set(data.map(d => d.date))];
+  const maxDateStr = uniqueDates.reduce((latest, current) =>
+    new Date(current) > new Date(latest) ? current : latest
+  );
+  const maxDate = new Date(maxDateStr);
+  const targetDates = [];
+
+  for (let i = 1; i <= days; i++) {
+    const d = new Date(maxDate);
+    d.setDate(d.getDate() + i);
+    targetDates.push(d.toISOString().split("T")[0]);
+  }
+
+  if (action === "add") {
+    const { data: existing } = await supabase
+      .from("availability")
+      .select("date, time")
+      .eq("location_id", locId)
+      .in("date", targetDates);
+
+    const existingKeys = new Set((existing || []).map(e => `${e.date}-${e.time}`));
+
+    const newRows = [];
+    targetDates.forEach(date => {
+      timeslots.forEach(time => {
+        const key = `${date}-${time}`;
+        if (!existingKeys.has(key)) {
+          newRows.push({ location_id: locId, date, time });
+        }
+      });
+    });
+
+    if (newRows.length > 0) {
+      await supabase.from("availability").insert(newRows);
+    }
+
+    alert(`Added ${newRows.length} time slots starting from ${maxDateStr}`);
+  }
+
+  if (action === "remove") {
+    const deleteDates = [];
+    for (let i = 0; i < days; i++) {
+      const d = new Date(maxDate);
+      d.setDate(d.getDate() - i);
+      deleteDates.push(d.toISOString().split("T")[0]);
+    }
+
+    await supabase
+      .from("availability")
+      .delete()
+      .in("date", deleteDates)
+      .eq("location_id", locId);
+
+    alert(`Removed ${days} days of availability from ${maxDateStr} backward`);
+  }
+
+  loadAvailability();
+};
 
   const toggleTime = (time) => {
     setSelectedTimes(prev =>
@@ -149,11 +217,12 @@ export default function AdminSchedulingSetting() {
     alert("Availability saved!");
     setSelectedTimes([]);
     setLoading(false);
+    loadAvailability();
   };
 
   const handleDeleteTime = async (id) => {
     await supabase.from("availability").delete().eq("id", id);
-    setExistingTimes((prev) => prev.filter((t) => t.id !== id));
+    loadAvailability();
   };
 
   return (
@@ -188,14 +257,50 @@ export default function AdminSchedulingSetting() {
             </div>
             <ul className="space-y-2">
               {locations.map(loc => (
-                <li key={loc.id} className="flex justify-between items-center border p-2 rounded">
-                  <span>{loc.name}</span>
-                  <button
-                    onClick={() => handleDeleteLocation(loc.id)}
-                    className="text-red-600"
-                  >
-                    Delete
-                  </button>
+                <li key={loc.id} className="relative border p-2 rounded">
+                  <div className="flex justify-between items-center">
+                    <span>{loc.name}</span>
+                    <button
+                      onClick={() => setDropdownOpenId(dropdownOpenId === loc.id ? null : loc.id)}
+                      className="text-blue-600 underline"
+                    >
+                      Actions ▾
+                    </button>
+                  </div>
+                  {dropdownOpenId === loc.id && (
+                    <div className="absolute right-0 bg-white shadow-lg border rounded mt-2 w-64 z-10">
+                      <button
+                        onClick={() => handleDeleteLocation(loc.id)}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100"
+                      >
+                        ❌ Delete Location
+                      </button>
+                      <button
+                        onClick={() => handleBatchAvailability(loc.id, 7, "add")}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100"
+                      >
+                        ➕ Open +7 Days
+                      </button>
+                      <button
+                        onClick={() => handleBatchAvailability(loc.id, 30, "add")}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100"
+                      >
+                        ➕ Open +30 Days
+                      </button>
+                      <button
+                        onClick={() => handleBatchAvailability(loc.id, 7, "remove")}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100"
+                      >
+                        🚫 Close Last 7 Days
+                      </button>
+                      <button
+                        onClick={() => handleBatchAvailability(loc.id, 30, "remove")}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100"
+                      >
+                        🚫 Close Last 30 Days
+                      </button>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
