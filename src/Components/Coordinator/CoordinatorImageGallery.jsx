@@ -13,43 +13,47 @@ export default function CoordinatorImageGallery() {
   const [firstName, setFirstName] = useState("User");
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
+
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
+
+  //     if (!profile || profileError) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+
+  //     if (profile.role !== "admin" && profile.role !== "coordinator") {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     fetchImages();
+  //   };
+
+  //   fetchUserInfo();
+  // }, [navigate]);
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
-
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
-
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile || profileError) {
-        navigate("/");
-        return;
-      }
-
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-
-      if (profile.role !== "admin" && profile.role !== "coordinator") {
-        navigate("/");
-        return;
-      }
-
-      fetchImages();
-    };
-
-    fetchUserInfo();
-  }, [navigate]);
-
+    sessionStorage.getItem("userRole") === "admin"
+      ? setUserRole("admin")
+      : setUserRole("coordinator");
+  }, []);
   const fetchImages = async () => {
     const { data, error } = await supabase.storage
       .from("coordinator-images")

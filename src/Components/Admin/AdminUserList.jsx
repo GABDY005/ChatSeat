@@ -16,38 +16,39 @@ export default function AdminUserList() {
   const [firstName, setFirstName] = useState("User");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUserName = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // useEffect(() => {
+  //   const fetchUserName = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
 
-      if (profileError || !profile || profile.role !== "admin") {
-        navigate("/");
-        return;
-      }
+  //     if (profileError || !profile || profile.role !== "admin") {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      setFirstName(profile.first_name);
-    };
+  //     setFirstName(profile.first_name);
+  //   };
 
-    fetchUserName();
-    getUsers();
-  }, [navigate]);
+  //   fetchUserName();
+  //   getUsers();
+  // }, [navigate]);
 
 
   //it will fetch the users from database
+  
   const getUsers = async () => {
     try {
       const data = await fetchAllUsers();

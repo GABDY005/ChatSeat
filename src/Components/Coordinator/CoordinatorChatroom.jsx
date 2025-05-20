@@ -22,44 +22,48 @@ export default function CoordinatorChatroom() {
 
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
+
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
+
+  //     if (!profile || profileError) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     if (profile.role !== "coordinator" && profile.role !== "admin") {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     setUserId(user.id);
+  //     setUsername(profile.first_name);
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+  //     setRole(profile.role);
+  //   };
+
+  //   fetchUser();
+  // }, [navigate]);
   useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
-
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
-
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile || profileError) {
-        navigate("/");
-        return;
-      }
-
-      if (profile.role !== "coordinator" && profile.role !== "admin") {
-        navigate("/");
-        return;
-      }
-
-      setUserId(user.id);
-      setUsername(profile.first_name);
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-      setRole(profile.role);
-    };
-
-    fetchUser();
-  }, [navigate]);
-
+    sessionStorage.getItem("userRole") === "admin"
+      ? setUserRole("admin")
+      : setUserRole("coordinator");
+  }, []);
   useEffect(() => {
     const threadsRef = ref(database, "coordinator_threads");
     onValue(threadsRef, (snapshot) => {
@@ -189,7 +193,7 @@ export default function CoordinatorChatroom() {
                   <div className="bg-white p-4 rounded shadow" key={id}>
                     <h4 className="font-bold text-black">{thread.title}</h4>
 
-                    <h4 className="font-bold text-emerald-50">{thread.title}</h4>
+                    {/* <h4 className="font-bold text-emerald-50">{thread.title}</h4> */}
 
                     <p>{thread.content}</p>
                     <small>

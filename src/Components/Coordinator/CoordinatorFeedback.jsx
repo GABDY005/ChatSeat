@@ -15,43 +15,48 @@ export default function Feedback() {
   const [userId, setUserId] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role, email")
-        .eq("id", user.id)
-        .single();
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role, email")
+  //       .eq("id", user.id)
+  //       .single();
 
-      if (!profile ||
-        profileError ||
-        !["admin", "coordinator"].includes(profile.role)
-      ) {
-        navigate("/");
-        return;
-      }
+  //     if (!profile ||
+  //       profileError ||
+  //       !["admin", "coordinator"].includes(profile.role)
+  //     ) {
+  //       navigate("/");
+  //       return;
+  //     }
 
 
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-      setEmail(profile.email);
-      setUserId(user.id);
-    };
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+  //     setEmail(profile.email);
+  //     setUserId(user.id);
+  //   };
 
-    fetchUserInfo();
-  }, [navigate]);
+  //   fetchUserInfo();
+  // }, [navigate]);
 
   //To prevent the page from reloading when the feedback is submitted
+    useEffect(() => {
+      sessionStorage.getItem("userRole") === "admin"
+        ? setUserRole("admin")
+        : setUserRole("coordinator");
+    }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

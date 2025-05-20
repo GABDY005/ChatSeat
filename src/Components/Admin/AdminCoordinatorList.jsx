@@ -14,29 +14,29 @@ export default function AdminCoordinatorList() {
   });
   const [coordinators, setCoordinators] = useState([]);
 
-  useEffect(() => {
-    const fetchUserName = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // useEffect(() => {
+  //   const fetchUserName = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("coordinators")
-          .select("first_name")
-          .eq("id", user.id)
-          .single();
+  //     if (user && !authError) {
+  //       const { data: profile, error: profileError } = await supabase
+  //         .from("coordinators")
+  //         .select("first_name")
+  //         .eq("id", user.id)
+  //         .single();
 
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-        }
-      }
-    };
+  //       if (profile?.first_name) {
+  //         setFirstName(profile.first_name);
+  //       }
+  //     }
+  //   };
 
-    fetchUserName();
-    fetchCoordinators();
-  }, []);
+  //   fetchUserName();
+  //   fetchCoordinators();
+  // }, []);
 
   const handleChange = (e) => {
     setFormData({

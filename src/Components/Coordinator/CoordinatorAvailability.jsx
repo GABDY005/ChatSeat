@@ -13,32 +13,36 @@ export default function CoordinatorAvailability() {
   const [userRole, setUserRole] = useState("");
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     const { data: { user }, error } = await supabase.auth.getUser();
+  //     if (!user || error) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
+
+  //     if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+  //   };
+
+  //   fetchUserInfo();
+  // }, [navigate]);
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (!user || error) {
-        navigate("/");
-        return;
-      }
-
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
-        navigate("/");
-        return;
-      }
-
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-    };
-
-    fetchUserInfo();
-  }, [navigate]);
-
+    sessionStorage.getItem("userRole") === "admin"
+      ? setUserRole("admin")
+      : setUserRole("coordinator");
+  }, []);
   useEffect(() => {
     const fetchCalendarEvents = async () => {
       const { data: bookings, error } = await supabase

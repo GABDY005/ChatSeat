@@ -21,44 +21,48 @@ export default function CoordinatorListenerChatroom() {
   const [replyTexts, setReplyTexts] = useState({});
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const verifyUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
+
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
+
+  //     if (!profile || profileError) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     if (profile.role !== "coordinator" && profile.role !== "admin") {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     setUserId(user.id);
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+  //     setUsername(profile.first_name);
+  //     setRole(profile.role);
+  //   };
+
+  //   verifyUser();
+  // }, [navigate]);
   useEffect(() => {
-    const verifyUser = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
-
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
-
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile || profileError) {
-        navigate("/");
-        return;
-      }
-
-      if (profile.role !== "coordinator" && profile.role !== "admin") {
-        navigate("/");
-        return;
-      }
-
-      setUserId(user.id);
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-      setUsername(profile.first_name);
-      setRole(profile.role);
-    };
-
-    verifyUser();
-  }, [navigate]);
-
+    sessionStorage.getItem("userRole") === "admin"
+      ? setUserRole("admin")
+      : setUserRole("coordinator");
+  }, []);
   useEffect(() => {
     const threadsRef = ref(database, "threads");
     onValue(threadsRef, (snapshot) => {

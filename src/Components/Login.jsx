@@ -1,41 +1,67 @@
-  import React, { useState } from "react";
-  import { useNavigate } from "react-router-dom";
-  import { loginUser } from "../Controller/UserController";
-  import {toast} from "react-toastify";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import  supabase  from "../supabase";
 
-  export default function LoginPage() {
-    const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
+export default function LoginPage() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    // Function will run when the login button is clicked
-    // It will call the loginUser function from UserController and navigate to the dashboard based on the role approved by admin
-      const handleLogin = async (e) => {
-      e.preventDefault();
+  // Function will run when the login button is clicked
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-      try {
-        const { role } = await loginUser({ email, password });
+    try {
+      // Sign in with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-        toast.success("Login successful!");
+      if (authError) throw authError;
 
-        if (role === "admin") {
-          navigate("/AdminDashboard");
-        } else if (role === "listener") {
-          navigate("/ListenerDashboard");
-        } else if (role === "coordinator") {
-          navigate("/CoordinatorDashboard");
-        } else if (role === "pending") {
-          navigate("/PendingApproval");
-        } else {
-          toast("Unknown role. Please contact admin.");
-        }
-      } catch (err) {
-        toast("Login failed: " + err.message);
+      // Get user profile including role
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', authData.user.id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      const role = profileData.role;
+      console.log("User role:", role);
+
+      // Store user session info for protected routes
+      sessionStorage.setItem('userRole', role);
+      
+      toast.success("Login successful!");
+
+      // Navigate based on role (keeping your existing navigation logic)
+      if (role === "admin") {
+        navigate("/AdminDashboard");
+      } else if (role === "listener") {
+        navigate("/ListenerDashboard");
+      } else if (role === "coordinator") {
+        navigate("/CoordinatorDashboard");
+      } else if (role === "pending") {
+        navigate("/PendingApproval");
+      } else {
+        toast.warning("Unknown role. Please contact admin.");
       }
-    };
+    } catch (err) {
+      console.error("Login error:", err);
+      toast.error("Login failed: " + (err.message || "Unknown error"));
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
+  return (
     <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4 sm:px-6">
       <div className="bg-white px-6 py-8 sm:p-10 shadow-lg w-full max-w-sm rounded-lg">
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#003366] mb-6 sm:mb-8">
@@ -79,9 +105,12 @@
 
           <button
             type="submit"
-            className="w-full bg-[#003366] hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300"
+            disabled={loading}
+            className={`w-full bg-[#003366] hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300 ${
+              loading ? "opacity-70 cursor-not-allowed" : ""
+            }`}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
 
           <div className="flex justify-between mt-6 text-sm text-[#003366] font-semibold">

@@ -9,41 +9,41 @@ export default function Feedback() {
   const [feedback, setFeedback] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [searchName, setSearchName] = useState("");
-  const [searchRole, setSearchRole] = useState("");
+  const [searchRole, setSearchRole] = useState("All Users");
   const [searchDate, setSearchDate] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(9);
   const [showMore, setShowMore] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUserName = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // useEffect(() => {
+  //   const fetchUserName = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
 
-      if (profileError || !profile || profile.role !== "admin") {
-        navigate("/");
-        return;
-      }
+  //     if (profileError || !profile || profile.role !== "admin") {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      setFirstName(profile.first_name);
-    };
+  //     setFirstName(profile.first_name);
+  //   };
 
-    fetchUserName();
-  }, [navigate]);
+  //   fetchUserName();
+  // }, [navigate]);
 
   useEffect(() => {
     const fetchFeedback = async () => {
@@ -86,7 +86,7 @@ export default function Feedback() {
       item.name.toLowerCase().includes(searchName.toLowerCase())
     )
     .filter((item) =>
-      searchRole === "" || searchRole === "all" ? true : item.role?.toLowerCase() === searchRole
+      searchRole === "" || searchRole === "All Users" ? true : item.role?.toLowerCase() === searchRole
     )
     .filter((item) =>
       !searchDate ? true : formatDate(item.created_at) === searchDate
@@ -124,9 +124,10 @@ export default function Feedback() {
               className="px-3 py-1.5 border border-gray-300 rounded-md w-64 focus:outline-none focus:ring-2 text-sm shadow-sm"
             >
               <option value="" disabled selected hidden>Search by Role...</option>
+              <option value="All Users">All Users</option>
               <option value="coordinator">Coordinator</option>
               <option value="listener">Listener</option>
-              <option value="all">All Users</option>
+              
             </select>
 
             <input
@@ -161,7 +162,7 @@ export default function Feedback() {
               <div
                 key={item.id}
                 className={`self-start bg-white shadow-md rounded-xl p-6 border-t-4 ${
-                  item.role === "coordinator" ? "border-green-500" : "border-blue-500"
+                  item.role === "Coordinator" ? "border-green-500" : "border-blue-500"
                 } hover:shadow-lg hover:scale-105 transition-transform duration-300`}
               >
                 <button

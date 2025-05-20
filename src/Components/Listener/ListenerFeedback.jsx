@@ -66,46 +66,50 @@ export default function Feedback() {
   //it will get the user data from database
   
   
-  useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
 
-      if (!profile || profileError) {
-        navigate("/");
-        return;
-      }
+  //     if (!profile || profileError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
       
-      if (
-        profile.role !== "listener" &&
-        profile.role !== "coordinator" &&
-        profile.role !== "admin"
-      ) {
-        navigate("/");
-        return;
-      }
+  //     if (
+  //       profile.role !== "listener" &&
+  //       profile.role !== "coordinator" &&
+  //       profile.role !== "admin"
+  //     ) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-    };
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+  //   };
 
-    fetchUser();
-  }, [navigate]);
-
+  //   fetchUser();
+  // }, [navigate]);
+  useEffect(() => {
+    sessionStorage.getItem("userRole") === "admin"
+      ? setUserRole("admin")
+      : setUserRole("listener");
+  }, []);
   return (
     <>
     {userRole === "admin" ? (

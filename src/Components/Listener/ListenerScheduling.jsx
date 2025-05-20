@@ -46,49 +46,53 @@ export default function ListenerScheduling() {
 
   
 
+  // useEffect(() => {
+
+  //   const fetchUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
+
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
+
+  //     if (!profile || profileError) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     if (
+  //       profile.role !== "listener" &&
+  //       profile.role !== "coordinator" &&
+  //       profile.role !== "admin"
+  //     ) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+  //     setUserId(user.id);
+  //     setUserName(profile.first_name);
+  //     fetchUserBookings(user.id);
+  //   };
+
+  //   fetchUser();
+  // }, [navigate]);
   useEffect(() => {
-
-    const fetchUser = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
-
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
-
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile || profileError) {
-        navigate("/");
-        return;
-      }
-
-      if (
-        profile.role !== "listener" &&
-        profile.role !== "coordinator" &&
-        profile.role !== "admin"
-      ) {
-        navigate("/");
-        return;
-      }
-
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-      setUserId(user.id);
-      setUserName(profile.first_name);
-      fetchUserBookings(user.id);
-    };
-
-    fetchUser();
-  }, [navigate]);
-
+    sessionStorage.getItem("userRole") === "admin"
+      ? setUserRole("admin")
+      : setUserRole("listener");
+  }, []);
   useEffect(() => {
     flatpickr("#date-picker", {
       dateFormat: "Y-m-d",

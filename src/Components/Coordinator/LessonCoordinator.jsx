@@ -14,46 +14,50 @@ function LessonCoordinator() {
   const [role, setRole] = useState("");
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const verifyUser = async () => {
+  //     const { data: { user }, error } = await supabase.auth.getUser();
+  //     if (error || !user) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     setUserId(user.id);
+
+  //     const isCoordinator = await checkUserRole("coordinator");
+  //     const isAdmin = await checkUserRole("admin");
+
+  //     if (!isCoordinator && !isAdmin) {
+  //       toast.error("Access denied. Coordinators and Admins only.");
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     setRole(isAdmin ? "admin" : "coordinator");
+
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
+
+  //     if (profileError || !profile) {
+  //       toast.error("Failed to load user profile.");
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+  //   };
+
+  //   verifyUser();
+  // }, [navigate]);
   useEffect(() => {
-    const verifyUser = async () => {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (error || !user) {
-        navigate("/");
-        return;
-      }
-
-      setUserId(user.id);
-
-      const isCoordinator = await checkUserRole("coordinator");
-      const isAdmin = await checkUserRole("admin");
-
-      if (!isCoordinator && !isAdmin) {
-        toast.error("Access denied. Coordinators and Admins only.");
-        navigate("/");
-        return;
-      }
-
-      setRole(isAdmin ? "admin" : "coordinator");
-
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
-
-      if (profileError || !profile) {
-        toast.error("Failed to load user profile.");
-        navigate("/");
-        return;
-      }
-
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-    };
-
-    verifyUser();
-  }, [navigate]);
-
+    sessionStorage.getItem("userRole") === "admin"
+      ? setUserRole("admin")
+      : setUserRole("coordinator");
+  }, []);
   return (
     <>
       {userRole === "admin" ? (

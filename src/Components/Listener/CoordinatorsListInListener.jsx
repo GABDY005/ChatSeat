@@ -11,30 +11,34 @@ export default function CoordinatorsListInListener() {
   const [userRole, setUserRole] = useState("");
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
+
+  //     if (user && !authError) {
+  //       const { data: profile } = await supabase
+  //         .from("profiles")
+  //         .select("first_name, role")
+  //         .eq("id", user.id)
+  //         .single();
+
+  //       if (profile?.first_name) {
+  //         setFirstName(profile.first_name);
+  //         setUserRole(profile.role);
+  //       }
+  //     }
+  //   };
+
+  //   fetchUser();
+  // }, []);
   useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
-
-      if (user && !authError) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
-      }
-    };
-
-    fetchUser();
+    sessionStorage.getItem("userRole") === "admin"
+      ? setUserRole("admin")
+      : setUserRole("listener");
   }, []);
-
   useEffect(() => {
     const fetchCoordinators = async () => {
       const { data, error } = await supabase.from("coordinators").select("*");

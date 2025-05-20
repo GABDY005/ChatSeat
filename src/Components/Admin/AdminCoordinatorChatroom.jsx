@@ -20,37 +20,37 @@ export default function AdminCoordinatorChatroom() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const verifyUser = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // useEffect(() => {
+  //   const verifyUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
 
-      if (!profile || profileError || profile.role !== "admin") {
-        navigate("/");
-        return;
-      }
+  //     if (!profile || profileError || profile.role !== "admin") {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      setUserId(user.id);
-      setUsername(profile.first_name);
-      setFirstName(profile.first_name);
-      setUserRole("admin");
-    };
+  //     setUserId(user.id);
+  //     setUsername(profile.first_name);
+  //     setFirstName(profile.first_name);
+  //     setUserRole("admin");
+  //   };
 
-    verifyUser();
-  }, [navigate]);
+  //   verifyUser();
+  // }, [navigate]);
 
   useEffect(() => {
     const threadsRef = ref(database, "coordinator_threads");

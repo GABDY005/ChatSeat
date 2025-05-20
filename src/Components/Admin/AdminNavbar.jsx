@@ -15,31 +15,34 @@ export default function AdminNavbar({title="Admin Dashboard"}) {
     window.location.reload();
   };
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", user.id)
-          .single();
+  // useEffect(() => {
+  //   const fetchUserRole = async () => {
+  //     const { data: { user } } = await supabase.auth.getUser();
+  //     if (user) {
+  //       const { data: profile } = await supabase
+  //         .from("profiles")
+  //         .select("role")
+  //         .eq("id", user.id)
+  //         .single();
 
-          if (profile?.role) {
-        setUserRole(profile.role);
-      }
-    }
+  //         if (profile?.role) {
+  //       setUserRole(profile.role);
+  //     }
+  //   }
     
 
-    const isListenerDashboard = location.pathname.includes("ListenerDashboard");
-    const isCoordinatorDashboard = location.pathname.includes("CoordinatorDashboard");
-    const isAdminDashboard = location.pathname.includes("AdminDashboard");
+  //   const isListenerDashboard = location.pathname.includes("ListenerDashboard");
+  //   const isCoordinatorDashboard = location.pathname.includes("CoordinatorDashboard");
+  //   const isAdminDashboard = location.pathname.includes("AdminDashboard");
 
-     setSwitchDashboard(isListenerDashboard || isCoordinatorDashboard || isAdminDashboard);
-  };
-  fetchUserRole();
-    }, [location]);
-
+  //    setSwitchDashboard(isListenerDashboard || isCoordinatorDashboard || isAdminDashboard);
+  // };
+  // fetchUserRole();
+  //   }, [location]);
+  useEffect(() => {
+    sessionStorage.getItem("userRole") === "admin"
+      ? setUserRole("admin") : setUserRole("");
+  }, []);
   return (
     <>
     <div className="fixed top-0 w-full z-50 bg-[#003366] text-white h-16 flex items-center justify-between px-6 shadow-md">

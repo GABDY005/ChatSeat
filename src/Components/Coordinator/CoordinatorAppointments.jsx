@@ -5,7 +5,6 @@ import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
 
-
 // const dummyAppointments = [
 //   {
 //     id: 1,
@@ -37,31 +36,37 @@ export default function CoordinatorAppointments() {
   const [userRole, setUserRole] = useState("");
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const { data: { user }, error } = await supabase.auth.getUser();
+  //     if (!user || error) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
+
+  //     if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+  //   };
+
+  //   fetchUser();
+  // }, [navigate]);
+  
   useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (!user || error) {
-        navigate("/");
-        return;
-      }
-
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
-        navigate("/");
-        return;
-      }
-
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-    };
-
-    fetchUser();
-  }, [navigate]);
+    sessionStorage.getItem("userRole") === "admin"
+      ? setUserRole("admin")
+      : setUserRole("coordinator");
+  }, []);
 
   useEffect(() => {
     const fetchAppointments = async () => {
