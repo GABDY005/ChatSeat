@@ -360,112 +360,114 @@ export default function AdminSchedulingSetting() {
             ))}
           </ul>
         </div>
-
+        
         <div className="bg-white p-4 rounded shadow">
           <h3 className="font-semibold mb-3 text-[#1E3A8A]">Set Availability</h3>
 
-          <div className="mb-4">
-            <label className="block font-medium mb-1 text-[#003366]">Location</label>
-            <select
-              value={selectedLocationId}
-              onChange={(e) => setSelectedLocationId(e.target.value)}
-              className="w-full p-2 border rounded"
-            >
-              <option value="">-- Select Location --</option>
-              {locations.map(loc => (
-                <option key={loc.id} value={loc.id}>{loc.name}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-6">
-            <label className="block font-medium mb-2 text-[#003366]">Time Slots</label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {timeslots.map(t => (
-                <label key={t} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedTimes.includes(t)}
-                    onChange={() => toggleTime(t)}
-                  />
-                  {t}
-                </label>
-              ))}
+          <div className="space-y-4 mb-6">
+            <div>
+              <label className="block font-medium mb-1 text-[#003366]">Location</label>
+              <select
+                value={selectedLocationId}
+                onChange={(e) => setSelectedLocationId(e.target.value)}
+                className="w-full p-2 border rounded"
+              >
+                <option value="">-- Select Location --</option>
+                {locations.map(loc => (
+                  <option key={loc.id} value={loc.id}>{loc.name}</option>
+                ))}
+              </select>
             </div>
-          </div>
 
-          <div className="mb-4">
-            <label className="block font-medium mb-1 text-[#003366]">Date</label>
-            <input
-              id="date-picker"
-              className="w-full p-2 border rounded"
-              placeholder="Select date"
-              readOnly
-            />
-          </div>
+            <div>
+              <label className="block font-medium mb-1 text-[#003366]">Weekday (for batch update)</label>
+              <select
+                value={selectedWeekday}
+                onChange={(e) => setSelectedWeekday(e.target.value)}
+                className="w-full p-2 border rounded"
+              >
+                <option value="">-- Select Weekday --</option>
+                <option value="0">Sunday</option>
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+              </select>
+            </div>
 
-          {existingTimes.length > 0 && (
-            <div className="mb-4">
-              <h4 className="font-semibold mb-2 text-[#003366]">Existing Times:</h4>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                {existingTimes.map(t => (
-                  <div key={t.id} className="flex items-center justify-between border rounded px-2 py-1 bg-gray-50">
-                    <span>{t.time}</span>
-                    <button
-                      className="text-red-600 text-sm"
-                      onClick={() => handleDeleteTime(t.id)}
-                    >
-                      ❌
-                    </button>
-                  </div>
+            <div>
+              <label className="block font-medium mb-1 text-[#003366]">Select Time Slots</label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                {timeslots.map(t => (
+                  <label key={t} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={selectedTimes.includes(t)}
+                      onChange={() => toggleTime(t)}
+                    />
+                    {t}
+                  </label>
                 ))}
               </div>
             </div>
-          )}
 
-          <div className="text-center mb-8">
-            <button
-              onClick={handleSaveAvailability}
-              className="bg-blue-700 text-white py-2 px-6 rounded"
-              disabled={loading || !selectedLocationId || !selectedDate || selectedTimes.length === 0}
-            >
-              {loading ? "Saving..." : "Save Availability for Date"}
-            </button>
+            <div className="flex flex-wrap gap-4 justify-center mt-2">
+              <button
+                onClick={() => handleWeekdayBatch("add")}
+                disabled={!selectedWeekday || selectedTimes.length === 0 || !selectedLocationId}
+                className="bg-green-700 text-white px-6 py-2 rounded"
+              >
+                ➕ Apply to Weekday
+              </button>
+              <button
+                onClick={() => handleWeekdayBatch("remove")}
+                disabled={!selectedWeekday || !selectedLocationId}
+                className="bg-red-700 text-white px-6 py-2 rounded"
+              >
+                ❌ Remove from Weekday
+              </button>
+            </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block font-medium mb-1 text-[#003366]">Weekday</label>
-            <select
-              value={selectedWeekday}
-              onChange={(e) => setSelectedWeekday(e.target.value)}
-              className="w-full p-2 border rounded"
-            >
-              <option value="">-- Select Weekday --</option>
-              <option value="0">Sunday</option>
-              <option value="1">Monday</option>
-              <option value="2">Tuesday</option>
-              <option value="3">Wednesday</option>
-              <option value="4">Thursday</option>
-              <option value="5">Friday</option>
-              <option value="6">Saturday</option>
-            </select>
-          </div>
+          <div className="border-t pt-4">
+            <label className="block font-medium mb-1 text-[#003366]">Single Date (manual update)</label>
+            <input
+              id="date-picker"
+              className="w-full p-2 mb-3 border rounded"
+              placeholder="Select date"
+              readOnly
+            />
 
-          <div className="flex flex-wrap gap-4 justify-center">
-            <button
-              onClick={() => handleWeekdayBatch("add")}
-              disabled={!selectedWeekday || selectedTimes.length === 0 || !selectedLocationId}
-              className="bg-green-700 text-white px-6 py-2 rounded"
-            >
-              ➕ Apply to Weekday
-            </button>
-            <button
-              onClick={() => handleWeekdayBatch("remove")}
-              disabled={!selectedWeekday || !selectedLocationId}
-              className="bg-red-700 text-white px-6 py-2 rounded"
-            >
-              ❌ Remove from Weekday
-            </button>
+            {existingTimes.length > 0 && (
+              <div className="mb-4">
+                <h4 className="font-semibold mb-2 text-[#003366]">Existing Times:</h4>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                  {existingTimes.map(t => (
+                    <div key={t.id} className="flex items-center justify-between border rounded px-2 py-1 bg-gray-50">
+                      <span>{t.time}</span>
+                      <button
+                        className="text-red-600 text-sm"
+                        onClick={() => handleDeleteTime(t.id)}
+                      >
+                        ❌
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="text-center">
+              <button
+                onClick={handleSaveAvailability}
+                className="bg-blue-700 text-white py-2 px-6 rounded"
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Save Availability"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
