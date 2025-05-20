@@ -55,7 +55,7 @@ import AdminCoordinatorList from "./Components/Admin/AdminCoordinatorList.jsx";
 function App() {
   return (
     <div>
-       <ToastContainer position="top-center" autoClose={3000} />
+       <ToastContainer position="top-center" autoClose={2000} />
       {/*\ <AuthProvider> */}
         <Router>
           <Routes>

@@ -46,6 +46,13 @@ export default function AdminCoordinatorList() {
   };
 
   const handleAdd = async () => {
+    const { name, email, phone, place } = formData;
+
+    if (!name.trim() || !email.trim() || !phone.trim() || !place.trim()) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+    
     const { data, error } = await supabase
       .from("coordinators")
       .insert([{ ...formData }]);
