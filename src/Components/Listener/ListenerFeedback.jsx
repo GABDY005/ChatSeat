@@ -4,6 +4,7 @@ import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Feedback() {
   const [firstName, setFirstName] = useState("User");
@@ -27,7 +28,7 @@ export default function Feedback() {
 
     //it will check whether the user is log in or not
     if (!user || authError) {
-      alert("You must be logged in to submit feedback.");
+      toast.warning("You must be logged in to submit feedback.");
       setLoading(false);
       return;
     }
@@ -55,9 +56,9 @@ export default function Feedback() {
     //if-else to check if the feedback block is empty or not
     if (error) {
       console.error("Feedback insert error:", error);
-      alert("Oops! Something went wrong. Please try again later.");
+      toast.error("Oops! Something went wrong. Please try again later.");
     } else {
-      alert("Thank you for your feedback!");
+      toast.success("Thank you for your feedback!");
       setMessage("");
     }
   };

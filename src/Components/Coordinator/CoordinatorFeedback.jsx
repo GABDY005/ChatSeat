@@ -4,6 +4,7 @@ import supabase from "../../supabase";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
+import { toast } from "react-toastify";
 
 export default function Feedback() {
   const [email, setEmail] = useState("");
@@ -58,7 +59,7 @@ export default function Feedback() {
 
 
     if (!userId) {
-      alert("You must be logged in to submit feedback.");
+      toast.warning("You must be logged in to submit feedback.");
       setLoading(false);
       return;
     }
@@ -79,9 +80,9 @@ export default function Feedback() {
     //if-else to check if the feedback block is empty or not
     if (error) {
       console.error("Feedback insert error:", error);
-      alert("Oops! Something went wrong. Please try again later.");
+      toast.error("Oops! Something went wrong. Please try again later.");
     } else {
-      alert("Thank you for your feedback!");
+      toast.success("Thank you for your feedback!");
       setMessage("");
     }
   };

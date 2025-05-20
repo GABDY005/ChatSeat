@@ -4,6 +4,7 @@ import { signupUser } from "../Controller/UserController";
 import {useForm} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
 
 const schema = Yup.object().shape({
@@ -42,12 +43,12 @@ export default function Signup() {
     const onSubmit = async (data) => {
       try{
         await signupUser(data);
-        alert("Signup successful!");
+        toast.success("Signup successful!");
         navigate("/Login");
 
       } catch(err) {
         console.error("Signup error:" , err.message);
-        alert("Signup failed:" +err.message);
+        toast.error("Signup failed:" +err.message);
       }
     };
   

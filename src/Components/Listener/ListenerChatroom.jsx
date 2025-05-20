@@ -6,6 +6,7 @@ import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function ListenerChatroom() {
   const [threads, setThreads] = useState({});
@@ -72,7 +73,7 @@ export default function ListenerChatroom() {
 
   const handlePost = () => {
     if (!title || !content) {
-      alert("Please enter a title and content!");
+      toast.warning("Please enter a title and content!");
       return;
     }
 

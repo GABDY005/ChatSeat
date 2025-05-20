@@ -4,6 +4,7 @@ import CoordinatorNavbar from "./CoordinatorNavbar";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function CoordinatorImageGallery() {
   const [files, setFiles] = useState([]);
@@ -86,7 +87,7 @@ export default function CoordinatorImageGallery() {
       .upload(fileName, file);
 
     if (error) {
-      alert("Upload failed.");
+      toast.error("Upload failed.");
       console.error(error);
     } else {
       fetchImages();
@@ -101,7 +102,7 @@ export default function CoordinatorImageGallery() {
       .remove([fileName]);
 
     if (error) {
-      alert("Failed to delete.");
+      toast.error("Failed to delete.");
       console.error(error);
     } else {
       fetchImages();

@@ -8,6 +8,7 @@ import {
   deleteUserById,
 } from "../../Controller/UserController";
 import supabase from "../../supabase";
+import { toast } from "react-toastify";
 
 export default function AdminUserList() {
   const [users, setUsers] = useState([]);
@@ -60,10 +61,10 @@ export default function AdminUserList() {
   const handleApprove = async (userId, role) => {
     try {
       await updateUserRole(userId, role);
-      alert(`User approved as ${role}`);
+      toast.success(`User approved as ${role}`);
       getUsers(); // Refresh list
     } catch (err) {
-      alert("Failed to approve user");
+      toast.error("Failed to approve user");
     }
   };
 
@@ -75,10 +76,10 @@ export default function AdminUserList() {
     if (!confirmDelete) return;
     try {
       await deleteUserById(userId);
-      alert("User deleted successfully");
+      toast.success("User deleted successfully");
       getUsers(); // Refresh the user list
     } catch (err) {
-      alert("Failed to delete user");
+      toast.error("Failed to delete user");
     }
   };
 

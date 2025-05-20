@@ -1,6 +1,7 @@
   import React, { useState } from "react";
   import { useNavigate } from "react-router-dom";
   import { loginUser } from "../Controller/UserController";
+  import {toast} from "react-toastify";
 
   export default function LoginPage() {
     const navigate = useNavigate();
@@ -16,6 +17,8 @@
       try {
         const { role } = await loginUser({ email, password });
 
+        toast.success("Login successful!");
+
         if (role === "admin") {
           navigate("/AdminDashboard");
         } else if (role === "listener") {
@@ -25,10 +28,10 @@
         } else if (role === "pending") {
           navigate("/PendingApproval");
         } else {
-          alert("Unknown role. Please contact admin.");
+          toast("Unknown role. Please contact admin.");
         }
       } catch (err) {
-        alert("Login failed: " + err.message);
+        toast("Login failed: " + err.message);
       }
     };
 

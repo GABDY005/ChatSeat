@@ -5,6 +5,7 @@ import { ref, push, onValue, set, remove } from "firebase/database";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import supabase from "../../supabase";
+import { toast } from "react-toastify";
 
 export default function AdminListenerChatroom() {
   const [threads, setThreads] = useState({});
@@ -61,7 +62,7 @@ export default function AdminListenerChatroom() {
 
   const handlePost = () => {
     if (!title || !content) {
-      alert("Please enter a title and content!");
+      toast.warning("Please enter a title and content!");
       return;
     }
 

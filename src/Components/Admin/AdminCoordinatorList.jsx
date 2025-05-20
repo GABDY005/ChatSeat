@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import supabase from "../../supabase";
+import { toast } from "react-toastify";
 
 export default function AdminCoordinatorList() {
   const [firstName, setFirstName] = useState("User");
@@ -49,9 +50,9 @@ export default function AdminCoordinatorList() {
       .from("coordinators")
       .insert([{ ...formData }]);
     if (error) {
-      alert("Error adding coordinator: " + error.message);
+      toast.error("Error adding coordinator: " + error.message);
     } else {
-      alert("Coordinator added successfully!");
+      toast.success("Coordinator added successfully!");
       setFormData({ name: "", email: "", phone: "", place: "" });
       fetchCoordinators();
     }
@@ -69,7 +70,7 @@ export default function AdminCoordinatorList() {
   const handleDelete = async (id) => {
     const { error } = await supabase.from("coordinators").delete().eq("id", id);
     if (error) {
-      alert("Error deleting coordinator: " + error.message);
+      toast.error("Error deleting coordinator: " + error.message);
     } else {
       fetchCoordinators();
     }

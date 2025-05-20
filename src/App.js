@@ -7,6 +7,8 @@ import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import ResetPassword from "./Components/ResetPassword";
 import ResetRequest from "./Components/ResetRequest";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //Listener components
 import ListenerDashboard from "./Components/Listener/ListenerDashboard";
@@ -53,9 +55,12 @@ import AdminCoordinatorList from "./Components/Admin/AdminCoordinatorList.jsx";
 function App() {
   return (
     <div>
+       <ToastContainer position="top-center" autoClose={3000} />
       {/*\ <AuthProvider> */}
         <Router>
           <Routes>
+            
+          
             <Route path="/" element={<Home />} />
             <Route path="/ListenerHelp" element={<ListenerHelp />} />
             <Route path="/About" element={<About />} />

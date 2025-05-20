@@ -5,6 +5,7 @@ import CoordinatorNavbar from "./CoordinatorNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import supabase from "../../supabase";
 import { checkUserRole } from "../../Controller/UserController";
+import { toast } from "react-toastify";
 
 function LessonCoordinator() {
   const [firstName, setFirstName] = useState("User");
@@ -27,7 +28,7 @@ function LessonCoordinator() {
       const isAdmin = await checkUserRole("admin");
 
       if (!isCoordinator && !isAdmin) {
-        alert("Access denied. Coordinators and Admins only.");
+        toast.error("Access denied. Coordinators and Admins only.");
         navigate("/");
         return;
       }
@@ -41,7 +42,7 @@ function LessonCoordinator() {
         .single();
 
       if (profileError || !profile) {
-        alert("Failed to load user profile.");
+        toast.error("Failed to load user profile.");
         navigate("/");
         return;
       }

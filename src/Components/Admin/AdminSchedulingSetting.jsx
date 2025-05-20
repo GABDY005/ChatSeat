@@ -5,6 +5,7 @@ import AdminNavbar from "./AdminNavbar";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function AdminSchedulingSetting() {
   const [locations, setLocations] = useState([]);
@@ -113,7 +114,7 @@ export default function AdminSchedulingSetting() {
     }
 
     await supabase.from("availability").insert(availabilityRows);
-    alert("Location and availability added!");
+    toast.success("Location and availability added!");
     setNewLocation("");
     const { data } = await supabase.from("locations").select("*");
     setLocations(data || []);
@@ -170,7 +171,7 @@ export default function AdminSchedulingSetting() {
         await supabase.from("availability").insert(newRows);
       }
 
-      alert(`Added ${newRows.length} time slots starting from ${maxDateStr}`);
+      toast.success(`Added ${newRows.length} time slots starting from ${maxDateStr}`);
     }
 
     if (action === "remove") {
@@ -187,7 +188,7 @@ export default function AdminSchedulingSetting() {
         .in("date", deleteDates)
         .eq("location_id", locId);
 
-      alert(`Removed ${days} days of availability from ${maxDateStr} backward`);
+      toast.success(`Removed ${days} days of availability from ${maxDateStr} backward`);
     }
 
     loadAvailability();
@@ -225,7 +226,7 @@ export default function AdminSchedulingSetting() {
       if (rows.length > 0) {
         await supabase.from("availability").insert(rows);
       }
-      alert(`Added ${rows.length} time slots on weekday.`);
+      toast.success(`Added ${rows.length} time slots on weekday.`);
     }
 
     if (action === "remove") {
@@ -240,7 +241,7 @@ export default function AdminSchedulingSetting() {
       if (idsToDelete.length > 0) {
         await supabase.from("availability").delete().in("id", idsToDelete);
       }
-      alert(`Removed ${idsToDelete.length} time slots on weekday.`);
+      toast.success(`Removed ${idsToDelete.length} time slots on weekday.`);
     }
 
     loadAvailability();
@@ -256,7 +257,7 @@ export default function AdminSchedulingSetting() {
 
   const handleSaveAvailability = async () => {
     if (!selectedLocationId || !selectedDate || selectedTimes.length === 0) {
-      alert("Please fill all fields");
+      toast.warning("Please fill all fields");
       return;
     }
 
@@ -268,7 +269,7 @@ export default function AdminSchedulingSetting() {
     }));
 
     await supabase.from("availability").insert(rows);
-    alert("Availability saved!");
+    toast.success("Availability saved!");
     setSelectedTimes([]);
     setLoading(false);
     loadAvailability();

@@ -8,6 +8,7 @@ import ListenerSidebar from "./ListenerSidebar";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 export default function ListenerScheduling() {
@@ -218,7 +219,7 @@ export default function ListenerScheduling() {
 
   const bookSlot = async () => {
     if (!location || !date || !time) {
-      alert("Please complete all fields.");
+      toast.error("Please complete all fields.");
       return;
     }
 
@@ -229,13 +230,13 @@ export default function ListenerScheduling() {
       .eq("date", date)
       .eq("time", time);
 
-    if (existing.length >= 2) return alert("Slot full");
+    if (existing.length >= 2) return toast.warning("Slot full");
 
     await supabase
       .from("bookings")
       .insert([{ location, date, time, user_id: userId }]);
 
-    setConfirmation(`Booked at ${location} on ${date} at ${time}.`);
+    toast.success(`Booked at ${location} on ${date} at ${time}.`);
     setTime("");
     fetchUserBookings(userId);
     loadAvailableTimes();

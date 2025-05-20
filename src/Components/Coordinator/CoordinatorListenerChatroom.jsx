@@ -6,6 +6,7 @@ import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
+import { toast } from "react-toastify";
 
 export default function CoordinatorListenerChatroom() {
   const [threads, setThreads] = useState({});
@@ -68,7 +69,7 @@ export default function CoordinatorListenerChatroom() {
 
   const handlePost = () => {
     if (!title || !content) {
-      alert("Please enter a title and content!");
+      toast.warning("Please enter a title and content!");
       return;
     }
 
