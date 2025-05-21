@@ -38,6 +38,10 @@ export default function AdminCoordinatorList() {
   //   fetchCoordinators();
   // }, []);
 
+   useEffect(() => {
+        fetchCoordinators();
+    }, [])
+
   const handleChange = (e) => {
     setFormData({
       ...formData,

@@ -7,8 +7,9 @@ import {
   updateUserRole,
   deleteUserById,
 } from "../../Controller/UserController";
-import supabase from "../../supabase";
 import { toast } from "react-toastify";
+
+
 
 export default function AdminUserList() {
   const [users, setUsers] = useState([]);
@@ -43,11 +44,14 @@ export default function AdminUserList() {
   //   };
 
   //   fetchUserName();
-  //   getUsers();
+  //   
   // }, [navigate]);
 
 
   //it will fetch the users from database
+  useEffect(() => {
+      getUsers();
+  }, [])
   
   const getUsers = async () => {
     try {
@@ -82,10 +86,15 @@ export default function AdminUserList() {
     } catch (err) {
       toast.error("Failed to delete user");
     }
+  
   };
+  
+
+
 
   //it will filter the user according tot he role
   const filteredUsers = users.filter((user) => user.role === activeTab);
+  
 
   return (
     <>
@@ -142,7 +151,7 @@ export default function AdminUserList() {
                             onClick={() => handleApprove(user.id, "listener")}
                             className="bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700"
                           >
-                            Approve as Listener
+                             Listener
                           </button>
                           <button
                             onClick={() =>
@@ -150,7 +159,15 @@ export default function AdminUserList() {
                             }
                             className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700"
                           >
-                            Approve as Coordinator
+                            Coordinator
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleDelete(user.id)
+                            }
+                            className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
+                          >
+                            Delete
                           </button>
                         </>
                       ) : (

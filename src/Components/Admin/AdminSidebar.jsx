@@ -1,10 +1,15 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import supabase from "../../supabase";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setloggedInUserSuccess } from "../../state/loggedInUser";
 
 export default function AdminSidebar({ userName = "" }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.loggedInUser.success);
 
   const getLinkStyle = (path) =>
     location.pathname === path
@@ -13,14 +18,15 @@ export default function AdminSidebar({ userName = "" }) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    sessionStorage.removeItem("userRole");
+    dispatch(setloggedInUserSuccess({}));
     navigate("/");
   };
 
   return (
     <div className="w-64 bg-[#A8E4F2] h-[calc(100vh-64px)] sticky top-16 flex flex-col px-4 py-6 overflow-y-auto">
       <div className="text-[#1E3A8A] font-bold text-xl mb-12 text-center">
-        {/* Hello, {userName}! */}
-        Hello, Tricia!
+        Hello, {user.first_name}!
       </div>
 
       <div className="flex flex-col space-y-3 mb-auto">
@@ -64,16 +70,16 @@ export default function AdminSidebar({ userName = "" }) {
         >
           Admin Scheduling Setting
         </Link>
-        
-        <Link to="/AdminCoordinatorList"
+
+        <Link
+          to="/AdminCoordinatorList"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
             "/AdminCoordinatorList"
-          )}`}>
-        
-        Coordinator List
-        
-        </Link> 
-        
+          )}`}
+        >
+          Coordinator List
+        </Link>
+
         <Link
           to="/AdminFeedback"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(

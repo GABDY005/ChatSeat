@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import  supabase  from "../supabase";
+import { useDispatch } from "react-redux";
+import { setloggedInUserSuccess } from "../state/loggedInUser";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -9,11 +11,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
 
   // Function will run when the login button is clicked
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+
 
     try {
       // Sign in with Supabase Auth
@@ -27,19 +33,22 @@ export default function LoginPage() {
       // Get user profile including role
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('role')
+        .select('*')
         .eq('id', authData.user.id)
         .single();
 
       if (profileError) throw profileError;
 
       const role = profileData.role;
-      console.log("User role:", role);
+      console.log("User role:", profileData);
+
 
       // Store user session info for protected routes
       sessionStorage.setItem('userRole', role);
       
       toast.success("Login successful!");
+
+      dispatch(setloggedInUserSuccess(profileData))
 
       // Navigate based on role (keeping your existing navigation logic)
       if (role === "admin") {
@@ -55,7 +64,7 @@ export default function LoginPage() {
       }
     } catch (err) {
       console.error("Login error:", err);
-      toast.error("Login failed: " + (err.message || "Unknown error"));
+      toast.error("Login failed");
     } finally {
       setLoading(false);
     }
