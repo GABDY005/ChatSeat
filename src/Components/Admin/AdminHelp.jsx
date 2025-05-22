@@ -82,6 +82,15 @@ export default function Help() {
                 View feedback from both <strong>listeners</strong> and <strong>coordinators</strong>. Use filters to sort by <em>name</em>, <em>role</em>, or <em>submission date</em>, so you can efficiently review and respond to input over time.
               </p>
             </div>
+
+            <div className="bg-purple-50 border-l-4 border-purple-400 p-6 rounded-xl shadow-sm hover:shadow-md transition md:col-span-2">
+              <h4 className="text-purple-900 font-semibold text-lg mb-2">Scheduling Settings</h4>
+              <p className="mb-2">Use this section to manage time availability for each location:</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-gray-800">
+                <li><strong>Add or delete locations</strong> that offer availability.</li>
+                <li><strong>Select a date</strong> to view or edit available time slots.</li>
+              </ul>
+            </div>
           </div>
           </div>
         </div>

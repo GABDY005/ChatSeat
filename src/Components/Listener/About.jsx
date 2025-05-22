@@ -120,6 +120,7 @@ export default function About() {
               </p>
               <p className="mt-1">
                 Contact: <a href="mailto:darshi.gabani2001@gmail.com" className="text-blue-600 hover:underline">darshi.gabani2001@gmail.com</a>
+                <p><a href="mailto:chacy239@gmail.com" className="text-blue-600 hover:underline">chacy239@gmail.com</a></p>
               </p>
             </footer>
 

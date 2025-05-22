@@ -47,7 +47,8 @@ export default function AdminSchedulingSetting() {
         .from("availability")
         .select("id, time")
         .eq("location_id", selectedLocationId)
-        .eq("date", selectedDate);
+        .eq("date", selectedDate)
+        .order("time", { ascending: true });
   
       setExistingTimes(data || []);
     };
