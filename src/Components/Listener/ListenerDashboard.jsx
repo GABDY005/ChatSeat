@@ -66,87 +66,91 @@ export default function ListenerDashboard() {
         </div>
 
         <div className="flex-1 p-6 sm:p-10">
-          <div className="max-w-4xl mx-auto bg-white sm:p-8 rounded-2xl shadow-lg">
-            <h2 className="text-4xl sm:text font-bold text-[#1E3A8A] mb-8 sm:mb-10 text-center">
-              Welcome, Listeners!
-            </h2>
-            <p className="text-gray-700 mb-4 sm:mb-6 text-base sm:text-lg">
-              Thank you for agreeing to volunteer some of your time as a
-              Listener on our Chat Seats.
-            </p>
-            <p className="text-gray-700 mb-4 sm:mb-6 text-base sm:text-lg">
-              On this page you will find some information about your role as a
-              Listener.
-            </p>
+          <div className="max-w-4xl mx-auto bg-white sm:p-10 p-6 rounded-2xl shadow-lg space-y-6">
+            <div className="text-center">
+              <h2 className="text-4xl font-bold text-[#1E3A8A] mb-4">
+                Welcome, Listeners!
+              </h2>
+              <p className="text-gray-700 text-lg">
+                Thank you for agreeing to volunteer some of your time as a
+                Listener on our Chat Seats. On this page you will find some
+                information about your role as a Listener.
+              </p>
+            </div>
 
-            <ul className="list-disc pl-6 text-gray-700 text-base sm:text-lg mb-6 space-y-2">
-              <li>
-                <Link
-                  to="/listener/listening-skills"
-                  className="text-black hover:underline"
-                >
-                  <strong>"Good Listening Skills."</strong>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/listener/conversation-skills"
-                  className="text-black hover:underline"
-                >
-                  <strong>"Good Conversation Skills."</strong>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/listener/make-people-comfortable"
-                  className="text-black hover:underline"
-                >
-                  <strong>
-                    "How to make people feel comfortable about joining you on
-                    the Chat Seat."
-                  </strong>
-                </Link>
-              </li>
-            </ul>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-[#f0f8ff] p-6 rounded-xl shadow">
+                <h3 className="text-xl font-semibold text-[#1E3A8A] mb-4">
+                  Learn More About Listening
+                </h3>
+                <ul className="list-disc pl-6 space-y-2 text-gray-800">
+                  <li>
+                    <Link
+                      to="/listener/listening-skills"
+                      className="text-[#1E3A8A] hover:underline"
+                    >
+                      Good Listening Skills
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/listener/conversation-skills"
+                      className="text-[#1E3A8A] hover:underline"
+                    >
+                      Good Conversation Skills
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/listener/make-people-comfortable"
+                      className="text-[#1E3A8A] hover:underline"
+                    >
+                      Making People Comfortable on the Chat Seat
+                    </Link>
+                  </li>
+                </ul>
+              </div>
 
-            <p className="text-gray-700 mb-2 sm:text-lg">
-              There are also links to other web sites that host information on
-              being an effective Listener.
-            </p>
+              <div className="bg-[#f9f9fb] p-6 rounded-xl shadow">
+                <h3 className="text-xl font-semibold text-[#1E3A8A] mb-4">
+                  External Resources
+                </h3>
+                <ul className="list-disc pl-6 space-y-2 text-gray-800">
+                  <li>
+                    <Link
+                      to="https://endingloneliness.com.au/"
+                      className="text-[#1E3A8A] hover:underline"
+                    >
+                      Ending Loneliness Together
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="https://www.rosthomas.com.au/features"
+                      className="text-[#1E3A8A] hover:underline"
+                    >
+                      Ros Thomas – Research on Loneliness
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
 
-            <ul className="list-disc pl-6 text-gray-700 text-base sm:text-lg mb-6 space-y-1">
-              <li>
-                <Link
-                  to="https://endingloneliness.com.au/"
-                  className="text-black hover:underline mb-2 text-lg"
-                >
-                  <strong>Ending Loneliness together</strong>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="https://www.rosthomas.com.au/features"
-                  className="text-black hover:underline"
-                >
-                  <strong>Ros Thomas - Research on Loneliness</strong>
-                </Link>
-              </li>
-            </ul>
+            <div className="bg-[#e8f5e9] p-6 rounded-xl shadow">
+              <h3 className="text-xl font-semibold text-[#1E3A8A] mb-4">
+                Tools and Support
+              </h3>
+              <p className="text-gray-800 mb-2">
+                Use the <strong>Booking tab</strong> to choose your Chat Seat venue and time.
+              </p>
+              <p className="text-gray-800 mb-2">
+                Use the <strong>Chat room</strong> to exchange ideas with other Listeners.
+              </p>
+              <p className="text-gray-800">
+                Provide your <strong>Feedback</strong> through the <strong>Feedback tab</strong>.
+              </p>
+            </div>
 
-            <p className="text-gray-700 mb-2 text-base sm:text-lg">
-              There is a <strong>Booking tab</strong> where you can select the
-              venue you want to sit on a <strong>Chat Seat</strong> and select
-              what time suits you.
-            </p>
-            <p className="text-gray-700 mb-2 text-base sm:text-lg">
-              A <strong>Chat room</strong> is also available where you can chat
-              with other Listeners to exchange ideas or give support.
-            </p>
-
-            <p className="text-gray-700 mb-4 text-base sm:text-lg">
-              Also if you would like to provide any <strong>Feedback</strong> to
-              us, please go to <strong>Feedback tab</strong>.
-            </p>
           </div>
         </div>
       </div>

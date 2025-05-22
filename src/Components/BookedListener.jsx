@@ -1,58 +1,70 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { fetchAllBookings } from "../Controller/BookingController"; 
+import { fetchAllBookings , deletePastBookings  } from "../Controller/BookingController"; 
 import { useEffect, useState } from "react"; 
+import logo from "../assets/Logo.jpg";
+
 
 export default function BookedListener() {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    const getBookings = async () => {
-      try {
-        const data = await fetchAllBookings();
-        setBookings(data);
-      } catch (err) {
-        console.error("Error fetching bookings:", err);
-      }
-    };
+  const getBookings = async () => {
+    try {
+      await deletePastBookings(); 
+      const data = await fetchAllBookings();
 
-    getBookings();
-  }, []);
-  // const listeners = [
-  //   { id: 1, location: "Tea Tree Plaza", date: "15/04/2025", time: "10:00 AM" },
-  //   {
-  //     id: 2,
-  //     location: "Campbelltow Library",
-  //     date: "10/05/2025",
-  //     time: "11:00 AM",
-  //   },
-  //   { id: 3, location: "Rundle Mall", date: "20/04/2025", time: "13:00 PM" },
-  //   {
-  //     id: 4,
-  //     location: "Prospect Library",
-  //     date: "25/04/2025",
-  //     time: "15:00 PM",
-  //   },
-  //   { id: 5, location: "Tea Tree Plaza", date: "30/04/2025", time: "14:00 AM" },
-  // ];
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const filteredBookings = data.filter((b) => {
+        const bookingDate = new Date(b.date);
+        bookingDate.setHours(0, 0, 0, 0);
+        return bookingDate >= today;
+      });
+
+      setBookings(filteredBookings);
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  };
+
+  getBookings();
+}, []);
+  const handleLogoClick = () => {
+    window.location.reload();
+  };
+  
   return (
     <>
       <div className="min-h-sceen bg-white">
         <nav className="sticky top-0 z-50 flex flex-col sm:flex-row items-center justify-between bg-[#003366] sm:px-8 py-4 sm:py-5 shadow-lg w-full">
-          <div>
-            <Link
-              to="/"
-              className="text-white font-semibold text-lg hover:underline"
-            >
-              Home
-            </Link>
-          </div>
-
-          <h1 className="text-white font-bold text-xl sm:text-2xl tracking-wide text-center">
+        <div
+          onClick={handleLogoClick}
+          className="flex items-center space-x-2 cursor-pointer mb-2 sm:mb-0"
+        >
+          <img
+            src={logo}
+            alt="ChatSeat Logo"
+            className="w-12 h-12 object-cover border-2 border-white shadow-md"
+          />
+        </div>
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <h1 className="text-white font-extrabold text-xl sm:text-2xl md:text-3xl tracking-wide text-center sm:text-left">
             Who's at the Seat?
           </h1>
-          <div className="w-20" />
-        </nav>
+        </div>
+
+       
+          <Link
+            to="/"
+            className="bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200"
+          >
+            Back to Home
+          </Link>
+       
+      </nav> 
+</div>
 
         <div className="px-4 sm:px-6 py-8 max-w-6xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
@@ -78,7 +90,7 @@ export default function BookedListener() {
             )}
           </div>
         </div>
-      </div>
+      
     </>
   );
 }

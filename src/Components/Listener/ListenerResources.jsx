@@ -67,16 +67,19 @@ export default function ListenerResources() {
         </div>
 
         <div className="flex-1 p-4 sm:p-10">
-          <div className="max-w-4xl mx-auto bg-white px-6 py-8 sm:p-8 rounded-2xl shadow-lg border border-blue-100">
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#1E3A8A] mb-6 text-left">
+          <div className="max-w-4xl mx-auto bg-white sm:p-10 p-6 rounded-2xl shadow-lg space-y-6">
+            <div className="text-center"></div>
+            <h2 className="text-4xl font-bold text-[#1E3A8A] mb-4">
               Lessons Learned in Establishing Chat Seats
             </h2>
 
-            <p className="text-gray-700 text-base sm:text-lg mb-4">
+            <p className="text-gray-700 text-lg">
               Below are some of the lessons we have learned when establishing Chat Seats:
             </p>
 
-            <ul className="list-disc pl-6 space-y-2 text-gray-700 text-base sm:text-lg">
+
+          <div className="grid sm:grid-cols-2 gap-6"></div>
+            <ul className="list-disc pl-6 space-y-3 text-gray-800 bg-[#f0f8ff] p-6 rounded-xl shadow">
               <li>Selection of listeners – ensure they are interested in other peoples’ experiences and have well developed listening skills.</li>
               <li>Have one very experienced listener who sits with less experienced listeners.</li>
               <li>Listeners work in pairs.</li>
@@ -85,6 +88,8 @@ export default function ListenerResources() {
               <li>Be prepared to be flexible about location of Chat Seats and setup style.</li>
               <li>Complete any required induction activities at the venue.</li>
               <li>Observe all requirements of the venue.</li>
+              </ul>
+              <ul className="list-disc pl-6 space-y-3 text-gray-800 bg-[#f9f9fb] p-6 rounded-xl shadow">
               <li>Hold required clearances as requested by venue managers.</li>
               <li>Check in regularly with the venue manager to see if anything needs to be adjusted.</li>
               <li>Advertise available Chat Seat times on the website for each venue.</li>
@@ -94,10 +99,12 @@ export default function ListenerResources() {
               <li>Provide name badges (e.g., "Hello my name is…").</li>
               <li>It’s a bonus if tea/coffee is available at the venue.</li>
               <li>It’s great if the venue advertises the availability of Chat Seats.</li>
+
             </ul>
           </div>
         </div>
       </div>
+
     </>
   );
 }

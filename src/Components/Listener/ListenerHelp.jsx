@@ -66,68 +66,85 @@ export default function ListenerHelp() {
           <ListenerSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 px-10 py-12 w-full">
-          <div className="max-w-3xl mx-auto text-black">
-            <h2 className="text-2xl font-bold mb-4">How to Use the Website</h2>
-            <p className="mb-6">
+        <div className="flex-1 px-6 sm:px-10 py-10">
+          <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-6 sm:p-10 space-y-6 ">
+            <div className="text-center"></div>
+            <h2 className="text-3xl font-bold text-[#1E3A8A] mb-2">
+              How to Use the Website
+            </h2>
+            <p className="text-gray-600 text-base">
               Follow these instructions to navigate and use the website
               effectively.
             </p>
-
-            <div className="bg-[#f9f9f9] p-6 rounded-lg shadow-md space-y-3">
-              <h4 className="font-semibold text-lg mb-1">List of Coordinators</h4>
-              <p>
+            <div className="grid md:grid-cols-2 gap-6 mt-6"></div>
+            <div className="bg-[#f0f4ff] p-5 rounded-xl shadow-sm">
+              <h4 className="font-semibold text-lg mb-2 text-[#1E3A8A]">
+                List of Coordinators
+              </h4>
+              <p className="text-gray-700 text-sm">
                 Here, you can view all available coordinators. This helps you
                 decide whom you'd like to book a session with. Each coordinator
                 may have different time slots and locations.
               </p>
-
-              <h4 className="font-semibold text-lg mb-1">Scheduling</h4>
-              <p>
+            </div>
+            <div className="bg-[#fef9c3] p-5 rounded-xl shadow-sm">
+              <h4 className="font-semibold text-lg mb-2 text-[#92400e]">
+                Scheduling
+              </h4>
+              <p className="text-gray-700 text-sm">
                 The Scheduling page helps you manage your appointments. It has
                 three useful tabs:
               </p>
-              <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
+              <ul className="list-disc ml-5 text-sm text-gray-700 mt-2 space-y-1">
                 <li>
-                  <strong>Upcoming Bookings:</strong> View all your upcoming
-                  sessions. You can also <em>edit</em> or <em>delete</em> any
-                  future booking here.
+                  <strong>Upcoming Bookings:</strong> Edit or delete your future
+                  sessions.
                 </li>
                 <li>
-                  <strong>Book a Slot:</strong> Choose a <em>place</em>,{" "}
-                  <em>date</em>, and <em>time</em> to book your session with a
-                  coordinator.
+                  <strong>Book a Slot:</strong> Choose place, date, and time for
+                  your session.
                 </li>
                 <li>
-                  <strong>View Calendar:</strong> See your booked sessions in a
-                  calendar format. Make sure to <em>select the place</em> to
-                  load the bookings.
+                  <strong>View Calendar:</strong> See all bookings in calendar
+                  format after selecting a place.
                 </li>
               </ul>
+              </div>
 
+              <div className="bg-[#ecfdf5] p-5 rounded-xl shadow-sm">
               <h4 className="font-semibold text-lg mb-1">Resources</h4>
               <p>
                 This section contains helpful resources and information to
                 support your journey. It may include guides, mental health
                 articles, or session tips curated for listeners.
               </p>
-
-              <h4 className="font-semibold text-lg mb-1">Let's Talk</h4>
-              <p>
+            </div>
+            <div className="bg-[#ecfdf5] p-5 rounded-xl shadow-sm">
+              <h4 className="font-semibold text-lg mb-2 text-[#6b21a8]">
+                Let's Talk
+              </h4>
+              <p className="text-gray-700 text-sm">
                 Share your experiences, thoughts, or questions with others. This
                 is a safe space to talk about meetings, ideas, or challenges —
                 whether it’s with a coordinator, admin, or fellow listener.
               </p>
+            </div>
 
-              <h4 className="font-semibold text-lg mb-1">About Us</h4>
-              <p>
+            <div className="bg-[#f3e8ff] p-5 rounded-xl shadow-sm">
+              <h4 className="font-semibold text-lg mb-2 text-[#9a3412]">
+                About Us
+              </h4>
+              <p className="text-gray-700 text-sm">
                 Learn more about the admin team who manage the platform. This
                 page offers background on their mission and contact information
                 if needed.
               </p>
-
-              <h2 className="text-lg font-semibold mb-1">Feedback</h2>
-              <p>
+            </div>
+            <div className="bg-[#dbeafe] p-5 rounded-xl shadow-sm">
+              <h2 className="text-lg font-semibold mb-2 text-[#1d4ed8]">
+                Feedback
+              </h2>
+              <p className="text-gray-700 text-sm">
                 Use this page to share your feedback — whether it’s about a
                 session, a coordinator, or your overall experience. Your input
                 helps us improve the platform for everyone.

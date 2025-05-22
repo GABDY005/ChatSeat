@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import  supabase  from "../supabase";
 import { useDispatch } from "react-redux";
 import { setloggedInUserSuccess } from "../state/loggedInUser";
+import logo from "../assets/Logo.jpg";
+import { Link } from "react-router-dom";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -13,6 +15,10 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  
+  const handleLogoClick = () => {
+    window.location.reload();
+  };
 
   // Function will run when the login button is clicked
   const handleLogin = async (e) => {
@@ -71,6 +77,30 @@ export default function LoginPage() {
   };
 
   return (
+    <>
+    <div className="min-h-sceen bg-white">
+        <nav className="sticky top-0 z-50 flex flex-col sm:flex-row items-center justify-between bg-[#003366] sm:px-8 py-4 sm:py-5 shadow-lg w-full">
+        <div
+          onClick={handleLogoClick}
+          className="flex items-center space-x-2 cursor-pointer mb-2 sm:mb-0"
+        >
+          <img
+            src={logo}
+            alt="ChatSeat Logo"
+            className="w-12 h-12 object-cover border-2 border-white shadow-md"
+          />
+        </div>
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <h1 className="text-white font-extrabold text-xl sm:text-2xl md:text-3xl tracking-wide text-center sm:text-left">
+            Have a Chat Seat
+          </h1>
+        </div>
+
+       
+         
+       
+      </nav> 
+</div>  
     <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4 sm:px-6">
       <div className="bg-white px-6 py-8 sm:p-10 shadow-lg w-full max-w-sm rounded-lg">
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#003366] mb-6 sm:mb-8">
@@ -151,5 +181,6 @@ export default function LoginPage() {
         </form>
       </div>
     </div>
+    </>
   );
 }

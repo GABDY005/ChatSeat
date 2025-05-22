@@ -12,3 +12,18 @@ export const fetchAllBookings = async () => {
     
     return data;
     };
+
+export const deletePastBookings = async () => {
+  const today = new Date().toISOString().split("T")[0]; 
+
+  const { error } = await supabase
+    .from("bookings") 
+    .lt("date", today);
+
+  if (error) {
+    console.error("Error deleting past bookings:", error);
+    throw new Error("Could not delete past bookings");
+  }
+};
+
+    

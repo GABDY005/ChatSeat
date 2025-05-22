@@ -45,40 +45,44 @@ export default function Help() {
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]" />
         <AdminSidebar userName={firstName} />
 
-        <div className="flex-1 px-4 sm:px-6 md:px-10 py-6 sm:py-10 md:py-12 w-full">
-          <div className="w-full max-w-[800px] mx-auto text-black">
-            <h2 className="text-xl sm:text-2xl font-bold mb-4">How to Use the Website</h2>
-            <p className="mb-6">
-              Follow these instructions to navigate and use the website
-              effectively.
-            </p>
+        <div className="flex-1 px-4 sm:px-6 md:px-10 pt-10 pb-8 w-full">
+        <div className="w-full max-w-5xl mx-auto text-gray-800">
+          <h2 className="text-3xl font-extrabold text-center text-[#1E3A8A] mb-2">
+            How to Use the Website
+          </h2>
+          <p className="text-center text-gray-600 mb-10">
+            Follow this quick guide to manage users, monitor feedback, and support platform communication.
+          </p>
 
-            <div className="bg-[#f9f9f9] p-6 rounded-lg shadow-md space-y-3">
-              <h4 className="font-semibold text-lg mb-1">Manage Users</h4>
-              <p>This page contains three tabs to help you manage the platform’s users:</p>
-              <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-                <li>
-                  <strong>Pending:</strong> View users awaiting approval. You can approve them as either <em>listeners</em> or <em>coordinators</em>.
-                </li>
-                <li>
-                  <strong>Listeners:</strong> View all registered listeners. You can <em>delete</em> a listener if necessary.
-                </li>
-                <li>
-                  <strong>Coordinators:</strong> View the list of coordinators. You can <em>delete</em> any coordinator if needed.
-                </li>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Manage Users */}
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-xl shadow-sm hover:shadow-md transition">
+              <h4 className="text-blue-900 font-semibold text-lg mb-2">Manage Users</h4>
+              <p className="mb-2">This section includes three tabs to manage users on the platform:</p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-gray-800">
+                <li><strong>Pending:</strong> Approve users as <em>listeners</em> or <em>coordinators</em>.</li>
+                <li><strong>Listeners:</strong> View all listeners and <em>delete</em> if necessary.</li>
+                <li><strong>Coordinators:</strong> View and <em>delete</em> coordinators as needed.</li>
               </ul>
+            </div>
 
-              <h4 className="font-semibold text-lg mb-1">Chatrooms</h4>
+            {/* Chatrooms */}
+            <div className="bg-green-50 border-l-4 border-green-400 p-6 rounded-xl shadow-sm hover:shadow-md transition">
+              <h4 className="text-green-900 font-semibold text-lg mb-2">Chatrooms</h4>
               <p>
-                The Admin can join both the <strong>Listener</strong> and <strong>Coordinator</strong> chatrooms. Use this space to check in, guide users, or respond to any questions or concerns.
-              </p>
-
-              <h4 className="font-semibold text-lg mb-1">Feedback</h4>
-              <p>
-                This page displays all feedback submitted by <strong>listeners</strong> and <strong>coordinators</strong>. 
-                You can use the sorting feature to organise feedback by <em>name</em>, <em>role</em>, or <em>submission date</em>, making it easier to review and track responses over time.
+                The Admin can access both <strong>Listener</strong> and <strong>Coordinator</strong> chatrooms.
+                Use these to guide users, share updates, or provide help when questions arise.
               </p>
             </div>
+
+            {/* Feedback */}
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-xl shadow-sm hover:shadow-md transition md:col-span-2">
+              <h4 className="text-yellow-900 font-semibold text-lg mb-2">Feedback</h4>
+              <p>
+                View feedback from both <strong>listeners</strong> and <strong>coordinators</strong>. Use filters to sort by <em>name</em>, <em>role</em>, or <em>submission date</em>, so you can efficiently review and respond to input over time.
+              </p>
+            </div>
+          </div>
           </div>
         </div>
       </div>

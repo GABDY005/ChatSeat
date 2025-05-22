@@ -71,47 +71,55 @@ function LessonCoordinator() {
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 px-4 sm:px-6 md:px-10 py-8 sm:py-10 md:py-12">
-          <div className="w-full max-w-3xl mx-auto bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-md text-gray-800 space-y-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-[#1E3A8A] text-center mb-4">
-              Volunteer Callout – Chat Seats
-            </h2>
+        <div className="flex-1 px-4 sm:px-6 md:px-8 pt-8 pb-8">
+  <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E3A8A] text-center">
+    Volunteer Callout – Chat Seats
+  </h2>
 
-            <p>We are looking for volunteers who enjoy listening to other people’s stories.</p>
+  <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6">
+    We are looking for volunteers who enjoy listening to others and want to help create a connected, supportive community through Chat Seats.
+  </p>
 
-            <p>
-              We will be setting up a <strong>Chat Seat</strong> in <em>“Name your Venue”</em> over the next few weeks.
-              The purpose of the Chat Seat is to connect members of the community through conversation.
-            </p>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+   
+    <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-xl shadow-sm">
+      <h3 className="text-lg font-semibold text-blue-900 mb-2">About the Chat Seat</h3>
+      <p>
+        We’ll be setting up a <strong>Chat Seat</strong> in <em>“Name your Venue”</em>. Its purpose is to help community members connect through conversation.
+      </p>
+    </div>
 
-            <p>
-              <strong>So, what will be involved?</strong> People such as yourself can be a volunteer, acting as a
-              listener, by spending some time at a Chat Seat within <em>“The Venue”</em>. The purpose is to encourage
-              members of our community to come and chat. Some members may be experiencing loneliness and isolation. We
-              hope these individuals will sit down, feel listened to, and start to feel connected to their community.
-            </p>
+    <div className="bg-green-50 border-l-4 border-green-400 p-6 rounded-xl shadow-sm">
+      <h3 className="text-lg font-semibold text-green-900 mb-2">What’s Involved</h3>
+      <p>
+        Volunteers will spend time listening at the Chat Seat. This helps people who may be lonely feel heard and supported by the community.
+      </p>
+    </div>
 
-            <p>
-              <strong>So, who do we need?</strong> Individuals who enjoy listening to others and have two hours a week
-              to commit to such an activity.
-            </p>
+ 
+    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-xl shadow-sm">
+      <h3 className="text-lg font-semibold text-yellow-900 mb-2">Who We’re Looking For</h3>
+      <p>
+        We need individuals who enjoy listening and can commit just two hours a week. Right now, we're looking for <strong>five</strong> volunteers.
+      </p>
+    </div>
 
-            <p>At this stage, we only need <strong>five</strong> such people.</p>
+    <div className="bg-purple-50 border-l-4 border-purple-400 p-6 rounded-xl shadow-sm">
+      <h3 className="text-lg font-semibold text-purple-900 mb-2">Next Steps</h3>
+      <p className="mb-2">
+        Visit&nbsp;
+        <Link to="https://chatseats.com.au" className="text-blue-600 underline">
+          chatseats.com.au
+        </Link>{" "}
+        to find out more.
+      </p>
+      <p>If you’re still interested, message me to learn more about what’s involved.</p>
+    </div>
+  </div>
+</div>
 
-            <p>
-              If you are interested, you can look at our webpage:{" "}
-              <Link to="https://chatseats.com.au" className="text-blue-600 underline">
-                chatseats.com.au
-              </Link>{" "}
-              to find out more.
-            </p>
-
-            <p>
-              If you’re still interested, message me so we can talk further and explain in more detail what’s involved.
-            </p>
-          </div>
         </div>
-      </div>
+      
     </>
   );
 }

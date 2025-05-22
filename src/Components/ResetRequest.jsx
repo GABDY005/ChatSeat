@@ -9,7 +9,7 @@ export default function ResetRequest() {
     e.preventDefault();
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:3000/reset-password",
+      redirectTo: "https://chatseats.com.au/reset-password",
     });
 
     setMessage(

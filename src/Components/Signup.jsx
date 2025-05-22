@@ -5,6 +5,8 @@ import {useForm} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import logo from "../assets/Logo.jpg";
+
 
 
 const schema = Yup.object().shape({
@@ -51,6 +53,11 @@ export default function Signup() {
         toast.error("Signup failed:" +err.message);
       }
     };
+
+     const handleLogoClick = () => {
+    window.location.reload();
+  };
+
   
 
   // Function to handle signup form submission
@@ -69,6 +76,30 @@ export default function Signup() {
   // };
 
   return (
+    <>
+    <div className="min-h-sceen bg-white">
+        <nav className="sticky top-0 z-50 flex flex-col sm:flex-row items-center justify-between bg-[#003366] sm:px-8 py-4 sm:py-5 shadow-lg w-full">
+        <div
+          onClick={handleLogoClick}
+          className="flex items-center space-x-2 cursor-pointer mb-2 sm:mb-0"
+        >
+          <img
+            src={logo}
+            alt="ChatSeat Logo"
+            className="w-12 h-12 object-cover border-2 border-white shadow-md"
+          />
+        </div>
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <h1 className="text-white font-extrabold text-xl sm:text-2xl md:text-3xl tracking-wide text-center sm:text-left">
+            Have a Chat Seat
+          </h1>
+        </div>
+
+       
+         
+       
+      </nav> 
+</div>  
     <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#1E3A8A] mb-6">
@@ -160,5 +191,6 @@ export default function Signup() {
         </div>
       </div>
     </div>
+    </>
   );
 }

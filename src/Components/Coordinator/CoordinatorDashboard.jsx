@@ -39,7 +39,7 @@ function CoordinatorDashboard() {
 
   //   fetchUserInfo();
   // }, [navigate]);
-  
+
   useEffect(() => {
     sessionStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
@@ -59,57 +59,65 @@ function CoordinatorDashboard() {
           <CoordinatorSidebar userName={firstName} />
         </div>
 
-        <div className="flex-1 p-4 sm:p-6 md:p-10">
-          <div className="w-full max-w-4xl mx-auto bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-md border border-blue-100 text-gray-800 text-base sm:text-md space-y-4">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E3A8A] mb-6 sm:mb-10 text-center">
-              Welcome, Coordinators!
-            </h2>
-            <p>
-              Thank you for agreeing to volunteer your time as a Coordinator of
-              one of our Chat Seats locations. Coordinators are individuals who
-              are also volunteers and may also choose to be Listeners. They
-              will:
-            </p>
+        <div className="w-full max-w-5xl mx-auto bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-md border border-blue-100 text-gray-800 space-y-8 mt-10">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-center text-[#1E3A8A]">
+            Welcome, Coordinators!
+          </h2>
 
-            <ul className="list-disc pl-8 space-y-2">
-              <li>Identify venues where to place Chat Seats</li>
-              <li>Gain the permission of the venue “owner/manager”</li>
-              <li>Attract Listeners</li>
-              <li>Assess the Listeners’ suitability</li>
+          <p className="text-center text-gray-700 text-lg max-w-3xl mx-auto">
+            Thank you for volunteering your time to serve as a Coordinator for
+            one of our Chat Seats. This page outlines your responsibilities and
+            available resources to help you support our community effectively.
+          </p>
+
+          <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+            <h3 className="font-semibold text-blue-900 text-xl mb-4">
+              Your Role
+            </h3>
+            <ul className="list-disc pl-6 space-y-2 text-gray-800">
+              <li>Identify venues where Chat Seats can be placed</li>
+              <li>Obtain permission from the venue manager or owner</li>
+              <li>Recruit Listeners and assess their suitability</li>
               <li>
-                Advise them of the clearances they may need (e.g., Working with
+                Advise Listeners on necessary clearances (e.g., Working with
                 Children Certificate)
               </li>
+              <li>Introduce Listeners to available resources and tools</li>
+              <li>Guide them to nominate volunteering times on the calendar</li>
               <li>
-                Advise of the website and resources available to Listeners
-              </li>
-              <li>
-                Advise them that there is a calendar available on the website to
-                nominate their times when they will be volunteering
-              </li>
-              <li>
-                Advise them that there is a Chat Room on the website for them to
-                talk with other volunteers
+                Encourage use of the Chat Room to connect with fellow volunteers
               </li>
             </ul>
+          </div>
 
-            <p>
-              On this page you will find some information about “Lessons
-              Learned” which is what we and other coordinators have learned when
-              setting up a Chat Seat. There is also some information on what we
-              said when attracting Listeners. There are graphics that we used on
-              the banner, name tags and logos. You are very welcomed to use
-              them.
+       
+          <div className="bg-purple-50 rounded-xl p-6 border border-purple-200">
+            <h3 className="font-semibold text-purple-900 text-xl mb-4">
+              Coordinator Resources
+            </h3>
+            <p className="text-gray-800">
+              This section includes useful tips from experienced coordinators,
+              examples of successful outreach strategies, and branding materials
+              like banners, logos, and name tags that you're welcome to use.
             </p>
+          </div>
 
-            <p>
-              A Chat Room is also available where you can chat with other
-              Coordinators to exchange ideas or give support.
+        
+          <div className="bg-green-50 rounded-xl p-6 border border-green-200">
+            <h3 className="font-semibold text-green-900 text-xl mb-4">
+              Tools and Support
+            </h3>
+            <p className="text-gray-800 mb-2">
+              Use the <strong>Availability</strong> tab to schedule times and
+              manage locations.
             </p>
-
-            <p>
-              Also, if you would like to provide any feedback to us, please
-              contact us.
+            <p className="text-gray-800 mb-2">
+              Use the <strong>Coordinator Chat Room</strong> to collaborate and
+              exchange ideas with other coordinators.
+            </p>
+            <p className="text-gray-800">
+              Submit your thoughts or report issues through the{" "}
+              <strong>Feedback</strong> tab.
             </p>
           </div>
         </div>
