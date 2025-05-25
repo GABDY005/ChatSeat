@@ -101,8 +101,7 @@ function App() {
               <Route path="/AdminCoordinatorChatroom" element={<AdminCoordinatorChatroom />} />
               <Route path="/AdminListenerChatroom" element={<AdminListenerChatroom />} />
               <Route path="/AdminCoordinatorList" element={<AdminCoordinatorList />} />
-              <Route path="/AdminSchedulingSetting" element={<AdminSchedulingSetting />} />
-             
+              <Route path="/AdminSchedulingSetting" element={<AdminSchedulingSetting />} />  
    </Route>
  <Route element={<ProtectedRoute requiredRole="pending" />}>
               <Route path="/PendingApproval" element={<PendingApproval />} />

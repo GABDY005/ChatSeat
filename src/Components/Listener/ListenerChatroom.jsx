@@ -63,7 +63,7 @@ export default function ListenerChatroom() {
   //   fetchUser();
   // }, [navigate]);
   useEffect(() => {
-    sessionStorage.getItem("userRole") === "admin"
+    localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
       : setUserRole("listener");
   }, []);

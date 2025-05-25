@@ -54,7 +54,7 @@ function LessonCoordinator() {
   //   verifyUser();
   // }, [navigate]);
   useEffect(() => {
-    sessionStorage.getItem("userRole") === "admin"
+    localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
       : setUserRole("coordinator");
   }, []);

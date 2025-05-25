@@ -60,7 +60,7 @@ export default function CoordinatorChatroom() {
   //   fetchUser();
   // }, [navigate]);
   useEffect(() => {
-    sessionStorage.getItem("userRole") === "admin"
+    localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
       : setUserRole("coordinator");
   }, []);

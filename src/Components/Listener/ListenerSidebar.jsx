@@ -12,6 +12,7 @@ export default function ListenerSidebar({ userName = "" }) {
 
   const user = useSelector((state) => state.loggedInUser.success);
 
+  console.log("redux", user)
   const getLinkStyle = (path) =>
     location.pathname === path
       ? "bg-[#003366] text-white font-semibold"
@@ -19,7 +20,7 @@ export default function ListenerSidebar({ userName = "" }) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    sessionStorage.removeItem("userRole");
+    localStorage.removeItem("userRole");
     dispatch(setloggedInUserSuccess({}));
     navigate("/");
   };

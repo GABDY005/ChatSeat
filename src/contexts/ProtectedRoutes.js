@@ -15,7 +15,7 @@ export default function ProtectedRoute({
     return <Navigate to={redirectPath} replace />;
   }
   
-  const userRole = sessionStorage.getItem('userRole');
+  const userRole = localStorage.getItem('userRole');
   
   if (userRole === 'admin') {
     return <Outlet />;

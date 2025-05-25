@@ -49,7 +49,7 @@ export default function ListenerHelp() {
   //   fetchUser();
   // }, [navigate]);
   useEffect(() => {
-    sessionStorage.getItem("userRole") === "admin"
+    localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
       : setUserRole("listener");
   }, []);

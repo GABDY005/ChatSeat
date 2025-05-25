@@ -18,7 +18,7 @@ export default function AdminSidebar({ userName = "" }) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    sessionStorage.removeItem("userRole");
+    localStorage.removeItem("userRole");
     dispatch(setloggedInUserSuccess({}));
     navigate("/");
   };

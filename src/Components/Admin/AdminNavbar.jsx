@@ -40,7 +40,7 @@ export default function AdminNavbar({title="Admin Dashboard"}) {
   // fetchUserRole();
   //   }, [location]);
   useEffect(() => {
-    sessionStorage.getItem("userRole") === "admin"
+    localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin") : setUserRole("");
   }, []);
   return (

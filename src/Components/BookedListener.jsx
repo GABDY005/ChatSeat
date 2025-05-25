@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchAllBookings , deletePastBookings  } from "../Controller/BookingController"; 
 import { useEffect, useState } from "react"; 
 import logo from "../assets/Logo.jpg";
@@ -7,6 +7,8 @@ import logo from "../assets/Logo.jpg";
 
 export default function BookedListener() {
   const [bookings, setBookings] = useState([]);
+  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
   const getBookings = async () => {
@@ -32,38 +34,94 @@ export default function BookedListener() {
   getBookings();
 }, []);
   const handleLogoClick = () => {
-    window.location.reload();
+    navigate("/");
   };
   
   return (
     <>
       <div className="min-h-sceen bg-white">
-        <nav className="sticky top-0 z-50 flex flex-col sm:flex-row items-center justify-between bg-[#003366] sm:px-8 py-4 sm:py-5 shadow-lg w-full">
-        <div
-          onClick={handleLogoClick}
-          className="flex items-center space-x-2 cursor-pointer mb-2 sm:mb-0"
-        >
-          <img
-            src={logo}
-            alt="ChatSeat Logo"
-            className="w-12 h-12 object-cover border-2 border-white shadow-md"
-          />
-        </div>
-        <div className="absolute left-1/2 transform -translate-x-1/2">
-          <h1 className="text-white font-extrabold text-xl sm:text-2xl md:text-3xl tracking-wide text-center sm:text-left">
-            Who's at the Seat?
-          </h1>
+        <nav className="sticky top-0 z-50 bg-[#003366] shadow-lg w-full">
+        <div className="flex items-center justify-between px-4 md:px-8 py-4 md:py-5">
+          <div
+            onClick={handleLogoClick}
+            className="flex items-center space-x-2 cursor-pointer"
+          >
+            <img
+              src={logo}
+              alt="ChatSeat Logo"
+              className="w-12 h-12 object-cover border-2 border-white shadow-md"
+            />
+          </div>
+
+          <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
+            <h1 className="text-white font-extrabold text-xl md:text-3xl tracking-wide text-center">
+              Who's at the Seat?
+            </h1>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Link
+              to="/BookedListener"
+              className="bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200"
+            >
+              Who's at the Seat?
+            </Link>
+            <Link
+              to="/Login"
+              className="bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200"
+            >
+              Login
+            </Link>
+          </div>
+
+          {/* Mobile Hamburger Menu */}
+
+          <div className="md:hidden">
+            {isMenuOpen ? (
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="text-white text-xl hover:text-gray-300"
+              >
+                ✕
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-white focus:outline-none"
+              >
+                <div className="w-6 h-6 flex flex-col justify-center items-center">
+                  <div className="w-5 h-0.5 bg-white mb-1"></div>
+                  <div className="w-5 h-0.5 bg-white mb-1"></div>
+                  <div className="w-5 h-0.5 bg-white"></div>
+                </div>
+              </button>
+            )}
+          </div>
         </div>
 
-       
-          <Link
-            to="/"
-            className="bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200"
-          >
-            Back to Home
-          </Link>
-       
-      </nav> 
+        {/* Mobile Dropdown Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-[#003366] border-t border-white/20">
+            <div className="px-4 py-4 space-y-3">
+              <Link
+                to="/BookedListener"
+                className="block bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200 text-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Who's at the Seat?
+              </Link>
+              <Link
+                to="/Login"
+                className="block bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200 text-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Login
+              </Link>
+            </div>
+          </div>
+        )}
+      </nav>
 </div>
 
         <div className="px-4 sm:px-6 py-8 max-w-6xl mx-auto">

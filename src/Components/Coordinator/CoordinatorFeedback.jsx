@@ -53,15 +53,13 @@ export default function Feedback() {
 
   //To prevent the page from reloading when the feedback is submitted
     useEffect(() => {
-      sessionStorage.getItem("userRole") === "admin"
+      localStorage.getItem("userRole") === "admin"
         ? setUserRole("admin")
-        : setUserRole("coordinator");
+        : setUserRole("Coordinator");
     }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-
 
     if (!userId) {
       toast.warning("You must be logged in to submit feedback.");

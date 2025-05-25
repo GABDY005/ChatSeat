@@ -35,7 +35,7 @@ export default function CoordinatorsListInListener() {
   //   fetchUser();
   // }, []);
   useEffect(() => {
-    sessionStorage.getItem("userRole") === "admin"
+    localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
       : setUserRole("listener");
   }, []);
