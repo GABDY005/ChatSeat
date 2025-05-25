@@ -136,7 +136,7 @@ export default function Signup() {
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        
         {isMenuOpen && (
           <div className="md:hidden bg-[#003366] border-t border-white/20">
             <div className="px-4 py-4 space-y-3">

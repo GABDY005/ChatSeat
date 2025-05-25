@@ -16,18 +16,23 @@ export default function BookedListener() {
       await deletePastBookings(); 
       const data = await fetchAllBookings();
 
+      console.log("Fetched bookings:", data);
+
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
       const filteredBookings = data.filter((b) => {
         const bookingDate = new Date(b.date);
         bookingDate.setHours(0, 0, 0, 0);
-        return bookingDate >= today;
+        const isFuture = bookingDate >= today;
+        console.log("Checking:", bookingDate, "Is future:", isFuture);
+        return isFuture;
       });
 
+      console.log("Filtered bookings:", filteredBookings);
       setBookings(filteredBookings);
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error fetching bookings:", err);
     }
   };
 
@@ -59,7 +64,7 @@ export default function BookedListener() {
             </h1>
           </div>
 
-          {/* Desktop Navigation */}
+         
           <div className="hidden md:flex items-center space-x-4">
             <Link
               to="/BookedListener"
@@ -75,8 +80,7 @@ export default function BookedListener() {
             </Link>
           </div>
 
-          {/* Mobile Hamburger Menu */}
-
+         
           <div className="md:hidden">
             {isMenuOpen ? (
               <button
@@ -100,7 +104,7 @@ export default function BookedListener() {
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        
         {isMenuOpen && (
           <div className="md:hidden bg-[#003366] border-t border-white/20">
             <div className="px-4 py-4 space-y-3">

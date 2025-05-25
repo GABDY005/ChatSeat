@@ -42,7 +42,7 @@ export default function Home() {
             </h1>
           </div>
 
-          {/* Desktop Navigation */}
+          
           <div className="hidden md:flex items-center space-x-4">
             <Link
               to="/BookedListener"
@@ -58,7 +58,7 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Mobile Hamburger Menu */}
+         
 
           <div className="md:hidden">
             {isMenuOpen ? (
@@ -83,7 +83,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
+       
         {isMenuOpen && (
           <div className="md:hidden bg-[#003366] border-t border-white/20">
             <div className="px-4 py-4 space-y-3">

@@ -18,6 +18,7 @@ export const deletePastBookings = async () => {
 
   const { error } = await supabase
     .from("bookings") 
+    .delete()
     .lt("date", today);
 
   if (error) {
