@@ -81,14 +81,14 @@ export default function ListenerSidebar({ userName = "" }) {
         >
           About Us
         </Link>
-        <Link
+        {/* <Link
           to="/ListenerFeedback"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
             "/ListenerFeedback"
           )}`}
         >
           Feedback
-        </Link>
+        </Link> */}
         <Link
           to="/ListenerHelp"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(

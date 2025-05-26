@@ -13,7 +13,9 @@ export default function Feedback() {
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
   const [userId, setUserId] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
 
   // useEffect(() => {
   //   const fetchUserInfo = async () => {
@@ -87,12 +89,50 @@ export default function Feedback() {
     } else {
       toast.success("Thank you for your feedback!");
       setMessage("");
+      setOpen(false);
     }
   };
 
   return (
     <>
-      {userRole === "admin" ? (
+    <div className="fixed bottom-6 right-6 z-50">
+{!open ? (
+        <button
+          onClick={() => setOpen(true)}
+          className="bg-[#003366] text-white px-4 py-2 rounded-full shadow-lg"
+        >
+          💬 Feedback
+        </button>
+      ) : (
+        <div className="w-[400px]  bg-white border border-gray-300 rounded-lg shadow-xl p-4">
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="font-bold text-[#003366]">Your Feedback</h4>
+            <button onClick={() => setOpen(false)} className="text-gray-500 text-sm">
+              ✖
+            </button>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="w-full h-24 p-2 border rounded"
+              placeholder="Write your thoughts..."
+              required
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full mt-2 bg-[#003366] text-white py-1 rounded"
+            >
+              {loading ? "Submitting..." : "Submit"}
+            </button>
+          </form>
+        </div>
+      )}
+    </div>
+  
+    
+      {/* {userRole === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
         <CoordinatorNavbar title="Your Feedback Matters" />
@@ -112,7 +152,7 @@ export default function Feedback() {
               Please let us know your thoughts about your experience.
             </p>
 
-            {/* <div className="bg-white p-5 rounded-lg shadow-md"> */}
+
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block font-semibold mb-1 text-gray-700">
@@ -139,8 +179,8 @@ export default function Feedback() {
             </form>
           </div>
         </div>
-      </div>
-      {/* </div> */}
+      </div> */}
+     
     </>
   );
 }

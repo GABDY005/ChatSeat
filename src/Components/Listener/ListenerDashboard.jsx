@@ -4,50 +4,53 @@ import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import { Link, useNavigate } from "react-router-dom";
 import AdminNavbar from "../Admin/AdminNavbar";
+import ListenerFeedbackWidget from "./ListenerFeedback";
 
 export default function ListenerDashboard() {
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
   const navigate = useNavigate();
+  const [userId, setUserId] = useState("");
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
+      if (!user || authError) {
+        navigate("/");
+        return;
+      }
 
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
 
-  //     if (!profile || profileError) {
-  //       navigate("/");
-  //       return;
-  //     }
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
 
-  //     if (
-  //       profile.role !== "listener" &&
-  //       profile.role !== "coordinator" &&
-  //       profile.role !== "admin"
-  //     ) {
-  //       navigate("/");
-  //       return;
-  //     }
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
 
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //   };
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+      setUserId(userId);
+    };
 
-  //   fetchUser();
-  // }, [navigate]);
+    fetchUser();
+  }, [navigate]);
   useEffect(() => {
     localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
@@ -154,6 +157,7 @@ export default function ListenerDashboard() {
           </div>
         </div>
       </div>
+      <ListenerFeedbackWidget />
     </>
   );
 }

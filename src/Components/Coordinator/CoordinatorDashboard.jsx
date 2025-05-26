@@ -4,41 +4,46 @@ import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
+import FeedbackWidget from "./CoordinatorFeedback";
+
 
 function CoordinatorDashboard() {
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+const [userId, setUserId] = useState(null);
+  
 
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
+      if (!user || authError) {
+        navigate("/");
+        return;
+      }
 
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
 
-  //     if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
-  //       navigate("/");
-  //       return;
-  //     }
+      if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
+        navigate("/");
+        return;
+      }
 
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //   };
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+    };
 
-  //   fetchUserInfo();
-  // }, [navigate]);
+    fetchUserInfo();
+  }, [navigate]);
 
   useEffect(() => {
     localStorage.getItem("userRole") === "admin"
@@ -126,6 +131,12 @@ function CoordinatorDashboard() {
     </div>
   </main>
 </div>
+<FeedbackWidget
+  userId={userId}
+  firstName={firstName}
+  email={email}
+  role={userRole}
+/>
     </>
   );
 }
