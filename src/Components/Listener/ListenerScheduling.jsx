@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { use, useCallback, useEffect, useState } from "react";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import FullCalendar from "@fullcalendar/react";
@@ -7,6 +7,8 @@ import supabase from "../../supabase";
 import ListenerSidebar from "./ListenerSidebar";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
+import { useNavigate } from "react-router-dom";
+
 
 export default function ListenerScheduling() {
   const [locations, setLocations] = useState([]);
@@ -26,6 +28,65 @@ export default function ListenerScheduling() {
   const [editAvailableTimes, setEditAvailableTimes] = useState([]);
   const [userRole, setUserRole] = useState(""); 
   const [firstName, setFirstName] = useState("User");
+  const navigate = useNavigate();
+
+
+  useEffect(() => { 
+    const fetchLocations = async () => {
+      const { data, error } = await supabase.from("locations").select("*");
+      if (error) {
+        console.error("Error fetching locations:", error);
+        return;
+      }
+      setLocations(data);
+    };
+    fetchLocations();
+  }, []);
+
+  
+
+  useEffect(() => {
+
+    const fetchUser = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (!user || authError) {
+        navigate("/");
+        return;
+      }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+      setUserId(user.id);
+      setUserName(profile.first_name);
+      fetchUserBookings(user.id);
+    };
+
+    fetchUser();
+  }, [navigate]);
 
   useEffect(() => {
     flatpickr("#date-picker", {
@@ -180,7 +241,8 @@ export default function ListenerScheduling() {
     loadAvailableTimes();
   };
 
-  
+ 
+
   const fetchCalendarEvents = async (locName) => {
     const { data: bookings, error } = await supabase
       .from("bookings")
@@ -258,12 +320,12 @@ export default function ListenerScheduling() {
          <ListenerNavbar title="Book Your Slot" />
       )}
      
-      <div className="flex min-h-screen bg-[#e6f4f9] pt-16">
+      <div className="flex flex-col lg:flex-row min-h-screen bg-[#e6f4f9] pt-16">
         <div className="sticky top-16 h-[calc(100vh-64px)] z-10">
-          <ListenerSidebar userName={userName || "Guest"} />
+          <ListenerSidebar userName={firstName} />
         </div>
-        <div className="flex-1 p-8">
-          <div className="flex space-x-4 mb-6">
+        <div className="flex-1 p-4 sm:p-6">
+          <div className="flex flex-wrap gap-4 mb-6">
             {["Upcoming", "Book", "Calendar"].map((tab) => (
               <button
                 key={tab}
@@ -285,7 +347,7 @@ export default function ListenerScheduling() {
 
           {activeTab === "Book" && (
             <div className="flex justify-center items-center min-h-[calc(100vh-200px)]">
-              <div className="bg-white w-full max-w-xl p-8 rounded-xl shadow-lg">
+              <div className="bg-white w-full max-w-xl p-6 sm:p-8 rounded-xl shadow-lg">
                 <label className="block font-semibold mb-1">Select Place:</label>
                 <select
                   value={location}
@@ -337,7 +399,7 @@ export default function ListenerScheduling() {
           )}
 
           {activeTab === "Calendar" && (
-            <div className="bg-white p-6 rounded shadow w-full">
+            <div className="bg-white p-4 sm:p-6 rounded shadow w-full overflow-auto">
               <select
                 value={calendarLocation}
                 onChange={(e) => setCalendarLocation(e.target.value)}
@@ -360,7 +422,7 @@ export default function ListenerScheduling() {
           )}
 
           {activeTab === "Upcoming" && (
-            <div className="bg-white p-6 rounded shadow w-full">
+            <div className="bg-white p-4 sm:p-6 rounded shadow w-full">
               <h3 className="text-xl font-bold mb-3">Your Upcoming Bookings</h3>
               {userBookings.length === 0 ? (
                 <p>No bookings yet.</p>
@@ -463,5 +525,4 @@ export default function ListenerScheduling() {
       </div>
     </>
   );
-}
-
+} 

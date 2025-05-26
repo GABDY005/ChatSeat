@@ -22,43 +22,43 @@ export default function CoordinatorChatroom() {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
+      if (!user || authError) {
+        navigate("/");
+        return;
+      }
 
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
 
-  //     if (!profile || profileError) {
-  //       navigate("/");
-  //       return;
-  //     }
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
 
-  //     if (profile.role !== "coordinator" && profile.role !== "admin") {
-  //       navigate("/");
-  //       return;
-  //     }
+      if (profile.role !== "coordinator" && profile.role !== "admin") {
+        navigate("/");
+        return;
+      }
 
-  //     setUserId(user.id);
-  //     setUsername(profile.first_name);
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //     setRole(profile.role);
-  //   };
+      setUserId(user.id);
+      setUsername(profile.first_name);
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+      setRole(profile.role);
+    };
 
-  //   fetchUser();
-  // }, [navigate]);
+    fetchUser();
+  }, [navigate]);
   useEffect(() => {
     localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")

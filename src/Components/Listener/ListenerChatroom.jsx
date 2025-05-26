@@ -6,7 +6,6 @@ import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 export default function ListenerChatroom() {
   const [threads, setThreads] = useState({});
@@ -21,52 +20,48 @@ export default function ListenerChatroom() {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     if (
-  //       profile.role !== "listener" &&
-  //       profile.role !== "coordinator" &&
-  //       profile.role !== "admin"
-  //     ) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //     setUserId(user.id);
-  //     setUsername(profile.first_name);
-  //     setRole(profile.role);
-  //   };
-
-  //   fetchUser();
-  // }, [navigate]);
   useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("listener");
-  }, []);
+    const fetchUser = async () => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (!user || authError) {
+        navigate("/");
+        return;
+      }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("first_name, role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        navigate("/");
+        return;
+      }
+
+      if (
+        profile.role !== "listener" &&
+        profile.role !== "coordinator" &&
+        profile.role !== "admin"
+      ) {
+        navigate("/");
+        return;
+      }
+
+      setFirstName(profile.first_name);
+      setUserRole(profile.role);
+      setUserId(user.id);
+      setUsername(profile.first_name);
+      setRole(profile.role);
+    };
+
+    fetchUser();
+  }, [navigate]);
+
   useEffect(() => {
     const threadsRef = ref(database, "threads");
     onValue(threadsRef, (snapshot) => {
@@ -77,7 +72,7 @@ export default function ListenerChatroom() {
 
   const handlePost = () => {
     if (!title || !content) {
-      toast.warning("Please enter a title and content!");
+      alert("Please enter a title and content!");
       return;
     }
 
