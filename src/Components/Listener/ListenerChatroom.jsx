@@ -6,6 +6,7 @@ import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { useNavigate } from "react-router-dom";
+import ListenerFeedbackWidget from "../Listener/ListenerFeedbackWidget";
 
 export default function ListenerChatroom() {
   const [threads, setThreads] = useState({});

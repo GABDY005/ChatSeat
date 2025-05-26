@@ -4,6 +4,7 @@ import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
+import interactionPlugin from "@fullcalendar/interaction";
 
 // const dummyAppointments = [
 //   {
@@ -35,6 +36,8 @@ export default function CoordinatorAppointments() {
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
   const navigate = useNavigate();
+  const [editModal, setEditModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   // useEffect(() => {
   //   const fetchUser = async () => {
@@ -61,7 +64,7 @@ export default function CoordinatorAppointments() {
 
   //   fetchUser();
   // }, [navigate]);
-  
+
   useEffect(() => {
     localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
@@ -106,6 +109,33 @@ export default function CoordinatorAppointments() {
   const toggleDropdown = (id) => {
     setOpenDropdown(openDropdown === id ? null : id);
   };
+
+  const handleEdit = (appointment) => {
+    setSelectedBooking(appointment);
+    setEditModal(true);
+  };
+
+  const saveEdit = async () => {
+  const { error } = await supabase
+    .from("bookings")
+    .update({
+      time: selectedBooking.time,
+      date: selectedBooking.date,
+      location: selectedBooking.location,
+    })
+    .eq("id", selectedBooking.id);
+
+  if (!error) {
+    setAppointments((prev) =>
+      prev.map((a) =>
+        a.id === selectedBooking.id ? { ...a, ...selectedBooking } : a
+      )
+    );
+    setEditModal(false);
+  } else {
+    console.error("Error updating booking:", error.message);
+  }
+};
 
   const handleDelete = async (id) => {
     const { error } = await supabase.from("bookings").delete().eq("id", id);
@@ -152,6 +182,12 @@ export default function CoordinatorAppointments() {
                     {openDropdown === appointment.id && (
                       <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-md z-10">
                         <button
+                          onClick={() => handleEdit(appointment)}
+                          className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-blue-600"
+                        >
+                          Edit
+                        </button>
+                        <button
                           onClick={() => handleDelete(appointment.id)}
                           className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-500"
                         >
@@ -160,7 +196,7 @@ export default function CoordinatorAppointments() {
                       </div>
                     )}
                   </div>
-
+                  
                   <div className="mb-3">
                     <h3 className="text-xl font-bold text-[#003366] flex items-center gap-2">
                       {appointment.listenerName}
@@ -187,6 +223,40 @@ export default function CoordinatorAppointments() {
           </div>
         </div>
       </div>
+      {editModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded-lg shadow-xl space-y-4 w-96">
+      <h2 className="text-lg font-bold mb-2">Edit Booking</h2>
+      <label className="block text-sm font-medium">Time</label>
+      <input
+        type="time"
+        value={selectedBooking.time}
+        onChange={(e) => setSelectedBooking({ ...selectedBooking, time: e.target.value })}
+        className="border rounded px-3 py-1 w-full"
+      />
+      <label className="block text-sm font-medium">Date</label>
+      <input
+        type="date"
+        value={selectedBooking.date}
+        onChange={(e) => setSelectedBooking({ ...selectedBooking, date: e.target.value })}
+        className="border rounded px-3 py-1 w-full"
+      />
+      <label className="block text-sm font-medium">Location</label>
+      <input
+        type="text"
+        value={selectedBooking.location}
+        onChange={(e) => setSelectedBooking({ ...selectedBooking, location: e.target.value })}
+        className="border rounded px-3 py-1 w-full"
+      />
+
+      <div className="flex justify-end gap-3 pt-4">
+        <button onClick={() => setEditModal(false)} className="text-gray-600">Cancel</button>
+        <button onClick={saveEdit} className="bg-blue-600 text-white px-4 py-1 rounded">Save</button>
+      </div>
+    </div>
+  </div>
+)}
+
     </>
   );
 }
