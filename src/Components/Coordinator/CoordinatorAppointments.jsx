@@ -4,7 +4,8 @@ import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
-import interactionPlugin from "@fullcalendar/interaction";
+import FeedbackWidget from "./CoordinatorFeedback";
+
 
 // const dummyAppointments = [
 //   {
@@ -38,6 +39,8 @@ export default function CoordinatorAppointments() {
   const navigate = useNavigate();
   const [editModal, setEditModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState(null);
 
   // useEffect(() => {
   //   const fetchUser = async () => {
@@ -256,6 +259,12 @@ export default function CoordinatorAppointments() {
     </div>
   </div>
 )}
+<FeedbackWidget
+  userId={userId}
+  firstName={firstName}
+  email={email}
+  role={userRole}
+/>
 
     </>
   );

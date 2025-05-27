@@ -3,16 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
-import supabase from "../../supabase";
-import { checkUserRole } from "../../Controller/UserController";
-import { toast } from "react-toastify";
+// import supabase from "../../supabase";
+// import { checkUserRole } from "../../Controller/UserController";
+// import { toast } from "react-toastify";
+import FeedbackWidget from "./CoordinatorFeedback";
 
 function LessonCoordinator() {
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
   const [userId, setUserId] = useState("");
-  const [role, setRole] = useState("");
-  const navigate = useNavigate();
+  // const [role, setRole] = useState("");
+  // const navigate = useNavigate();
+  const [email, setEmail] = useState("");
 
   // useEffect(() => {
   //   const verifyUser = async () => {
@@ -119,6 +121,12 @@ function LessonCoordinator() {
 </div>
 
         </div>
+        <FeedbackWidget
+          userId={userId}
+          firstName={firstName}
+          email={email}
+          role={userRole}
+        />
       
     </>
   );

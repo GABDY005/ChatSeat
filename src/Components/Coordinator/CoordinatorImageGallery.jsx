@@ -5,6 +5,7 @@ import CoordinatorSidebar from "./CoordinatorSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import FeedbackWidget from "./CoordinatorFeedback";
 
 export default function CoordinatorImageGallery() {
   const [files, setFiles] = useState([]);
@@ -12,6 +13,8 @@ export default function CoordinatorImageGallery() {
   const [userRole, setUserRole] = useState("");
   const [firstName, setFirstName] = useState("User");
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState(null);
 
   // useEffect(() => {
   //   const fetchUserInfo = async () => {
@@ -175,6 +178,12 @@ export default function CoordinatorImageGallery() {
           </div>
         </div>
       </div>
+      <FeedbackWidget
+        userId={userId}
+        firstName={firstName}
+        email={email}
+        role={userRole}
+      />
     </>
   );
 }

@@ -4,7 +4,7 @@ import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import { Link, useNavigate } from "react-router-dom";
 import AdminNavbar from "../Admin/AdminNavbar";
-
+import ListenerFeedbackWidget from "./ListenerFeedback";
 
 export default function ConversationSkills() {
   const [firstName, setFirstName] = useState("User");
@@ -134,7 +134,7 @@ export default function ConversationSkills() {
           </div>
           </div>
         </div>
-      
+      <ListenerFeedbackWidget />
     </>
   );
 }

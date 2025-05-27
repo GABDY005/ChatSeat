@@ -8,6 +8,7 @@ import ListenerSidebar from "./ListenerSidebar";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { useNavigate } from "react-router-dom";
+import ListenerFeedbackWidget from "./ListenerFeedback";
 
 
 export default function ListenerScheduling() {
@@ -523,6 +524,7 @@ export default function ListenerScheduling() {
           )}
         </div>
       </div>
+      <ListenerFeedbackWidget />
     </>
   );
 } 

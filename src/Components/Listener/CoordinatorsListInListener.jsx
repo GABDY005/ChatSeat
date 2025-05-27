@@ -4,6 +4,7 @@ import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { useNavigate } from "react-router-dom";
+import ListenerFeedbackWidget from "./ListenerFeedback";
 
 export default function CoordinatorsListInListener() {
   const [firstName, setFirstName] = useState("User");
@@ -88,6 +89,7 @@ export default function CoordinatorsListInListener() {
           )}
         </div>
       </div>
+      <ListenerFeedbackWidget />
     </>
   );
 }

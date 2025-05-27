@@ -7,6 +7,7 @@ import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { toast } from "react-toastify";
+import FeedbackWidget from "./CoordinatorFeedback";
 
 export default function CoordinatorListenerChatroom() {
   const [threads, setThreads] = useState({});
@@ -20,6 +21,8 @@ export default function CoordinatorListenerChatroom() {
   const [userRole, setUserRole] = useState("");
   const [replyTexts, setReplyTexts] = useState({});
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+
 
    useEffect(() => {
      const verifyUser = async () => {
@@ -260,6 +263,12 @@ export default function CoordinatorListenerChatroom() {
           </div>
         </div>
       </div>
+      <FeedbackWidget
+        userId={userId}
+        firstName={firstName}
+        email={email}
+        role={userRole}
+      />
     </>
   );
 }
