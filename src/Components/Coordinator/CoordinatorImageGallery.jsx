@@ -56,6 +56,7 @@ export default function CoordinatorImageGallery() {
     localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
       : setUserRole("coordinator");
+    fetchImages();
   }, []);
   const fetchImages = async () => {
     const { data, error } = await supabase.storage
