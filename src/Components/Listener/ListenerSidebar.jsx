@@ -12,7 +12,7 @@ export default function ListenerSidebar({ userName = "" }) {
 
   const user = useSelector((state) => state.loggedInUser.success);
 
-  console.log("redux", user)
+  console.log("redux", user);
   const getLinkStyle = (path) =>
     location.pathname === path
       ? "bg-[#003366] text-white font-semibold"
@@ -28,7 +28,6 @@ export default function ListenerSidebar({ userName = "" }) {
   return (
     <div className="w-64 bg-[#A8E4F2] h-[calc(100vh-64px)] sticky top-16 flex flex-col px-4 py-6 overflow-y-auto">
       <div className="text-[#1E3A8A] font-bold text-xl mb-12 text-center">
-        {/* Hello, {userName}! */}
         Hello, {user.first_name}!
       </div>
 

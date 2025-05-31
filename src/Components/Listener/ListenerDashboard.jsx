@@ -81,7 +81,7 @@ export default function ListenerDashboard() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            {/* <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-[#f0f8ff] p-6 rounded-xl shadow">
                 <h3 className="text-xl font-semibold text-[#1E3A8A] mb-4">
                   Learn More About Listening
@@ -152,7 +152,7 @@ export default function ListenerDashboard() {
               <p className="text-gray-800">
                 Provide your <strong>Feedback</strong> through the <strong>Feedback tab</strong>.
               </p>
-            </div>
+            </div> */}
 
           </div>
         </div>

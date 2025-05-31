@@ -67,7 +67,7 @@ const [userId, setUserId] = useState(null);
 
   
   <main className="flex-1 overflow-y-auto bg-[#e6f4f9]">
-    <div className="p-6 sm:p-8 md:p-10 max-w-5xl mx-auto">
+    <div className="p-6 sm:p-8 md:p-10 max-w-5xl mx-auto mt-8">
       <div className="bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-md border border-blue-100 text-gray-800 space-y-8 mt-4">
         <h2 className="text-3xl md:text-4xl font-extrabold text-center text-[#1E3A8A]">
           Welcome, Coordinators!

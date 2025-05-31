@@ -75,7 +75,7 @@ export default function Signup() {
 
   return (
     <>
-      <div className="min-h-sceen bg-white">
+      <div className=" bg-white">
       <nav className="sticky top-0 z-50 bg-[#003366] shadow-lg w-full">
         <div className="flex items-center justify-between px-4 md:px-8 py-4 md:py-5">
           <div
@@ -95,7 +95,6 @@ export default function Signup() {
             </h1>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
             <Link
               to="/BookedListener"
@@ -159,7 +158,7 @@ export default function Signup() {
         )}
       </nav>
       </div>
-      <div className="min-h-screen flex items-center justify-center bg-[#A8E4F2] px-4">
+      <div className="h-[calc(100vh-80px)] flex items-center justify-center bg-[#A8E4F2] px-4">
         <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#1E3A8A] mb-6">
             Create an Account

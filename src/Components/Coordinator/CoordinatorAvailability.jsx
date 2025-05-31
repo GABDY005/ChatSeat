@@ -116,9 +116,7 @@ export default function CoordinatorAvailability() {
           </h2>
 
           <div className="flex flex-wrap gap-4 sm:gap-6 mb-4">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-[#86efac] rounded-sm"></div> Available
-            </div>
+            
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-[#fde047] rounded-sm"></div> Partially Booked
             </div>

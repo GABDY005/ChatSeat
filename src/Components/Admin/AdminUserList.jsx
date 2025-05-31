@@ -88,9 +88,6 @@ export default function AdminUserList() {
     }
   
   };
-  
-
-
 
   //it will filter the user according tot he role
   const filteredUsers = users.filter((user) => user.role === activeTab);
