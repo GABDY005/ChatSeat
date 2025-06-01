@@ -31,7 +31,6 @@ import CoordinatorChatroom from "./Components/Coordinator/CoordinatorChatroom";
 import CoordinatorListenerChatroom from "./Components/Coordinator/CoordinatorListenerChatroom";
 import CoordinatorAppointments from "./Components/Coordinator/CoordinatorAppointments";
 import CoordinatorAvailability from "./Components/Coordinator/CoordinatorAvailability";
-import CoordinatorImageGallery from "./Components/Coordinator/CoordinatorImageGallery.jsx";
 import LessonCoordinator from "./Components/Coordinator/LessonCoordinator";
 // import Logos from "./Components/Coordinator/Logos";
 import CoordinatorFeedback from "./Components/Coordinator/CoordinatorFeedback";
@@ -87,7 +86,6 @@ function App() {
               <Route path="/LessonCoordinator" element={<LessonCoordinator />}  />
               <Route path="/CoordinatorChatroom" element={<CoordinatorChatroom />} />
               <Route path="/CoordinatorListenerChatroom" element={<CoordinatorListenerChatroom />}  />
-              <Route path="/CoordinatorImageGallery" element={<CoordinatorImageGallery />}  />
               {/* <Route path="/Logos" element={<Logos />} /> */}
               <Route path="/CoordinatorFeedback" element={<CoordinatorFeedback />}/>
               <Route path="/CoordinatorHelp" element={<CoordinatorHelp />} />
