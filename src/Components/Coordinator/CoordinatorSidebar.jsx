@@ -86,14 +86,6 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
         >
           Listener Chat room
         </Link>
-        <Link
-          to="/CoordinatorImageGallery"
-          className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-            "/CoordinatorImageGallery"
-          )}`}
-        >
-          Image Gallery
-        </Link>
         {/* <Link to="/Logos" className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle("/Logos")}`}>
           Banners and Logo
         </Link> */}
@@ -116,7 +108,7 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
       </div>
 
       {/* Logout */}
-      <div className="mt-20">
+      <div className="mt-auto">
         <button
           onClick={handleLogout}
           className="w-full bg-white text-[#1E3A8A] font-medium px-4 py-2 rounded-full text-center hover:bg-[#d9eefe] transition"
