@@ -162,7 +162,7 @@ export default function Feedback() {
               <div
                 key={item.id}
                 className={`self-start bg-white shadow-md rounded-xl p-6 border-t-4 ${
-                  item.role === "Coordinator" ? "border-green-500" : "border-blue-500"
+                  item.role.toLowerCase() === "coordinator" ? "border-green-500" : "border-blue-500"
                 } hover:shadow-lg hover:scale-105 transition-transform duration-300`}
               >
                 <button

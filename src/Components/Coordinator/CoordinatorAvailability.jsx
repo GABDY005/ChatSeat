@@ -61,7 +61,10 @@ export default function CoordinatorAvailability() {
       for (const booking of bookings || []) {
         const key = `${booking.date}T${booking.time}`;
         if (!grouped[key]) grouped[key] = [];
-        grouped[key].push({ user_id: booking.user_id, location: booking.location });
+        grouped[key].push({
+          user_id: booking.user_id,
+          location: booking.location,
+        });
       }
 
       const enrichedEvents = await Promise.all(
@@ -116,12 +119,13 @@ export default function CoordinatorAvailability() {
           </h2>
 
           <div className="flex flex-wrap gap-4 sm:gap-6 mb-4">
-            
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-[#fde047] rounded-sm"></div> Partially Booked
+              <div className="w-4 h-4 bg-[#fde047] rounded-sm"></div> Partially
+              Booked
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-[#f87171] rounded-sm"></div> Fully Booked
+              <div className="w-4 h-4 bg-[#f87171] rounded-sm"></div> Fully
+              Booked
             </div>
           </div>
 
@@ -132,19 +136,16 @@ export default function CoordinatorAvailability() {
               height={550}
               events={calendarEvents}
               eventDidMount={(info) => {
-                const tooltip = `${info.event.title}\n${info.event.start.toLocaleString()}`;
+                const tooltip = `${
+                  info.event.title
+                }\n${info.event.start.toLocaleString()}`;
                 info.el.setAttribute("title", tooltip);
               }}
             />
           </div>
         </div>
       </div>
-      <FeedbackWidget
-        userId={userId}
-        firstName={firstName}
-        email={email}
-        role={userRole}
-      />
+      <FeedbackWidget />
     </>
   );
 }

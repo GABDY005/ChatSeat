@@ -1,68 +1,72 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import ListenerSidebar from "./ListenerSidebar";
-import supabase from "../../supabase";
+// import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import ListenerFeedbackWidget from "./ListenerFeedback";
-
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify/unstyled";
 
 export default function ListenerChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [username, setUsername] = useState("User");
-  const [userId, setUserId] = useState("");
-  const [role, setRole] = useState("");
+  // const [username, setUsername] = useState("User");
+  // const [userId, setUserId] = useState("");
+  // const [role, setRole] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [userRole, setUserRole] = useState("");
-  const [firstName, setFirstName] = useState("User");
+  // const [userRole, setUserRole] = useState("");
+  // const [firstName, setFirstName] = useState("User");
+  const [replyTexts, setReplyTexts] = useState({});
 
-  const navigate = useNavigate();
+  const user = useSelector((state) => state.loggedInUser.success);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // const navigate = useNavigate();
 
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      if (!profile || profileError) {
-        navigate("/");
-        return;
-      }
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
 
-      if (
-        profile.role !== "listener" &&
-        profile.role !== "coordinator" &&
-        profile.role !== "admin"
-      ) {
-        navigate("/");
-        return;
-      }
+  //     if (!profile || profileError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-      setUserId(user.id);
-      setUsername(profile.first_name);
-      setRole(profile.role);
-    };
+  //     if (
+  //       profile.role !== "listener" &&
+  //       profile.role !== "coordinator" &&
+  //       profile.role !== "admin"
+  //     ) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-    fetchUser();
-  }, [navigate]);
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+  //     setUserId(user.id);
+  //     setUsername(profile.first_name);
+  //     setRole(profile.role);
+  //   };
+
+  //   fetchUser();
+  // }, [navigate]);
 
   useEffect(() => {
     const threadsRef = ref(database, "threads");
@@ -82,9 +86,9 @@ export default function ListenerChatroom() {
     set(newRef, {
       title,
       content,
-      username,
-      user_id: userId,
-      role,
+      username: user.first_name,
+      user_id: user.id,
+      role: user.role,
       timestamp: Date.now(),
     });
 
@@ -98,25 +102,38 @@ export default function ListenerChatroom() {
     const newReply = push(ref(database, `threads/${threadID}/replies`));
     set(newReply, {
       text: replyText,
-      username,
-      user_id: userId,
-      role,
+      username: user.first_name,
+      user_id: user.id,
+      role: user.role,
       timestamp: Date.now(),
     });
   };
 
-  const handleDeleteThread = (threadId) => {
-    const threadRef = ref(database, `threads/${threadId}`);
-    remove(threadRef);
+  const handleDeleteThread = (threadId, threadTitle) => {
+    // Show confirmation dialog
+    const isConfirmed = window.confirm(
+      `Are you sure you want to delete the thread "${threadTitle}"? This action cannot be undone.`
+    );
+
+    if (isConfirmed) {
+      const threadRef = ref(database, `threads/${threadId}`);
+      remove(threadRef);
+      toast.success("Thread deleted successfully!");
+    }
   };
 
-  const handleDeleteReply = (threadId, replyKey) => {
-    const replyRef = ref(database, `threads/${threadId}/replies/${replyKey}`);
-    remove(replyRef);
+  const handleDeleteReply = (threadId, replyKey, reply) => {
+    const isConfirmed = window.confirm(
+      `Are you sure you want to delete the thread "${reply}"? This action cannot be undone.`
+    );
+    if (isConfirmed) {
+      const replyRef = ref(database, `threads/${threadId}/replies/${replyKey}`);
+      remove(replyRef);
+    }
   };
 
   const canDeleteReply = (replyUserId, replyUserRole) => {
-    return userId === replyUserId || role === "admin";
+    return user.id === replyUserId || user.role === "admin";
   };
 
   const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
@@ -125,7 +142,7 @@ export default function ListenerChatroom() {
 
   return (
     <>
-      {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Listener Dashboard" />
       ) : (
         <ListenerNavbar title="Let's Chat" />
@@ -133,7 +150,7 @@ export default function ListenerChatroom() {
 
       <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <ListenerSidebar userName={username} />
+          <ListenerSidebar />
         </div>
 
         <div className="flex-1 p-4 sm:p-6 w-full">
@@ -162,7 +179,7 @@ export default function ListenerChatroom() {
               onChange={(e) => setContent(e.target.value)}
             />
             <button
-              className="w-full bg-[#003366] text-white py-2 rounded"
+              className="w-full bg-[#003366] hover:bg-[#002244] text-white py-2 rounded"
               onClick={handlePost}
             >
               Post Discussion
@@ -180,27 +197,38 @@ export default function ListenerChatroom() {
                     {new Date(thread.timestamp).toLocaleString()}
                   </small>
 
-                  {(thread.user_id === userId || role === "admin") && (
+                  {(thread.user_id === user.id || user.role === "admin") && (
                     <button
-                      onClick={() => handleDeleteThread(id)}
-                      className="text-red-500 ml-4"
+                      onClick={() => handleDeleteThread(id, thread.title)}
+                      className="text-red-500 ml-4 hover:underline"
                     >
                       Delete
                     </button>
                   )}
-
-                  <input
-                    type="text"
-                    className="form-control mt-2 p-2 border rounded w-full"
-                    placeholder="Write a reply..."
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleReply(id, e.target.value);
-                        e.target.value = "";
+                  <div className="flex items-stretch gap-2 mt-2">
+                    <input
+                      type="text"
+                      className="flex-1 px-4 py-2 border rounded text-sm"
+                      placeholder="Write a reply..."
+                      value={replyTexts[id] || ""}
+                      onChange={(e) =>
+                        setReplyTexts((prev) => ({
+                          ...prev,
+                          [id]: e.target.value,
+                        }))
                       }
-                    }}
-                  />
+                    />
 
+                    <button
+                      onClick={() => {
+                        handleReply(id, replyTexts[id]);
+                        setReplyTexts((prev) => ({ ...prev, [id]: "" }));
+                      }}
+                      className="bg-[#003366] text-white px-4 rounded text-sm hover:bg-[#002244]"
+                    >
+                      Post
+                    </button>
+                  </div>
                   <div className="mt-3 space-y-2">
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (
@@ -216,10 +244,12 @@ export default function ListenerChatroom() {
 
                           {canDeleteReply(reply.user_id, reply.role) && (
                             <button
-                              onClick={() => handleDeleteReply(id, key)}
-                              className="text-red-500 mt-2 sm:mt-0 sm:ml-4"
+                              onClick={() =>
+                                handleDeleteReply(id, key, reply.text)
+                              }
+                              className=" bg-red-700 hover:bg-red-900 px-2 py-1 rounded text-white"
                             >
-                              ❌
+                              delete
                             </button>
                           )}
                         </div>

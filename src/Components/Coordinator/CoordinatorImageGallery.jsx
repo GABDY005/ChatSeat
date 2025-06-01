@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import supabase from "../../supabase";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import FeedbackWidget from "./CoordinatorFeedback";
 
@@ -11,10 +11,10 @@ export default function CoordinatorImageGallery() {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [userRole, setUserRole] = useState("");
-  const [firstName, setFirstName] = useState("User");
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [userId, setUserId] = useState(null);
+  // const [firstName, setFirstName] = useState("User");
+  // const navigate = useNavigate();
+  // const [email, setEmail] = useState("");
+  // const [userId, setUserId] = useState(null);
 
   // useEffect(() => {
   //   const fetchUserInfo = async () => {
@@ -127,7 +127,7 @@ export default function CoordinatorImageGallery() {
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName={firstName} />
+          <CoordinatorSidebar />
         </div>
 
         <div className="flex-1 p-4 sm:p-6 md:p-8">
@@ -179,12 +179,7 @@ export default function CoordinatorImageGallery() {
           </div>
         </div>
       </div>
-      <FeedbackWidget
-        userId={userId}
-        firstName={firstName}
-        email={email}
-        role={userRole}
-      />
+      <FeedbackWidget />
     </>
   );
 }

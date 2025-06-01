@@ -1,4 +1,4 @@
-import React, { use, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import FullCalendar from "@fullcalendar/react";
@@ -7,9 +7,9 @@ import supabase from "../../supabase";
 import ListenerSidebar from "./ListenerSidebar";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import ListenerFeedbackWidget from "./ListenerFeedback";
-
+import { useSelector } from "react-redux";
 
 export default function ListenerScheduling() {
   const [locations, setLocations] = useState([]);
@@ -20,19 +20,23 @@ export default function ListenerScheduling() {
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [calendarLocation, setCalendarLocation] = useState("");
   const [confirmation, setConfirmation] = useState("");
-  const [userName, setUserName] = useState("");
+  // const [userName, setUserName] = useState("");
   const [userBookings, setUserBookings] = useState([]);
-  const [userId, setUserId] = useState(null);
+  // const [userId, setUserId] = useState(null);
   const [activeTab, setActiveTab] = useState("Upcoming");
   const [editBookingId, setEditBookingId] = useState(null);
-  const [editValues, setEditValues] = useState({ date: "", time: "", location: "" });
+  const [editValues, setEditValues] = useState({
+    date: "",
+    time: "",
+    location: "",
+  });
   const [editAvailableTimes, setEditAvailableTimes] = useState([]);
-  const [userRole, setUserRole] = useState(""); 
-  const [firstName, setFirstName] = useState("User");
-  const navigate = useNavigate();
+  // const [userRole, setUserRole] = useState("");
+  // const [firstName, setFirstName] = useState("User");
+  // const navigate = useNavigate();
+  const user = useSelector((state) => state.loggedInUser.success);
 
-
-  useEffect(() => { 
+  useEffect(() => {
     const fetchLocations = async () => {
       const { data, error } = await supabase.from("locations").select("*");
       if (error) {
@@ -44,50 +48,48 @@ export default function ListenerScheduling() {
     fetchLocations();
   }, []);
 
-  
+  // useEffect(() => {
 
-  useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-    const fetchUser = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
 
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
+  //     if (!profile || profileError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      if (!profile || profileError) {
-        navigate("/");
-        return;
-      }
+  //     if (
+  //       profile.role !== "listener" &&
+  //       profile.role !== "coordinator" &&
+  //       profile.role !== "admin"
+  //     ) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      if (
-        profile.role !== "listener" &&
-        profile.role !== "coordinator" &&
-        profile.role !== "admin"
-      ) {
-        navigate("/");
-        return;
-      }
+  //     setFirstName(profile.first_name);
+  //     setUserRole(profile.role);
+  //     setUserId(user.id);
+  //     setUserName(profile.first_name);
+  //     fetchUserBookings(user.id);
+  //   };
 
-      setFirstName(profile.first_name);
-      setUserRole(profile.role);
-      setUserId(user.id);
-      setUserName(profile.first_name);
-      fetchUserBookings(user.id);
-    };
-
-    fetchUser();
-  }, [navigate]);
+  //   fetchUser();
+  // }, [navigate]);
 
   useEffect(() => {
     flatpickr("#date-picker", {
@@ -116,30 +118,29 @@ export default function ListenerScheduling() {
     fetchLocations();
   }, []);
 
-  
-  useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      if (user && !authError) {
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("first_name, role")
-          .eq("id", user.id)
-          .single();
+  //     if (user && !authError) {
+  //       const { data: profile, error: profileError } = await supabase
+  //         .from("profiles")
+  //         .select("first_name, role")
+  //         .eq("id", user.id)
+  //         .single();
 
-        if (profile?.first_name) {
-          setFirstName(profile.first_name);
-          setUserRole(profile.role);
-        }
-      }
-    };
+  //       if (profile?.first_name) {
+  //         setFirstName(profile.first_name);
+  //         setUserRole(profile.role);
+  //       }
+  //     }
+  //   };
 
-    fetchUser();
-  }, []);
+  //   fetchUser();
+  // }, []);
 
   const fetchUserBookings = async (uid) => {
     const { data } = await supabase
@@ -234,35 +235,33 @@ export default function ListenerScheduling() {
 
     await supabase
       .from("bookings")
-      .insert([{ location, date, time, user_id: userId }]);
+      .insert([{ location, date, time, user_id: user.id }]);
 
     setConfirmation(`Booked at ${location} on ${date} at ${time}.`);
     setTime("");
-    fetchUserBookings(userId);
+    fetchUserBookings(user.id);
     loadAvailableTimes();
   };
-
- 
 
   const fetchCalendarEvents = async (locName) => {
     const { data: bookings, error } = await supabase
       .from("bookings")
       .select("date, time, user_id")
       .eq("location", locName);
-  
+
     if (error) {
       console.error("Error fetching bookings:", error);
       return;
     }
-  
+
     const grouped = {};
-  
+
     for (const booking of bookings || []) {
       const key = `${booking.date}T${booking.time}`;
       if (!grouped[key]) grouped[key] = [];
       grouped[key].push(booking.user_id);
     }
-  
+
     const enrichedEvents = await Promise.all(
       Object.entries(grouped).map(async ([start, userIds]) => {
         const names = await Promise.all(
@@ -275,18 +274,17 @@ export default function ListenerScheduling() {
             return profile?.first_name || "Unknown";
           })
         );
-  
+
         return {
-          title: names.join(", "), 
+          title: names.join(", "),
           start,
           allDay: false,
         };
       })
     );
-  
+
     setCalendarEvents(enrichedEvents);
   };
-  
 
   useEffect(() => {
     if (calendarLocation) fetchCalendarEvents(calendarLocation);
@@ -298,8 +296,8 @@ export default function ListenerScheduling() {
       .update(editValues)
       .eq("id", id);
     if (!error) {
-      fetchUserBookings(userId);
-      
+      fetchUserBookings(user.id);
+
       if (calendarLocation) {
         fetchCalendarEvents(calendarLocation);
       }
@@ -309,21 +307,21 @@ export default function ListenerScheduling() {
 
   const handleCancel = async (id) => {
     await supabase.from("bookings").delete().eq("id", id);
-    fetchUserBookings(userId);
+    fetchUserBookings(user.id);
     loadAvailableTimes();
   };
 
   return (
     <>
-    {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Listener Dashboard" />
       ) : (
-         <ListenerNavbar title="Book Your Slot" />
+        <ListenerNavbar title="Book Your Slot" />
       )}
-     
+
       <div className="flex flex-col lg:flex-row min-h-screen bg-[#e6f4f9] pt-16">
         <div className="sticky top-16 h-[calc(100vh-64px)] z-10">
-          <ListenerSidebar userName={firstName} />
+          <ListenerSidebar />
         </div>
         <div className="flex-1 p-4 sm:p-6">
           <div className="flex flex-wrap gap-4 mb-6">
@@ -349,7 +347,9 @@ export default function ListenerScheduling() {
           {activeTab === "Book" && (
             <div className="flex justify-center items-center min-h-[calc(100vh-200px)]">
               <div className="bg-white w-full max-w-xl p-6 sm:p-8 rounded-xl shadow-lg">
-                <label className="block font-semibold mb-1">Select Place:</label>
+                <label className="block font-semibold mb-1">
+                  Select Place:
+                </label>
                 <select
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
@@ -393,7 +393,9 @@ export default function ListenerScheduling() {
                 </button>
 
                 {confirmation && (
-                  <div className="bg-blue-100 mt-3 p-3 rounded">{confirmation}</div>
+                  <div className="bg-blue-100 mt-3 p-3 rounded">
+                    {confirmation}
+                  </div>
                 )}
               </div>
             </div>
@@ -527,4 +529,4 @@ export default function ListenerScheduling() {
       <ListenerFeedbackWidget />
     </>
   );
-} 
+}

@@ -10,7 +10,7 @@ export default function CoordinatorHelp() {
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
   const navigate = useNavigate();
-    const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [userId, setUserId] = useState(null);
 
   // useEffect(() => {
@@ -141,12 +141,7 @@ export default function CoordinatorHelp() {
           </div>
         </div>
       </div>
-      <FeedbackWidget
-        userId={userId}
-        firstName={firstName}
-        email={email}
-        role={userRole}
-      />
+      <FeedbackWidget />
     </>
   );
 }
