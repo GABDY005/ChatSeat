@@ -55,18 +55,18 @@ export default function Help() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Manage Users */}
+          
             <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-xl shadow-sm hover:shadow-md transition">
               <h4 className="text-blue-900 font-semibold text-lg mb-2">Manage Users</h4>
               <p className="mb-2">This section includes three tabs to manage users on the platform:</p>
               <ul className="list-disc list-inside space-y-1 text-sm text-gray-800">
-                <li><strong>Pending:</strong> Approve users as <em>listeners</em> or <em>coordinators</em>.</li>
-                <li><strong>Listeners:</strong> View all listeners and <em>delete</em> if necessary.</li>
-                <li><strong>Coordinators:</strong> View and <em>delete</em> coordinators as needed.</li>
+                <li><strong>Pending:</strong> Approve users as listeners or coordinators.</li>
+                <li><strong>Listeners:</strong> View all listeners and delete if necessary.</li>
+                <li><strong>Coordinators:</strong> View and delete coordinators as needed.</li>
               </ul>
             </div>
 
-            {/* Chatrooms */}
+        
             <div className="bg-green-50 border-l-4 border-green-400 p-6 rounded-xl shadow-sm hover:shadow-md transition">
               <h4 className="text-green-900 font-semibold text-lg mb-2">Chatrooms</h4>
               <p>
@@ -75,11 +75,11 @@ export default function Help() {
               </p>
             </div>
 
-            {/* Feedback */}
+            
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-xl shadow-sm hover:shadow-md transition md:col-span-2">
               <h4 className="text-yellow-900 font-semibold text-lg mb-2">Feedback</h4>
               <p>
-                View feedback from both <strong>listeners</strong> and <strong>coordinators</strong>. Use filters to sort by <em>name</em>, <em>role</em>, or <em>submission date</em>, so you can efficiently review and respond to input over time.
+                View feedback from both <strong>listeners</strong> and <strong>coordinators</strong>. Use filters to sort by name, role, or submission date, so you can efficiently review and respond to input over time.
               </p>
             </div>
 

@@ -5,10 +5,10 @@ import Seat from "../assets/Seat.JPG";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import Navbar from "./Navbar";
 
 export default function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+ 
   useEffect(() => {
     Aos.init({
       duration: 800,
@@ -17,13 +17,9 @@ export default function Home() {
     });
   }, []);
 
-  const handleLogoClick = () => {
-    window.location.reload();
-  };
-
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-[#003366] shadow-lg w-full">
+      {/* <nav className="sticky top-0 z-50 bg-[#003366] shadow-lg w-full">
         <div className="flex items-center justify-between px-4 md:px-8 py-4 md:py-5">
           <div
             onClick={handleLogoClick}
@@ -42,7 +38,6 @@ export default function Home() {
             </h1>
           </div>
 
-          
           <div className="hidden md:flex items-center space-x-4">
             <Link
               to="/BookedListener"
@@ -57,8 +52,6 @@ export default function Home() {
               Login
             </Link>
           </div>
-
-         
 
           <div className="md:hidden">
             {isMenuOpen ? (
@@ -83,7 +76,6 @@ export default function Home() {
           </div>
         </div>
 
-       
         {isMenuOpen && (
           <div className="md:hidden bg-[#003366] border-t border-white/20">
             <div className="px-4 py-4 space-y-3">
@@ -104,7 +96,8 @@ export default function Home() {
             </div>
           </div>
         )}
-      </nav>
+      </nav> */}
+      <Navbar />
 
       <div className="w-full bg-white py-8 md:py-12 px-4 md:px-12 text-gray-800">
         <div className="max-w-screen-xl mx-auto space-y-8 md:space-y-12">
@@ -191,21 +184,31 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8" data-aos="fade-up">
-  <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-xl shadow-sm">
-    <h3 className="text-lg font-semibold text-blue-900 mb-2">About the Chat Seat</h3>
-    <p>
-      We’ll be setting up a <strong>Chat Seat</strong> in <em>“Name your Venue”</em>. Its purpose is to help community members connect through conversation.
-    </p>
-  </div>
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
+            data-aos="fade-up"
+          >
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-xl shadow-sm">
+              <h3 className="text-lg font-semibold text-blue-900 mb-2">
+                About the Chat Seat
+              </h3>
+              <p>
+                We’ll be setting up a Chat Seat in “Name your Venue”. Its
+                purpose is to help community members connect through
+                conversation.
+              </p>
+            </div>
 
-  <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-xl shadow-sm">
-    <h3 className="text-lg font-semibold text-yellow-900 mb-2">Who We’re Looking For</h3>
-    <p>
-      We need individuals who enjoy listening and can commit just two hours a week. Right now, we're looking for <strong>five</strong> volunteers.
-    </p>
-  </div>
-</div>
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-xl shadow-sm">
+              <h3 className="text-lg font-semibold text-yellow-900 mb-2">
+                Who We’re Looking For
+              </h3>
+              <p>
+                We need individuals who enjoy listening and can commit just two
+                hours a week. Right now, we're looking for five volunteers.
+              </p>
+            </div>
+          </div>
 
           <div className="text-center" data-aos="fade-up">
             <h4 className="text-base md:text-xl font-semibold mb-4">

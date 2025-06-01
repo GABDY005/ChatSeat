@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import supabase from "../../supabase";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export default function AdminSchedulingSetting() {
   const [locations, setLocations] = useState([]);
@@ -14,8 +14,8 @@ export default function AdminSchedulingSetting() {
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [existingTimes, setExistingTimes] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [firstName, setFirstName] = useState("User");
-  const navigate = useNavigate();
+  // const [firstName, setFirstName] = useState("User");
+  // const navigate = useNavigate();
 
   const timeslots = [
     "08:00", "09:00", "10:00", "11:00", "12:00", "13:00",
@@ -23,34 +23,34 @@ export default function AdminSchedulingSetting() {
     "20:00", "21:00"
   ];
 
-  useEffect(() => {
-    const fetchUserName = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // useEffect(() => {
+  //   const fetchUserName = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
 
-      if (profileError || !profile || profile.role !== "admin") {
-        navigate("/");
-        return;
-      }
+  //     if (profileError || !profile || profile.role !== "admin") {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      setFirstName(profile.first_name);
-    };
+  //     setFirstName(profile.first_name);
+  //   };
 
-    fetchUserName();
-  }, [navigate]);
+  //   fetchUserName();
+  // }, [navigate]);
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -167,7 +167,7 @@ export default function AdminSchedulingSetting() {
       <AdminNavbar title="Scheduling Settings" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
-          <AdminSidebar userName={firstName} />
+          <AdminSidebar />
         </div>
 
         <div className="p-4 sm:p-6 md:p-8 flex-1">

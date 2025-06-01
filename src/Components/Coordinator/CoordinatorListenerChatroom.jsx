@@ -1,66 +1,68 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
-import supabase from "../../supabase";
+// import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { toast } from "react-toastify";
 import FeedbackWidget from "./CoordinatorFeedback";
+import { useSelector } from "react-redux";
 
 export default function CoordinatorListenerChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [username, setUsername] = useState("User");
-  const [userId, setUserId] = useState("");
-  const [role, setRole] = useState("coordinator");
+  // const [username, setUsername] = useState("User");
+  // const [userId, setUserId] = useState("");
+  // const [role, setRole] = useState("coordinator");
   const [searchQuery, setSearchQuery] = useState("");
-  const [firstName, setFirstName] = useState("User");
+  // const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
   const [replyTexts, setReplyTexts] = useState({});
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  // const navigate = useNavigate();
+  // const [email, setEmail] = useState("");
+  const user = useSelector((state) => state.loggedInUser.success);
 
+  //  useEffect(() => {
+  //    const verifyUser = async () => {
+  //      const {
+  //        data: { user },
+  //        error: authError,
+  //      } = await supabase.auth.getUser();
 
-   useEffect(() => {
-     const verifyUser = async () => {
-       const {
-         data: { user },
-         error: authError,
-       } = await supabase.auth.getUser();
+  //      if (!user || authError) {
+  //        navigate("/");
+  //        return;
+  //      }
 
-       if (!user || authError) {
-         navigate("/");
-         return;
-       }
+  //      const { data: profile, error: profileError } = await supabase
+  //        .from("profiles")
+  //        .select("first_name, role")
+  //        .eq("id", user.id)
+  //        .single();
 
-       const { data: profile, error: profileError } = await supabase
-         .from("profiles")
-         .select("first_name, role")
-         .eq("id", user.id)
-         .single();
+  //      if (!profile || profileError) {
+  //        navigate("/");
+  //        return;
+  //      }
 
-       if (!profile || profileError) {
-         navigate("/");
-         return;
-       }
+  //      if (profile.role !== "coordinator" && profile.role !== "admin") {
+  //        navigate("/");
+  //        return;
+  //      }
 
-       if (profile.role !== "coordinator" && profile.role !== "admin") {
-         navigate("/");
-         return;
-       }
+  //      setUserId(user.id);
+  //      setFirstName(profile.first_name);
+  //      setUserRole(profile.role);
+  //      setUsername(profile.first_name);
+  //      setRole(profile.role);
+  //    };
 
-       setUserId(user.id);
-       setFirstName(profile.first_name);
-       setUserRole(profile.role);
-       setUsername(profile.first_name);
-       setRole(profile.role);
-     };
+  //    verifyUser();
+  //  }, [navigate]);
 
-     verifyUser();
-   }, [navigate]);
   useEffect(() => {
     localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
@@ -84,8 +86,8 @@ export default function CoordinatorListenerChatroom() {
     set(newRef, {
       title,
       content,
-      username,
-      user_id: userId,
+      username: user.first_name,
+      user_id: user.id,
       timestamp: Date.now(),
     });
 
@@ -99,27 +101,45 @@ export default function CoordinatorListenerChatroom() {
     const newReply = push(ref(database, `threads/${threadID}/replies`));
     set(newReply, {
       text: replyText,
-      username,
-      user_id: userId,
-      role,
+      username: user.first_name,
+      user_id: user.id,
+      role: user.role,
       timestamp: Date.now(),
     });
   };
 
-  const handleDeleteThread = (threadId) => {
-    const threadRef = ref(database, `threads/${threadId}`);
-    remove(threadRef);
+  const handleDeleteThread = (threadId, threadTitle) => {
+    // Show confirmation dialog
+    const isConfirmed = window.confirm(
+      `Are you sure you want to delete the thread "${threadTitle}"? This action cannot be undone.`
+    );
+
+    if (isConfirmed) {
+      const threadRef = ref(database, `threads/${threadId}`);
+      remove(threadRef);
+      toast.success("Thread deleted successfully!");
+    }
   };
 
-  const handleDeleteReply = (threadId, replyKey) => {
-    const replyRef = ref(database, `threads/${threadId}/replies/${replyKey}`);
-    remove(replyRef);
+  const handleDeleteReply = (threadId, replyKey, reply) => {
+    const isConfirmed = window.confirm(
+      `Are you sure you want to delete the thread "${reply}"? This action cannot be undone.`
+    );
+    if (isConfirmed) {
+      const replyRef = ref(database, `threads/${threadId}/replies/${replyKey}`);
+      remove(replyRef);
+    }
   };
 
   const canDeleteReply = (replyUserId, replyUserRole) => {
-    if (userId === replyUserId) return true;
-    if (role === "coordinator" && replyUserRole === "listener") return true;
-    if (role === "admin" && (replyUserRole === "listener" || replyUserRole === "coordinator")) return true;
+    if (user.id === replyUserId) return true;
+    if (user.role === "coordinator" && replyUserRole === "listener")
+      return true;
+    if (
+      user.role === "admin" &&
+      (replyUserRole === "listener" || replyUserRole === "coordinator")
+    )
+      return true;
     return false;
   };
 
@@ -137,11 +157,13 @@ export default function CoordinatorListenerChatroom() {
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName={firstName} />
+          <CoordinatorSidebar />
         </div>
 
         <div className="main-content p-4 sm:p-6 w-full">
-          <h2 className="text-lg sm:text-xl text-[#1E3A8A] font-bold mb-4">Discussion Forum</h2>
+          <h2 className="text-lg sm:text-xl text-[#1E3A8A] font-bold mb-4">
+            Discussion Forum
+          </h2>
 
           <div className="mb-6">
             <input
@@ -176,7 +198,10 @@ export default function CoordinatorListenerChatroom() {
           <div className="space-y-4">
             {filteredThreads.length > 0 ? (
               filteredThreads.reverse().map(([id, thread]) => (
-                <div className="bg-white p-4 rounded shadow w-full break-words" key={id}>
+                <div
+                  className="bg-white p-4 rounded shadow w-full break-words"
+                  key={id}
+                >
                   <h4 className="font-bold text-[#003366]">{thread.title}</h4>
                   <p>{thread.content}</p>
                   <small>
@@ -184,16 +209,16 @@ export default function CoordinatorListenerChatroom() {
                     {new Date(thread.timestamp).toLocaleString()}
                   </small>
 
-                  {(thread.user_id === userId || role === "admin") && (
+                  {(thread.user_id === user.id || user.role === "admin") && (
                     <button
-                      onClick={() => handleDeleteThread(id)}
+                      onClick={() => handleDeleteThread(id, thread.title)}
                       className="text-red-500 ml-4"
                     >
                       Delete
                     </button>
                   )}
 
-                    <div className="flex items-stretch gap-2 mt-2">
+                  <div className="flex items-stretch gap-2 mt-2">
                     <input
                       type="text"
                       className="flex-1 px-4 py-2 border rounded text-sm"
@@ -244,7 +269,9 @@ export default function CoordinatorListenerChatroom() {
 
                           {canDeleteReply(reply.user_id, reply.role) && (
                             <button
-                              onClick={() => handleDeleteReply(id, key)}
+                              onClick={() =>
+                                handleDeleteReply(id, key, reply.text)
+                              }
                               className="text-red-500 ml-4"
                             >
                               Delete
@@ -263,12 +290,7 @@ export default function CoordinatorListenerChatroom() {
           </div>
         </div>
       </div>
-      <FeedbackWidget
-        userId={userId}
-        firstName={firstName}
-        email={email}
-        role={userRole}
-      />
+      <FeedbackWidget />
     </>
   );
 }

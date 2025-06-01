@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
-import supabase from "../../supabase";
+// import supabase from "../../supabase";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 export default function AdminListenerChatroom() {
   const [threads, setThreads] = useState({});
@@ -17,40 +18,41 @@ export default function AdminListenerChatroom() {
   const [searchQuery, setSearchQuery] = useState("");
   const [firstName, setFirstName] = useState("User");
   const [replyTexts, setReplyTexts] = useState({});
+  const user = useSelector((state) => state.loggedInUser.success);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const verifyUser = async () => {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+  // useEffect(() => {
+  //   const verifyUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
 
-      if (!user || authError) {
-        navigate("/");
-        return;
-      }
+  //     if (!user || authError) {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("first_name, role")
-        .eq("id", user.id)
-        .single();
+  //     const { data: profile, error: profileError } = await supabase
+  //       .from("profiles")
+  //       .select("first_name, role")
+  //       .eq("id", user.id)
+  //       .single();
 
-      if (!profile || profileError || profile.role !== "admin") {
-        navigate("/");
-        return;
-      }
+  //     if (!profile || profileError || profile.role !== "admin") {
+  //       navigate("/");
+  //       return;
+  //     }
 
-      setUserId(user.id);
-      setUsername(profile.first_name);
-      setFirstName(profile.first_name);
-      setUserRole("admin");
-    };
+  //     setUserId(user.id);
+  //     setUsername(profile.first_name);
+  //     setFirstName(profile.first_name);
+  //     setUserRole("admin");
+  //   };
 
-    verifyUser();
-  }, [navigate]);
+  //   verifyUser();
+  // }, [navigate]);
 
   useEffect(() => {
     const threadsRef = ref(database, "threads");
@@ -92,18 +94,34 @@ export default function AdminListenerChatroom() {
     });
   };
 
-  const handleDeleteThread = (threadId) => {
-    const threadRef = ref(database, `threads/${threadId}`);
-    remove(threadRef);
+  const handleDeleteThread = (threadId, threadTitle) => {
+    // Show confirmation dialog
+    const isConfirmed = window.confirm(
+      `Are you sure you want to delete the thread "${threadTitle}"? This action cannot be undone.`
+    );
+
+    if (isConfirmed) {
+      const threadRef = ref(database, `threads/${threadId}`);
+      remove(threadRef);
+      toast.success("Thread deleted successfully!");
+    }
   };
 
-  const handleDeleteReply = (threadId, replyKey) => {
-    const replyRef = ref(database, `threads/${threadId}/replies/${replyKey}`);
-    remove(replyRef);
+  const handleDeleteReply = (threadId, replyKey, reply) => {
+    const isConfirmed = window.confirm(
+      `Are you sure you want to delete the thread "${reply}"? This action cannot be undone.`
+    );
+    if (isConfirmed) {
+      const replyRef = ref(
+        database,
+        `coordinator_threads/${threadId}/replies/${replyKey}`
+      );
+      remove(replyRef);
+    }
   };
 
   const canDeleteReply = (replyUserId) => {
-    return replyUserId === userId || userRole === "admin";
+    return user.id === replyUserId || user.role === "admin";
   };
 
   const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
@@ -119,7 +137,9 @@ export default function AdminListenerChatroom() {
         </div>
 
         <div className="main-content p-6 w-full bg-emerald-50">
-          <h2 className="text-xl font-bold text-[#1E3A8A] mb-4">Discussion Forum</h2>
+          <h2 className="text-xl font-bold text-[#1E3A8A] mb-4">
+            Discussion Forum
+          </h2>
 
           <div className="mb-6">
             <input
@@ -144,7 +164,7 @@ export default function AdminListenerChatroom() {
               onChange={(e) => setContent(e.target.value)}
             />
             <button
-              className="w-full bg-[#003366] text-white py-2 rounded"
+              className="w-full bg-[#003366] text-white py-2 rounded hover:bg-[#002244]"
               onClick={handlePost}
             >
               Post Discussion
@@ -164,8 +184,8 @@ export default function AdminListenerChatroom() {
 
                   {canDeleteReply(thread.user_id) && (
                     <button
-                      onClick={() => handleDeleteThread(id)}
-                      className="text-red-500 ml-4"
+                      onClick={() => handleDeleteThread(id, thread.title)}
+                      className="text-red-700 hover:underline ml-3"
                     >
                       Delete
                     </button>
@@ -189,7 +209,7 @@ export default function AdminListenerChatroom() {
                         handleReply(id, replyTexts[id]);
                         setReplyTexts((prev) => ({ ...prev, [id]: "" }));
                       }}
-                      className="bg-[#003366] text-white px-4 rounded text-sm"
+                      className="bg-[#003366] text-white px-4 rounded text-sm hover:bg-[#002244]"
                     >
                       Post
                     </button>
@@ -207,7 +227,6 @@ export default function AdminListenerChatroom() {
                     }}
                   /> */}
 
-
                   <div className="mt-3 space-y-2">
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (
@@ -223,8 +242,10 @@ export default function AdminListenerChatroom() {
 
                           {canDeleteReply(reply.user_id) && (
                             <button
-                              onClick={() => handleDeleteReply(id, key)}
-                              className="text-red-500 ml-4"
+                              onClick={() =>
+                                handleDeleteReply(id, key, reply.text)
+                              }
+                              className="bg-red-700 hover:bg-red-900 px-2 py-1 rounded text-white"
                             >
                               Delete
                             </button>
