@@ -81,7 +81,7 @@ export default function CoordinatorHelp() {
                 </h4>
                 <p>
                   This page shows all your booked sessions with listeners. If
-                  necessary, you can <strong>delete</strong> any slot that’s no
+                  necessary, you can <strong>Edit</strong> time, place or date also you can <strong>delete</strong> any slot that’s no
                   longer available or needed.
                 </p>
               </div>

@@ -56,14 +56,14 @@ export default function ListenerSidebar({ userName = "" }) {
         >
           Scheduling
         </Link>
-        <Link
+        {/* <Link
           to="/ListenerResources"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
             "/ListenerResources"
           )}`}
         >
           Resources
-        </Link>
+        </Link> */}
         <Link
           to="/ListenerChatroom"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
