@@ -7,6 +7,7 @@ import { setloggedInUserSuccess } from "../state/loggedInUser";
 // import logo from "../assets/Logo.jpg";
 // import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
+import { Helmet } from "react-helmet";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -77,6 +78,10 @@ export default function LoginPage() {
 
   return (
     <>
+    <Helmet>
+        <title>Login – ChatSeat</title>
+        <meta name="description" content="Access your ChatSeat account to book a listener or manage your availability." />
+      </Helmet>
       <div className="h-screen">
         <Navbar />
 

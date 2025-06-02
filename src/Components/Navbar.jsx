@@ -40,14 +40,14 @@ export default function Navbar() {
             >
               Who's at the Seat?
             </Link>
-            {user === null ? (
+            {/* {user === null ? ( */}
               <Link
                 to="/Login"
                 className="bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200"
               >
                 Login
               </Link>
-            ) : (
+            {/* ) : (
               <Link
                 to={
                   user.role === "admin"
@@ -60,7 +60,7 @@ export default function Navbar() {
               >
                 Dashboard
               </Link>
-            )}
+            )} */}
           </div>
 
           <div className="md:hidden">

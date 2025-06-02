@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 // import logo from "../assets/Logo.jpg";
 import Navbar from "./Navbar";
+import { Helmet } from "react-helmet";
 
 const schema = Yup.object().shape({
   firstName: Yup.string()
@@ -76,6 +77,10 @@ export default function Signup() {
 
   return (
     <>
+    <Helmet>
+        <title>Sign Up</title>
+        <meta name="description" content="Access your ChatSeat account to book a listener or manage your availability." />
+      </Helmet>
       <div className=" bg-white">
         <Navbar />
       </div>

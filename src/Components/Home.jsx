@@ -6,6 +6,7 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import Navbar from "./Navbar";
+import { Helmet } from "react-helmet";
 
 export default function Home() {
  
@@ -19,6 +20,10 @@ export default function Home() {
 
   return (
     <>
+    <Helmet>
+        <title>Have a Chat Seat</title>
+        <meta name="description" content="Access your ChatSeat account to book a listener or manage your availability." />
+      </Helmet>
       {/* <nav className="sticky top-0 z-50 bg-[#003366] shadow-lg w-full">
         <div className="flex items-center justify-between px-4 md:px-8 py-4 md:py-5">
           <div
