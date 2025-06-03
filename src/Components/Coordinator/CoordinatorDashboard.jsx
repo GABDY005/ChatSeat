@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
@@ -6,17 +5,11 @@ import FeedbackWidget from "./CoordinatorFeedback";
 import { useSelector } from "react-redux";
 
 function CoordinatorDashboard() {
-  const [userRole, setUserRole] = useState("");
   const user = useSelector((state) => state.loggedInUser.success);
-
-  // Set user role based on the logged-in user's role
-  useEffect(() => {
-    user.role === "admin" ? setUserRole("admin") : setUserRole("coordinator");
-  }, []);
 
   return (
     <>
-      {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
         <CoordinatorNavbar title="Coordinator Dashboard" />

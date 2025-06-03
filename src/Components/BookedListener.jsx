@@ -9,15 +9,13 @@ import { Helmet } from "react-helmet";
 
 export default function BookedListener() {
   const [bookings, setBookings] = useState([]);
-  
-// Fetch all bookings and filter out past ones
+
+  // Fetch all bookings and filter out past ones
   useEffect(() => {
     const getBookings = async () => {
       try {
         await deletePastBookings();
         const data = await fetchAllBookings();
-
-        console.log("Fetched bookings:", data);
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -27,11 +25,9 @@ export default function BookedListener() {
           const bookingDate = new Date(b.date);
           bookingDate.setHours(0, 0, 0, 0);
           const isFuture = bookingDate >= today;
-          console.log("Checking:", bookingDate, "Is future:", isFuture);
           return isFuture;
         });
 
-        console.log("Filtered bookings:", filteredBookings);
         setBookings(filteredBookings);
       } catch (err) {
         console.error("Error fetching bookings:", err);
@@ -40,17 +36,19 @@ export default function BookedListener() {
 
     getBookings();
   }, []);
-  
+
   return (
     <>
-    <Helmet>
+      <Helmet>
         <title>WHo's at the Seat?</title>
-        <meta name="description" content="Access your ChatSeat account to book a listener or manage your availability." />
+        <meta
+          name="description"
+          content="Access your ChatSeat account to book a listener or manage your availability."
+        />
       </Helmet>
       <div className="min-h-sceen bg-white">
         <Navbar />
       </div>
-
 
       <div className="px-4 sm:px-6 py-8 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">

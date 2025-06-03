@@ -9,12 +9,12 @@ export default function Feedback() {
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.loggedInUser.success);
 
-// To prevent the page from reloading when the feedback is submitted
+  // To prevent the page from reloading when the feedback is submitted
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-// Check if user is logged in
+    // Check if user is logged in
     if (!user.id) {
       toast.warning("You must be logged in to submit feedback.");
       setLoading(false);
@@ -50,8 +50,6 @@ export default function Feedback() {
       setMessage("");
     }
   };
-
-  
 
   return (
     <>

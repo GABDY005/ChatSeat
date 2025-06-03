@@ -1,4 +1,3 @@
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import supabase from "../../supabase";
 import { useSelector } from "react-redux";
@@ -10,14 +9,11 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.loggedInUser.success);
-  
 
   const getLinkStyle = (path) =>
     location.pathname === path
       ? "bg-[#003366] text-white font-semibold"
       : "bg-white text-[#1E3A8A] hover:bg-[#d9eefe]";
-
-     
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -28,11 +24,9 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
 
   return (
     <div className="w-64 bg-[#A8E4F2] h-[calc(100vh-64px)] sticky top-16 flex flex-col px-4 py-6 overflow-y-auto">
-   
-
- <div className="text-[#1E3A8A] font-bold text-xl mb-12 text-center">
-      Hello, {user.first_name}!
-    </div>
+      <div className="text-[#1E3A8A] font-bold text-xl mb-12 text-center">
+        Hello, {user.first_name}!
+      </div>
       <div className="flex flex-col space-y-3 mb-6">
         <Link
           to="/CoordinatorDashboard"
@@ -82,7 +76,7 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
         >
           Listener Chat room
         </Link>
-        
+
         <Link
           to="/CoordinatorHelp"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
@@ -93,7 +87,6 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
         </Link>
       </div>
 
-     
       <div className="mt-auto">
         <button
           onClick={handleLogout}

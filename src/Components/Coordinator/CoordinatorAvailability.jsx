@@ -6,18 +6,11 @@ import CoordinatorNavbar from "./CoordinatorNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import supabase from "../../supabase";
 import FeedbackWidget from "./CoordinatorFeedback";
+import { useSelector } from "react-redux";
 
 export default function CoordinatorAvailability() {
   const [calendarEvents, setCalendarEvents] = useState([]);
-  const [firstName, setFirstName] = useState("User");
-  const [userRole, setUserRole] = useState("");
-
-  // Fetch the user's first name from localStorage or supabase
-  useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("coordinator");
-  }, []);
+  const user = useSelector((state) => state.loggedInUser.success);
 
   // Fetch the user's first name from supabase
   useEffect(() => {
@@ -79,9 +72,7 @@ export default function CoordinatorAvailability() {
 
   return (
     <>
-    
-
-      {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
         <CoordinatorNavbar title="Availability" />
@@ -89,7 +80,7 @@ export default function CoordinatorAvailability() {
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName={firstName} />
+          <CoordinatorSidebar />
         </div>
 
         {/*  Main content area */}
@@ -97,14 +88,13 @@ export default function CoordinatorAvailability() {
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">
             View All Slots
           </h2>
-        
+
           <div className="flex flex-wrap gap-4 sm:gap-6 mb-4">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-[#fde047] rounded-sm"></div> Partially
               Booked
             </div>
 
-            
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-[#f87171] rounded-sm"></div> Fully
               Booked

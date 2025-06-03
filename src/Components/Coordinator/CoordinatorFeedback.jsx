@@ -6,10 +6,8 @@ import { useSelector } from "react-redux";
 export default function Feedback() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const user = useSelector((state) => state.loggedInUser.success);
   const [open, setOpen] = useState(false);
-
-  
+  const user = useSelector((state) => state.loggedInUser.success);
 
   //To prevent the page from reloading when the feedback is submitted
   // useEffect(() => {

@@ -13,16 +13,8 @@ export default function CoordinatorListenerChatroom() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [userRole, setUserRole] = useState("");
   const [replyTexts, setReplyTexts] = useState({});
   const user = useSelector((state) => state.loggedInUser.success);
-
-  // Determine user role based on localStorage or user state
-  useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("coordinator");
-  }, []);
 
   // Fetch threads from Firebase Realtime Database
   useEffect(() => {
@@ -112,7 +104,7 @@ export default function CoordinatorListenerChatroom() {
 
   return (
     <>
-      {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
         <CoordinatorNavbar title="Coordinator & Listener Chat" />
@@ -122,7 +114,6 @@ export default function CoordinatorListenerChatroom() {
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar />
         </div>
-
 
         <div className="main-content p-4 sm:p-6 w-full">
           <h2 className="text-lg sm:text-xl text-[#1E3A8A] font-bold mb-4">
@@ -159,7 +150,7 @@ export default function CoordinatorListenerChatroom() {
             </button>
           </div>
 
-        {/* Display threads */}
+          {/* Display threads */}
           <div className="space-y-4">
             {filteredThreads.length > 0 ? (
               filteredThreads.reverse().map(([id, thread]) => (
@@ -207,7 +198,7 @@ export default function CoordinatorListenerChatroom() {
                       Post
                     </button>
                   </div>
-                  
+
                   {/*  Display replies */}
                   <div className="mt-3 space-y-2">
                     {thread.replies &&

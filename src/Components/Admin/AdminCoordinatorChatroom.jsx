@@ -10,13 +10,11 @@ export default function AdminCoordinatorChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [username, setUsername] = useState("Admin");
   const [searchQuery, setSearchQuery] = useState("");
-  const [firstName, setFirstName] = useState("User");
   const [replyTexts, setReplyTexts] = useState({});
   const user = useSelector((state) => state.loggedInUser.success);
 
-// Set the username based on the logged-in user
+  // Set the username based on the logged-in user
   useEffect(() => {
     const threadsRef = ref(database, "coordinator_threads");
     onValue(threadsRef, (snapshot) => {
@@ -55,7 +53,7 @@ export default function AdminCoordinatorChatroom() {
     );
     set(newReply, {
       text: replyText,
-      username,
+      username: user.first_name,
       user_id: user.id,
       role: user.role,
       timestamp: Date.now(),
@@ -105,7 +103,7 @@ export default function AdminCoordinatorChatroom() {
       <AdminNavbar title="Admin - Coordinator Chatroom" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
-          <AdminSidebar userName={firstName} />
+          <AdminSidebar />
         </div>
 
         {/*  Main content area */}
@@ -153,8 +151,6 @@ export default function AdminCoordinatorChatroom() {
                 >
                   <h4 className="font-bold text-black">{thread.title}</h4>
 
-                  
-
                   <p>{thread.content}</p>
                   <small>
                     Posted by <b>{thread.username}</b> at{" "}
@@ -194,7 +190,7 @@ export default function AdminCoordinatorChatroom() {
                       Post
                     </button>
                   </div>
-                  
+
                   <div className="mt-3 space-y-2">
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (

@@ -17,9 +17,6 @@ export default function CoordinatorChatroom() {
   const [replyTexts, setReplyTexts] = useState({});
   const user = useSelector((state) => state.loggedInUser.success);
 
-  console.log(user);
-  
-
   // Fetch threads from Firebase on component mount
   useEffect(() => {
     const threadsRef = ref(database, "coordinator_threads");
@@ -134,7 +131,7 @@ export default function CoordinatorChatroom() {
             Discussion Forum
           </h2>
 
-        {/* Input fields for posting a discussion  */}
+          {/* Input fields for posting a discussion  */}
           <div className="mb-6">
             <input
               type="text"
@@ -193,8 +190,8 @@ export default function CoordinatorChatroom() {
                       Delete
                     </button>
                   )}
-                
-                    {/* Input field for replying to the discussion thread */} 
+
+                  {/* Input field for replying to the discussion thread */}
                   <div className="flex items-stretch gap-2 mt-2">
                     <input
                       type="text"
@@ -221,7 +218,7 @@ export default function CoordinatorChatroom() {
                     </button>
                   </div>
 
-                {/* Render the replies to the discussion thread */}
+                  {/* Render the replies to the discussion thread */}
                   <div className="mt-3 space-y-2">
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (
@@ -235,7 +232,7 @@ export default function CoordinatorChatroom() {
                             {reply.text}
                           </div>
 
-                        {/* Check if the user can delete the reply */}
+                          {/* Check if the user can delete the reply */}
                           {canDeleteReply(reply.user_id, reply.role) && (
                             <button
                               onClick={() =>

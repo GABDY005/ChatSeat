@@ -54,12 +54,15 @@ export default function Signup() {
     }
   };
 
-   return (
+  return (
     <>
-    {/* Helmet component to manage the document head */}
-    <Helmet>
+      {/* Helmet component to manage the document head */}
+      <Helmet>
         <title>Sign Up</title>
-        <meta name="description" content="Access your ChatSeat account to book a listener or manage your availability." />
+        <meta
+          name="description"
+          content="Access your ChatSeat account to book a listener or manage your availability."
+        />
       </Helmet>
 
       {/* Navbar component for the header */}
@@ -163,7 +166,6 @@ export default function Signup() {
               Sign Up
             </button>
           </form>
-
 
           {/* Link to navigate back to the login page */}
           <div className="text-center mt-6">

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import supabase from "../supabase";
-import logo from "../assets/Logo.jpg";
 import Navbar from "./Navbar";
 
 export default function ResetPassword() {
@@ -9,6 +8,7 @@ export default function ResetPassword() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  // Effect to handle password reset link from URL hash
   useEffect(() => {
     const hash = window.location.hash.substring(1);
     const params = new URLSearchParams(hash);
@@ -31,8 +31,7 @@ export default function ResetPassword() {
     }
   }, []);
 
-
-
+  // Function to handle password reset
   const handleReset = async (e) => {
     e.preventDefault();
     const { error } = await supabase.auth.updateUser({ password: newPassword });
@@ -44,8 +43,7 @@ export default function ResetPassword() {
 
   return (
     <>
-  
-      <Navbar/>
+      <Navbar />
       <div className="min-h-screen flex justify-center items-center bg-gray-100">
         <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
           <h2 className="text-2xl font-bold mb-4">Reset Password</h2>

@@ -5,8 +5,8 @@ import Navbar from "./Navbar";
 export default function ResetRequest() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  
- // Function to handle password reset request
+
+  // Function to handle password reset request
   const handleResetRequest = async (e) => {
     e.preventDefault();
 

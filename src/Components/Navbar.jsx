@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/Logo.jpg";
 import { useSelector } from "react-redux";
 
 export default function Navbar() {
   const user = useSelector((state) => state.loggedInUser.success);
-
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogoClick = () => {
-    window.location.reload();
+    navigate("/");
   };
 
   return (
@@ -40,27 +40,27 @@ export default function Navbar() {
             >
               Who's at the Seat?
             </Link>
-            {/* {user === null ? ( */}
+            {user && user.id ? (
+              <Link
+                to={
+                  user.role === "admin"
+                    ? "/AdminDashboard"
+                    : user.role === "coordinator"
+                    ? "/CoordinatorDashboard"
+                    : "/ListenerDashboard"
+                }
+                className="bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200"
+              >
+                Dashboard
+              </Link>
+            ) : (
               <Link
                 to="/Login"
                 className="bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200"
               >
                 Login
               </Link>
-            {/* ) : (
-              <Link
-                to={
-                  user.role === "admin"
-                    ? "/admindasboard"
-                    : user.role === "coordinator"
-                    ? "/coordinatordashboard"
-                    : "/listenerdashboard"
-                }
-                className="bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200"
-              >
-                Dashboard
-              </Link>
-            )} */}
+            )}
           </div>
 
           <div className="md:hidden">
@@ -96,13 +96,29 @@ export default function Navbar() {
               >
                 Who's at the Seat?
               </Link>
-              <Link
-                to="/Login"
-                className="block bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200 text-center"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Login
-              </Link>
+              {user && user.id ? (
+                <Link
+                  to={
+                    user.role === "admin"
+                      ? "/AdminDashboard"
+                      : user.role === "coordinator"
+                      ? "/CoordinatorDashboard"
+                      : "/ListenerDashboard"
+                  }
+                  className="block bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200 text-center"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+              ) : (
+                <Link
+                  to="/Login"
+                  className="block bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200 text-center"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Login
+                </Link>
+              )}
             </div>
           </div>
         )}

@@ -1,6 +1,3 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "../assets/Logo.jpg";
 import Seat from "../assets/Seat.JPG";
 import Aos from "aos";
 import "aos/dist/aos.css";
@@ -9,7 +6,6 @@ import Navbar from "./Navbar";
 import { Helmet } from "react-helmet";
 
 export default function Home() {
- 
   useEffect(() => {
     Aos.init({
       duration: 800,
@@ -20,9 +16,12 @@ export default function Home() {
 
   return (
     <>
-    <Helmet>
+      <Helmet>
         <title>Have a Chat Seat</title>
-        <meta name="description" content="Access your ChatSeat account to book a listener or manage your availability." />
+        <meta
+          name="description"
+          content="Access your ChatSeat account to book a listener or manage your availability."
+        />
       </Helmet>
       {/* <nav className="sticky top-0 z-50 bg-[#003366] shadow-lg w-full">
         <div className="flex items-center justify-between px-4 md:px-8 py-4 md:py-5">

@@ -5,9 +5,8 @@ import AdminNavbar from "./AdminNavbar";
 
 export default function AdminDashboard() {
   const [pendingCount, setPendingCount] = useState(0);
-  const [firstName, setFirstName] = useState("User");
 
-// Fetch the first name from localStorage or user object
+  // Fetch the first name from localStorage or user object
   useEffect(() => {
     const fetchPending = async () => {
       try {
@@ -26,13 +25,11 @@ export default function AdminDashboard() {
 
   return (
     <>
-      
-      <AdminNavbar title="Dashboard"/>
-      
+      <AdminNavbar title="Dashboard" />
 
-<div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
-<div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]" />
-        <AdminSidebar userName={firstName}/>
+      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+        <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]" />
+        <AdminSidebar />
 
         <div className="flex-1 p-4 sm:p-6 md:p-8">
           <h2 className="text-xl sm:text-2xl font-bold text-[#1E3A8A] mb-6">
@@ -42,7 +39,7 @@ export default function AdminDashboard() {
           {pendingCount > 0 && (
             <div className="bg-yellow-100 text-yellow-800 border-l-4 border-yellow-500 p-4 rounded mb-6">
               <p className="font-medium">
-                 {pendingCount} user{pendingCount > 1 ? "s" : ""} waiting for     
+                {pendingCount} user{pendingCount > 1 ? "s" : ""} waiting for
                 approval
               </p>
               <a

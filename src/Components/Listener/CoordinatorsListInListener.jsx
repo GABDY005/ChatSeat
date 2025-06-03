@@ -4,18 +4,11 @@ import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import ListenerFeedbackWidget from "./ListenerFeedback";
+import { useSelector } from "react-redux";
 
 export default function CoordinatorsListInListener() {
-  const [firstName, setFirstName] = useState("User");
   const [coordinators, setCoordinators] = useState([]);
-  const [userRole, setUserRole] = useState("");
- 
-  // Set the first name from localStorage or default to "User"
-  useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("listener");
-  }, []);
+  const user = useSelector((state) => state.loggedInUser.success);
 
   // Set the first name from localStorage or default to "User"
   useEffect(() => {
@@ -29,7 +22,7 @@ export default function CoordinatorsListInListener() {
 
   return (
     <>
-      {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Listener Dashboard" />
       ) : (
         <ListenerNavbar title="Coordinators" />
@@ -38,7 +31,7 @@ export default function CoordinatorsListInListener() {
       {/* Main content area */}
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <ListenerSidebar userName={firstName} />
+          <ListenerSidebar />
         </div>
 
         {/*  Coordinator list section */}

@@ -7,8 +7,6 @@ import { setloggedInUserSuccess } from "../state/loggedInUser";
 import Navbar from "./Navbar";
 import { Helmet } from "react-helmet";
 
-// This component handles user login functionality
-// It allows users to enter their email and password, authenticate with Supabase, and navigate to different dashboards based on their role.
 export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -16,7 +14,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  
+
   // Function will run when the login button is clicked
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -43,7 +41,6 @@ export default function LoginPage() {
 
       // Check if profile data is available
       const role = profileData.role;
-      console.log("User role:", profileData);
 
       // Store user session info for protected routes
       localStorage.setItem("userRole", role);
@@ -74,10 +71,13 @@ export default function LoginPage() {
 
   return (
     <>
-    {/* Helmet component to manage the document head for SEO */}
-    <Helmet>
+      {/* Helmet component to manage the document head for SEO */}
+      <Helmet>
         <title>Login – ChatSeat</title>
-        <meta name="description" content="Access your ChatSeat account to book a listener or manage your availability." />
+        <meta
+          name="description"
+          content="Access your ChatSeat account to book a listener or manage your availability."
+        />
       </Helmet>
       <div className="h-screen">
         <Navbar />
@@ -92,7 +92,6 @@ export default function LoginPage() {
             {/* Login form */}
             <form onSubmit={handleLogin} className="space-y-5 md:space-y-6">
               <div>
-
                 {/* Input field for email address */}
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Email Address
@@ -109,7 +108,6 @@ export default function LoginPage() {
                 />
               </div>
               <div>
-
                 {/* Input field for password */}
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Password

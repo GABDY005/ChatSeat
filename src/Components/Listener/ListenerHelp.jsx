@@ -1,24 +1,15 @@
-import { useEffect, useState } from "react";
 import ListenerSidebar from "./ListenerSidebar";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
-import { useNavigate } from "react-router-dom";
 import ListenerFeedbackWidget from "./ListenerFeedback";
+import { useSelector } from "react-redux";
 
 export default function ListenerHelp() {
-  const [firstName, setFirstName] = useState("User");
-  const [userRole, setUserRole] = useState("");
-  const navigate = useNavigate();
+  const user = useSelector((state) => state.loggedInUser.success);
 
-  
-  useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("listener");
-  }, []);
   return (
     <>
-      {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Listener Dashboard" />
       ) : (
         <ListenerNavbar title="Help" />
@@ -26,7 +17,7 @@ export default function ListenerHelp() {
 
       <div className="flex flex-col lg:flex-row min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 lg:w-64 h-[calc(100vh-64px)]">
-          <ListenerSidebar userName={firstName} />
+          <ListenerSidebar />
         </div>
 
         <div className="flex-1 px-6 sm:px-10 py-10">
@@ -72,9 +63,9 @@ export default function ListenerHelp() {
                   format after selecting a place.
                 </li>
               </ul>
-              </div>
+            </div>
 
-              <div className="bg-[#ecfdf5] p-5 rounded-xl shadow-sm">
+            <div className="bg-[#ecfdf5] p-5 rounded-xl shadow-sm">
               <h4 className="font-semibold text-lg mb-1">Resources</h4>
               <p>
                 This section contains helpful resources and information to

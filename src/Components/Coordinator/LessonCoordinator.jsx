@@ -8,21 +8,10 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 function LessonCoordinator() {
-  const [firstName, setFirstName] = useState("User");
-  const [userRole, setUserRole] = useState("");
-  const [userId, setUserId] = useState("");
-  const [email, setEmail] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const user = useSelector((state) => state.loggedInUser.success);
-
- 
-// Set user details from Redux store
-  useEffect(() => {
-    const role = localStorage.getItem("userRole");
-    setUserRole(role === "admin" ? "admin" : "coordinator");
-  }, []);
 
   // Fetch user details from Redux store
   useEffect(() => {
@@ -105,19 +94,23 @@ function LessonCoordinator() {
               <strong>Volunteer Callout – Chat Seats</strong>
             </p>
             <p className="text-gray-700 text-lg">
-              We are looking for volunteers who enjoy listening to others and want to help create a connected, supportive community through Chat Seats.
+              We are looking for volunteers who enjoy listening to others and
+              want to help create a connected, supportive community through Chat
+              Seats.
             </p>
             <p className="text-gray-700 text-lg">
               <strong>About the Chat Seat</strong>
             </p>
             <p className="text-gray-700 text-lg">
-              We’ll be setting up a Chat Seat in “Name your Venue”. Its purpose is to help community members connect through conversation.
+              We’ll be setting up a Chat Seat in “Name your Venue”. Its purpose
+              is to help community members connect through conversation.
             </p>
             <p className="text-gray-700 text-lg">
               <strong>What’s Involved</strong>
             </p>
             <p className="text-gray-700 text-lg">
-              Volunteers will spend time listening at the Chat Seat. This helps people who may be lonely feel heard and supported.
+              Volunteers will spend time listening at the Chat Seat. This helps
+              people who may be lonely feel heard and supported.
             </p>
           </div>
         );
@@ -128,29 +121,59 @@ function LessonCoordinator() {
               Lessons Learned in Establishing Chat Seats
             </h2>
             <p className="text-gray-700 text-lg">
-              Below are some of the lessons we have learned when establishing <strong>Chat Seats</strong>:
+              Below are some of the lessons we have learned when establishing{" "}
+              <strong>Chat Seats</strong>:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-gray-800 bg-[#f0f8ff] p-6 rounded-xl shadow">
-              <li>Selection of listeners – need to ensure they are interested in other peoples’ experiences and have well developed listening skills.</li>
-              <li>Have one very experienced listener who sits with other less experienced listeners.</li>
+              <li>
+                Selection of listeners – need to ensure they are interested in
+                other peoples’ experiences and have well developed listening
+                skills.
+              </li>
+              <li>
+                Have one very experienced listener who sits with other less
+                experienced listeners.
+              </li>
               <li>Listeners work in pairs.</li>
-              <li>It is important that it is about listening and not counselling.</li>
-              <li>Have banners and graphics ready when talk to venue managers.</li>
-              <li>Be prepared to be flexible about location of chat seats and style.</li>
-              <li>Be prepared to do whatever induction activities, et cetera that are required by the venue.</li>
+              <li>
+                It is important that it is about listening and not counselling.
+              </li>
+              <li>
+                Have banners and graphics ready when talk to venue managers.
+              </li>
+              <li>
+                Be prepared to be flexible about location of chat seats and
+                style.
+              </li>
+              <li>
+                Be prepared to do whatever induction activities, et cetera that
+                are required by the venue.
+              </li>
               <li>Observe the requirements of the venue.</li>
-              <li>To have certain clearances as required by the venue manager.</li>
-              <li>Check out with venue manager on a regular basis that everything is Okay or if we need to change somethings.</li>
-              <li>Advertised times on the website of when <strong>Chat Seats</strong> will be available at a particular venue.</li>
+              <li>
+                To have certain clearances as required by the venue manager.
+              </li>
+              <li>
+                Check out with venue manager on a regular basis that everything
+                is Okay or if we need to change somethings.
+              </li>
+              <li>
+                Advertised times on the website of when{" "}
+                <strong>Chat Seats</strong> will be available at a particular
+                venue.
+              </li>
               <li>Get together for listeners, biannually?</li>
               <li>Inter-generational listeners a plus.</li>
               <li>Materials to help with development of Listening skills.</li>
               <li>Badge to wear “Hello my name is ……”.</li>
               <li>A plus if tea/coffee is available.</li>
-              <li>Great if the venue advertises that the <strong>Chat Seats</strong> are available at their venue.</li>
+              <li>
+                Great if the venue advertises that the{" "}
+                <strong>Chat Seats</strong> are available at their venue.
+              </li>
             </ul>
           </div>
-          );
+        );
       case 2:
         return (
           <div>
@@ -260,12 +283,7 @@ function LessonCoordinator() {
         </div>
       </div>
 
-      <FeedbackWidget
-        userId={userId}
-        firstName={firstName}
-        email={email}
-        role={userRole}
-      />
+      <FeedbackWidget />
     </>
   );
 }

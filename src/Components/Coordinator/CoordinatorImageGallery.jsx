@@ -5,16 +5,14 @@ import CoordinatorSidebar from "./CoordinatorSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { toast } from "react-toastify";
 import FeedbackWidget from "./CoordinatorFeedback";
+import { useSelector } from "react-redux";
 
 export default function CoordinatorImageGallery() {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
-  const [userRole, setUserRole] = useState("");
+  const user = useSelector((state) => state.loggedInUser.success);
   
   useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("coordinator");
     fetchImages();
   }, []);
   const fetchImages = async () => {
@@ -78,7 +76,7 @@ export default function CoordinatorImageGallery() {
 
   return (
     <>
-      {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
         <CoordinatorNavbar title="Image Gallery" />

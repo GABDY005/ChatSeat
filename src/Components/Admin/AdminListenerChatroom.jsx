@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import AdminSidebar from "../Admin/AdminSidebar";
@@ -10,17 +10,11 @@ export default function AdminListenerChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [username, setUsername] = useState("Admin");
-  const [userId, setUserId] = useState("");
-  const [userRole, setUserRole] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [firstName, setFirstName] = useState("User");
   const [replyTexts, setReplyTexts] = useState({});
   const user = useSelector((state) => state.loggedInUser.success);
 
- 
-  
-// Set user role and ID from Redux store
+  // Set user role and ID from Redux store
   useEffect(() => {
     const threadsRef = ref(database, "threads");
     onValue(threadsRef, (snapshot) => {
@@ -40,8 +34,8 @@ export default function AdminListenerChatroom() {
     set(newRef, {
       title,
       content,
-      username,
-      user_id: userId,
+      username: user.first_name,
+      user_id: user.id,
       timestamp: Date.now(),
     });
 
@@ -57,16 +51,15 @@ export default function AdminListenerChatroom() {
     const newReply = push(ref(database, `threads/${threadID}/replies`));
     set(newReply, {
       text: replyText,
-      username,
-      user_id: userId,
-      role: userRole,
+      username: user.first_name,
+      user_id: user.id,
+      role: user.role,
       timestamp: Date.now(),
     });
   };
 
   // Function to handle thread deletion with confirmation
   const handleDeleteThread = (threadId, threadTitle) => {
-   
     const isConfirmed = window.confirm(
       `Are you sure you want to delete the thread "${threadTitle}"? This action cannot be undone.`
     );
@@ -84,10 +77,7 @@ export default function AdminListenerChatroom() {
       `Are you sure you want to delete the thread "${reply}"? This action cannot be undone.`
     );
     if (isConfirmed) {
-      const replyRef = ref(
-        database,
-        `coordinator_threads/${threadId}/replies/${replyKey}`
-      );
+      const replyRef = ref(database, `threads/${threadId}/replies/${replyKey}`);
       remove(replyRef);
     }
   };
@@ -107,7 +97,7 @@ export default function AdminListenerChatroom() {
       <AdminNavbar title="Admin - Listener Chatroom" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
-          <AdminSidebar userName={firstName} />
+          <AdminSidebar />
         </div>
 
         <div className="main-content p-6 w-full bg-emerald-50">
@@ -188,8 +178,6 @@ export default function AdminListenerChatroom() {
                       Post
                     </button>
                   </div>
-
-                 
 
                   <div className="mt-3 space-y-2">
                     {thread.replies &&

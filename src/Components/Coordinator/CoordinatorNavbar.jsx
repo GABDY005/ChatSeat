@@ -1,11 +1,10 @@
-import React from "react";
 import logo from "../../assets/Logo.jpg";
 
-
-export default function CoordinatorNavbar({title = "Coordinator Dashboard" }) {
+export default function CoordinatorNavbar({ title = "Coordinator Dashboard" }) {
   const handleLogoClick = () => {
     window.location.reload();
   };
+
   return (
     <>
       <nav className="fixed top-0 w-full z-50 bg-[#003366] text-white h-16 shadow-md flex items-center justify-between px-6">
@@ -29,5 +28,3 @@ export default function CoordinatorNavbar({title = "Coordinator Dashboard" }) {
     </>
   );
 }
-
-

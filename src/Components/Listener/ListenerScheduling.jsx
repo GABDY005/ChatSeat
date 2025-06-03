@@ -44,8 +44,7 @@ export default function ListenerScheduling() {
     fetchLocations();
   }, []);
 
-  
-// Fetch user bookings when the component mounts or user changes
+  // Fetch user bookings when the component mounts or user changes
   useEffect(() => {
     flatpickr("#date-picker", {
       dateFormat: "Y-m-d",
@@ -64,7 +63,7 @@ export default function ListenerScheduling() {
           setEditValues((prev) => ({ ...prev, date: dateStr })),
       });
     }
-  }, [editBookingId]);
+  }, [editBookingId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch locations from the database when the component mounts
   useEffect(() => {
@@ -75,8 +74,51 @@ export default function ListenerScheduling() {
     fetchLocations();
   }, []);
 
-  
-// Fetch user bookings when the component mounts or user changes
+  // Fetch user bookings when the component mounts or user changes
+  useEffect(() => {
+    const fetchEditTimes = async () => {
+      if (!editValues.location || !editValues.date) return;
+
+      const loc = locations.find((l) => l.name === editValues.location);
+      if (!loc) return;
+
+      // Fetch all available times for the selected location and date
+      const { data: allAvailable } = await supabase
+        .from("availability")
+        .select("*")
+        .eq("location_id", loc.id)
+        .eq("date", editValues.date);
+
+      // Fetch all booked times for the selected location and date
+      const { data: allBooked } = await supabase
+        .from("bookings")
+        .select("*")
+        .eq("location", editValues.location)
+        .eq("date", editValues.date);
+
+      const countMap = {};
+      allBooked?.forEach((b) => {
+        countMap[b.time] = (countMap[b.time] || 0) + 1;
+      });
+
+      // Filter available times based on booking count (max 2 per time slot)
+      const filtered = allAvailable
+        ?.map((a) => a.time)
+        .filter((t) => !countMap[t] || countMap[t] < 2);
+
+      setEditAvailableTimes(filtered || []);
+    };
+
+    // Fetch user bookings when the component mounts or user changes
+    fetchEditTimes();
+  }, [editValues.date, editValues.location, locations]);
+
+  // Fetch calendar events when the component mounts or calendarLocation changes
+  useEffect(() => {
+    if (calendarLocation) fetchCalendarEvents(calendarLocation);
+  }, [calendarLocation]);
+
+  // Fetch user bookings when the component mounts or user changes
   const fetchUserBookings = async (uid) => {
     const { data } = await supabase
       .from("bookings")
@@ -117,50 +159,6 @@ export default function ListenerScheduling() {
 
     setAvailableTimes(filtered || []);
   }, [location, date, locations]);
-
-  // Load available times when location or date changes
-  useEffect(() => {
-    if (location && date) loadAvailableTimes();
-  }, [location, date, loadAvailableTimes]);
-
-  // Fetch user bookings when the component mounts or user changes
-  useEffect(() => {
-    const fetchEditTimes = async () => {
-      if (!editValues.location || !editValues.date) return;
-
-      const loc = locations.find((l) => l.name === editValues.location);
-      if (!loc) return;
-
-      // Fetch all available times for the selected location and date
-      const { data: allAvailable } = await supabase
-        .from("availability")
-        .select("*")
-        .eq("location_id", loc.id)
-        .eq("date", editValues.date);
-
-      // Fetch all booked times for the selected location and date
-      const { data: allBooked } = await supabase
-        .from("bookings")
-        .select("*")
-        .eq("location", editValues.location)
-        .eq("date", editValues.date);
-
-      const countMap = {};
-      allBooked?.forEach((b) => {
-        countMap[b.time] = (countMap[b.time] || 0) + 1;
-      });
-
-      // Filter available times based on booking count (max 2 per time slot)
-      const filtered = allAvailable
-        ?.map((a) => a.time)
-        .filter((t) => !countMap[t] || countMap[t] < 2);
-
-      setEditAvailableTimes(filtered || []);
-    };
-
-    // Fetch user bookings when the component mounts or user changes
-    fetchEditTimes();
-  }, [editValues.date, editValues.location, locations]);
 
   // Function to book a slot
   const bookSlot = async () => {
@@ -235,11 +233,6 @@ export default function ListenerScheduling() {
     setCalendarEvents(enrichedEvents);
   };
 
-  // Fetch calendar events when the component mounts or calendarLocation changes
-  useEffect(() => {
-    if (calendarLocation) fetchCalendarEvents(calendarLocation);
-  }, [calendarLocation]);
-
   // Fetch user bookings when the component mounts or user changes
   const handleUpdateBooking = async (id) => {
     const { error } = await supabase
@@ -262,6 +255,11 @@ export default function ListenerScheduling() {
     fetchUserBookings(user.id);
     loadAvailableTimes();
   };
+
+  // Load available times when location or date changes
+  useEffect(() => {
+    if (location && date) loadAvailableTimes();
+  }, [location, date, loadAvailableTimes]);
 
   return (
     <>

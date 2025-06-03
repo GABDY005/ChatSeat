@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 
 export default function AdminCoordinatorList() {
   // State variables
-  const [firstName, setFirstName] = useState("User");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,12 +14,12 @@ export default function AdminCoordinatorList() {
   });
   const [coordinators, setCoordinators] = useState([]);
 
- // Fetch user role from local storage
-   useEffect(() => {
-        fetchCoordinators();
-    }, [])
+  // Fetch user role from local storage
+  useEffect(() => {
+    fetchCoordinators();
+  }, []);
 
-    // Fetch coordinators from the database
+  // Fetch coordinators from the database
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -37,8 +36,8 @@ export default function AdminCoordinatorList() {
       return;
     }
 
-// Validate email format
-    const { data, error } = await supabase
+    // Validate email format
+    const { error } = await supabase
       .from("coordinators")
       .insert([{ ...formData }]);
     if (error) {
@@ -75,7 +74,7 @@ export default function AdminCoordinatorList() {
       <AdminNavbar title="Coordinator List" />
       <div className="flex">
         <div className="w-full sm:w-64 sticky top-16 h-[calc(100vh-64px)]">
-          <AdminSidebar userName={firstName} />
+          <AdminSidebar />
         </div>
         <div className="flex-1 p-4 sm:p-6 overflow-auto">
           <div className="w-full overflow-x-auto">
@@ -133,7 +132,9 @@ export default function AdminCoordinatorList() {
                     </button>
                   </th>
                 </tr>
-                 <tr><td colSpan="5" className="h-2"></td></tr> 
+                <tr>
+                  <td colSpan="5" className="h-2"></td>
+                </tr>
               </thead>
               <tbody className="align-top">
                 {coordinators.length === 0 ? (

@@ -4,23 +4,15 @@ import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
 import FeedbackWidget from "./CoordinatorFeedback";
-
+import { useSelector } from "react-redux";
 
 export default function CoordinatorAppointments() {
   // State variables
   const [openDropdown, setOpenDropdown] = useState(null);
   const [appointments, setAppointments] = useState([]);
-  const [firstName, setFirstName] = useState("User");
-  const [userRole, setUserRole] = useState("");
   const [editModal, setEditModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
-
-  // Fetch user's first name from local storage
-  useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("coordinator");
-  }, []);
+  const user = useSelector((state) => state.loggedInUser.success);
 
   // Fetch user's first name from Supabase
   useEffect(() => {
@@ -102,8 +94,8 @@ export default function CoordinatorAppointments() {
 
   return (
     <>
-    {/* Render the appropriate navbar based on user role */}
-      {userRole === "admin" ? (
+      {/* Render the appropriate navbar based on user role */}
+      {user.role === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
         <CoordinatorNavbar title="Coordinator Dashboard" />
@@ -112,10 +104,10 @@ export default function CoordinatorAppointments() {
       {/* Render the sidebar and main content */}
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName={firstName} />
+          <CoordinatorSidebar />
         </div>
-      
-      {/* Main content area */}
+
+        {/* Main content area */}
         <div className="flex-1 p-10">
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">
             Confirmed Listener Bookings
@@ -127,7 +119,6 @@ export default function CoordinatorAppointments() {
               <p>No bookings found.</p>
             ) : (
               appointments.map((appointment) => (
-
                 // Render each appointment card
                 <div
                   key={appointment.id}
@@ -141,7 +132,7 @@ export default function CoordinatorAppointments() {
                       ⋮
                     </button>
 
-{/* Dropdown menu for edit and delete options */}
+                    {/* Dropdown menu for edit and delete options */}
                     {openDropdown === appointment.id && (
                       <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-md z-10">
                         <button
@@ -168,7 +159,7 @@ export default function CoordinatorAppointments() {
                       {appointment.listenerName}
                     </h3>
                   </div>
-                  
+
                   {/* Display appointment details */}
                   <div className="text-sm space-y-1 text-gray-700">
                     <p className="flex items-center gap-2">
@@ -230,9 +221,8 @@ export default function CoordinatorAppointments() {
               }
               className="border rounded px-3 py-1 w-full"
             />
-            
-              
-              {/* Buttons to cancel or save the edit */}
+
+            {/* Buttons to cancel or save the edit */}
             <div className="flex justify-end gap-3 pt-4">
               <button
                 onClick={() => setEditModal(false)}

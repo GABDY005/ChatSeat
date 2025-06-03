@@ -16,7 +16,7 @@ export default function ListenerChatroom() {
   const [replyTexts, setReplyTexts] = useState({});
   const user = useSelector((state) => state.loggedInUser.success);
 
-  
+  // Fetch threads from Firebase on component mount
   useEffect(() => {
     const threadsRef = ref(database, "threads");
     onValue(threadsRef, (snapshot) => {
@@ -25,6 +25,7 @@ export default function ListenerChatroom() {
     });
   }, []);
 
+  // Handle posting a new discussion thread
   const handlePost = () => {
     if (!title || !content) {
       alert("Please enter a title and content!");
@@ -45,6 +46,7 @@ export default function ListenerChatroom() {
     setContent("");
   };
 
+  // Handle replying to a discussion thread
   const handleReply = (threadID, replyText) => {
     if (!replyText) return;
 
@@ -58,8 +60,8 @@ export default function ListenerChatroom() {
     });
   };
 
+  // Handle deleting a discussion thread
   const handleDeleteThread = (threadId, threadTitle) => {
-   
     const isConfirmed = window.confirm(
       `Are you sure you want to delete the thread "${threadTitle}"? This action cannot be undone.`
     );
@@ -71,6 +73,7 @@ export default function ListenerChatroom() {
     }
   };
 
+  // Handle deleting a reply from a discussion thread
   const handleDeleteReply = (threadId, replyKey, reply) => {
     const isConfirmed = window.confirm(
       `Are you sure you want to delete the thread "${reply}"? This action cannot be undone.`
@@ -81,10 +84,12 @@ export default function ListenerChatroom() {
     }
   };
 
+  // Check if the user can delete a reply
   const canDeleteReply = (replyUserId, replyUserRole) => {
     return user.id === replyUserId || user.role === "admin";
   };
 
+  // Filter threads based on search query
   const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
     thread.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
