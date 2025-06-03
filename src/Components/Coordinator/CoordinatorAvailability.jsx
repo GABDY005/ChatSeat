@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -7,45 +6,13 @@ import CoordinatorNavbar from "./CoordinatorNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import supabase from "../../supabase";
 import FeedbackWidget from "./CoordinatorFeedback";
+import { useSelector } from "react-redux";
 
 export default function CoordinatorAvailability() {
   const [calendarEvents, setCalendarEvents] = useState([]);
-  const [firstName, setFirstName] = useState("User");
-  const [userRole, setUserRole] = useState("");
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [userId, setUserId] = useState(null);
+  const user = useSelector((state) => state.loggedInUser.success);
 
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     const { data: { user }, error } = await supabase.auth.getUser();
-  //     if (!user || error) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //   };
-
-  //   fetchUserInfo();
-  // }, [navigate]);
-  useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("coordinator");
-  }, []);
+  // Fetch the user's first name from supabase
   useEffect(() => {
     const fetchCalendarEvents = async () => {
       const { data: bookings, error } = await supabase
@@ -57,6 +24,7 @@ export default function CoordinatorAvailability() {
         return;
       }
 
+      // Fetch the user's first name
       const grouped = {};
       for (const booking of bookings || []) {
         const key = `${booking.date}T${booking.time}`;
@@ -67,6 +35,7 @@ export default function CoordinatorAvailability() {
         });
       }
 
+      // Enrich the events with user names and colors
       const enrichedEvents = await Promise.all(
         Object.entries(grouped).flatMap(async ([start, entries]) =>
           Promise.all(
@@ -77,12 +46,14 @@ export default function CoordinatorAvailability() {
                 .eq("id", entry.user_id)
                 .single();
 
+              // Default to "Unknown" if no profile found
               const name = profile?.first_name || "Unknown";
               const count = entries.length;
               let bgColor = "#86efac";
               if (count === 1) bgColor = "#fde047";
               if (count >= 2) bgColor = "#f87171";
 
+              // Format the start date and time
               return {
                 title: `${entry.location} - ${name}`,
                 start,
@@ -93,7 +64,6 @@ export default function CoordinatorAvailability() {
           )
         )
       );
-
       setCalendarEvents(enrichedEvents.flat());
     };
 
@@ -102,7 +72,7 @@ export default function CoordinatorAvailability() {
 
   return (
     <>
-      {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
         <CoordinatorNavbar title="Availability" />
@@ -110,9 +80,10 @@ export default function CoordinatorAvailability() {
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName={firstName} />
+          <CoordinatorSidebar />
         </div>
 
+        {/*  Main content area */}
         <div className="flex-1 p-4 sm:p-6 md:p-10">
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">
             View All Slots
@@ -123,12 +94,14 @@ export default function CoordinatorAvailability() {
               <div className="w-4 h-4 bg-[#fde047] rounded-sm"></div> Partially
               Booked
             </div>
+
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-[#f87171] rounded-sm"></div> Fully
               Booked
             </div>
           </div>
 
+          {/* Calendar component */}
           <div className="bg-white p-4 sm:p-6 rounded shadow overflow-auto w-full">
             <FullCalendar
               plugins={[timeGridPlugin]}

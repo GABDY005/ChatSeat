@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function PendingApproval() {
@@ -10,6 +9,8 @@ export default function PendingApproval() {
           <h1 className="text-3xl font-bold text-blue-700 mb-4">
             Awaiting Admin Approval
           </h1>
+
+          {/* Customise the message and styles as needed */}
           <p className="text-blue-900 mb-4">
             Thank you for signing up! Your account is currently under review by
             an admin. Once approved, you will be redirected to your dashboard

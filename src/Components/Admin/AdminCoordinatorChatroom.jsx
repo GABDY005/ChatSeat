@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
-// import supabase from "../../supabase";
 import { toast } from "react-toastify/unstyled";
 import { useSelector } from "react-redux";
 
@@ -12,48 +10,11 @@ export default function AdminCoordinatorChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [username, setUsername] = useState("Admin");
-  // const [userId, setUserId] = useState("");
-  // const [userRole, setUserRole] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [firstName, setFirstName] = useState("User");
   const [replyTexts, setReplyTexts] = useState({});
   const user = useSelector((state) => state.loggedInUser.success);
 
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const verifyUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError || profile.role !== "admin") {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setUserId(user.id);
-  //     setUsername(profile.first_name);
-  //     setFirstName(profile.first_name);
-  //     setUserRole("admin");
-  //   };
-
-  //   verifyUser();
-  // }, [navigate]);
-
+  // Set the username based on the logged-in user
   useEffect(() => {
     const threadsRef = ref(database, "coordinator_threads");
     onValue(threadsRef, (snapshot) => {
@@ -62,12 +23,14 @@ export default function AdminCoordinatorChatroom() {
     });
   }, []);
 
+  // Set the username based on the logged-in user
   const handlePost = () => {
     if (!title || !content) {
       toast.warning("Please enter a title and content!");
       return;
     }
 
+    // Create a new thread in the database
     const newRef = push(ref(database, "coordinator_threads"));
     set(newRef, {
       title,
@@ -81,6 +44,7 @@ export default function AdminCoordinatorChatroom() {
     setContent("");
   };
 
+  // Handle reply to a thread
   const handleReply = (threadID, replyText) => {
     if (!replyText) return;
 
@@ -89,13 +53,14 @@ export default function AdminCoordinatorChatroom() {
     );
     set(newReply, {
       text: replyText,
-      username,
+      username: user.first_name,
       user_id: user.id,
       role: user.role,
       timestamp: Date.now(),
     });
   };
 
+  // Handle deletion of a thread
   const handleDeleteThread = (threadId, threadTitle) => {
     // Show confirmation dialog
     const isConfirmed = window.confirm(
@@ -109,6 +74,7 @@ export default function AdminCoordinatorChatroom() {
     }
   };
 
+  // Handle deletion of a reply
   const handleDeleteReply = (threadId, replyKey, reply) => {
     const isConfirmed = window.confirm(
       `Are you sure you want to delete the thread "${reply}"? This action cannot be undone.`
@@ -122,10 +88,12 @@ export default function AdminCoordinatorChatroom() {
     }
   };
 
+  // Function to check if the user can delete a reply
   const canDeleteReply = (replyUserId) => {
     return user.id === replyUserId || user.role === "admin";
   };
 
+  // Filter threads based on search query
   const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
     thread.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -135,16 +103,14 @@ export default function AdminCoordinatorChatroom() {
       <AdminNavbar title="Admin - Coordinator Chatroom" />
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
-          <AdminSidebar userName={firstName} />
+          <AdminSidebar />
         </div>
 
+        {/*  Main content area */}
         <div className="flex-1 p-4 sm:p-6 w-full bg-emerald-50">
           <h2 className="text-lg sm:text-xl font-bold text-blue-900 mb-4">
             Discussion Forum
           </h2>
-
-          {/* <div className="main-content p-6 w-full bg-[#cfffa5]">
-          <h2 className="text-xl font-bold text-green-800 mb-4">Discussion Forum</h2> */}
 
           <div className="mb-6">
             <input
@@ -185,8 +151,6 @@ export default function AdminCoordinatorChatroom() {
                 >
                   <h4 className="font-bold text-black">{thread.title}</h4>
 
-                  {/* <h4 className="font-bold text-green-700">{thread.title}</h4> */}
-
                   <p>{thread.content}</p>
                   <small>
                     Posted by <b>{thread.username}</b> at{" "}
@@ -226,17 +190,6 @@ export default function AdminCoordinatorChatroom() {
                       Post
                     </button>
                   </div>
-                  {/* <input
-                    type="text"
-                    className="form-control mt-2 p-2 border rounded w-full"
-                    placeholder="Write a reply..."
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleReply(id, e.target.value);
-                        e.target.value = "";
-                      }
-                    }}
-                  /> */}
 
                   <div className="mt-3 space-y-2">
                     {thread.replies &&

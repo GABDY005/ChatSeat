@@ -1,78 +1,20 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
 import FeedbackWidget from "./CoordinatorFeedback";
-
-// const dummyAppointments = [
-//   {
-//     id: 1,
-//     listenerName: "Darshi",
-//     time: "10:00 AM",
-//     date: "April 15, 2024",
-//     location: "Tea Tree Gully Library",
-//   },
-//   {
-//     id: 2,
-//     listenerName: "Mahek",
-//     time: "11:30 AM",
-//     date: "April 15, 2024",
-//     location: "Rundle Library",
-//   },
-//   {
-//     id: 3,
-//     listenerName: "Kesha",
-//     time: "2:00 PM",
-//     date: "April 16, 2024",
-//     location: "Campbelltown",
-//   },
-// ];
+import { useSelector } from "react-redux";
 
 export default function CoordinatorAppointments() {
+  // State variables
   const [openDropdown, setOpenDropdown] = useState(null);
   const [appointments, setAppointments] = useState([]);
-  const [firstName, setFirstName] = useState("User");
-  const [userRole, setUserRole] = useState("");
-  const navigate = useNavigate();
   const [editModal, setEditModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
-  const [email, setEmail] = useState("");
-  const [userId, setUserId] = useState(null);
+  const user = useSelector((state) => state.loggedInUser.success);
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const { data: { user }, error } = await supabase.auth.getUser();
-  //     if (!user || error) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //   };
-
-  //   fetchUser();
-  // }, [navigate]);
-
-  useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("coordinator");
-  }, []);
-
+  // Fetch user's first name from Supabase
   useEffect(() => {
     const fetchAppointments = async () => {
       const { data: bookings, error } = await supabase
@@ -112,11 +54,13 @@ export default function CoordinatorAppointments() {
     setOpenDropdown(openDropdown === id ? null : id);
   };
 
+  //it will handle the edit button when it is clicked
   const handleEdit = (appointment) => {
     setSelectedBooking(appointment);
     setEditModal(true);
   };
 
+  //it will save the edited booking details
   const saveEdit = async () => {
     const { error } = await supabase
       .from("bookings")
@@ -127,6 +71,7 @@ export default function CoordinatorAppointments() {
       })
       .eq("id", selectedBooking.id);
 
+    // If no error, update the local state
     if (!error) {
       setAppointments((prev) =>
         prev.map((a) =>
@@ -139,6 +84,7 @@ export default function CoordinatorAppointments() {
     }
   };
 
+  //it will handle the delete button when it is clicked
   const handleDelete = async (id) => {
     const { error } = await supabase.from("bookings").delete().eq("id", id);
     if (!error) {
@@ -148,27 +94,32 @@ export default function CoordinatorAppointments() {
 
   return (
     <>
-      {userRole === "admin" ? (
+      {/* Render the appropriate navbar based on user role */}
+      {user.role === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
         <CoordinatorNavbar title="Coordinator Dashboard" />
       )}
 
+      {/* Render the sidebar and main content */}
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName={firstName} />
+          <CoordinatorSidebar />
         </div>
 
+        {/* Main content area */}
         <div className="flex-1 p-10">
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">
             Confirmed Listener Bookings
           </h2>
 
+          {/* Render the appointments in a grid layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {appointments.length === 0 ? (
               <p>No bookings found.</p>
             ) : (
               appointments.map((appointment) => (
+                // Render each appointment card
                 <div
                   key={appointment.id}
                   className="relative bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500 hover:shadow-lg transition w-full"
@@ -181,6 +132,7 @@ export default function CoordinatorAppointments() {
                       ⋮
                     </button>
 
+                    {/* Dropdown menu for edit and delete options */}
                     {openDropdown === appointment.id && (
                       <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-md z-10">
                         <button
@@ -189,6 +141,8 @@ export default function CoordinatorAppointments() {
                         >
                           Edit
                         </button>
+
+                        {/* Delete button */}
                         <button
                           onClick={() => handleDelete(appointment.id)}
                           className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-500"
@@ -199,12 +153,14 @@ export default function CoordinatorAppointments() {
                     )}
                   </div>
 
+                  {/* Render the listener's name and appointment details */}
                   <div className="mb-3">
                     <h3 className="text-xl font-bold text-[#003366] flex items-center gap-2">
                       {appointment.listenerName}
                     </h3>
                   </div>
 
+                  {/* Display appointment details */}
                   <div className="text-sm space-y-1 text-gray-700">
                     <p className="flex items-center gap-2">
                       <span className="font-medium">Time:</span>{" "}
@@ -225,6 +181,8 @@ export default function CoordinatorAppointments() {
           </div>
         </div>
       </div>
+
+      {/* Edit modal for updating booking details */}
       {editModal && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl space-y-4 w-96">
@@ -238,6 +196,8 @@ export default function CoordinatorAppointments() {
               }
               className="border rounded px-3 py-1 w-full"
             />
+
+            {/* Date and location inputs */}
             <label className="block text-sm font-medium">Date</label>
             <input
               type="date"
@@ -247,6 +207,8 @@ export default function CoordinatorAppointments() {
               }
               className="border rounded px-3 py-1 w-full"
             />
+
+            {/* Location input */}
             <label className="block text-sm font-medium">Location</label>
             <input
               type="text"
@@ -260,6 +222,7 @@ export default function CoordinatorAppointments() {
               className="border rounded px-3 py-1 w-full"
             />
 
+            {/* Buttons to cancel or save the edit */}
             <div className="flex justify-end gap-3 pt-4">
               <button
                 onClick={() => setEditModal(false)}
@@ -267,6 +230,8 @@ export default function CoordinatorAppointments() {
               >
                 Cancel
               </button>
+
+              {/* Save button to update the booking */}
               <button
                 onClick={saveEdit}
                 className="bg-blue-600 text-white px-4 py-1 rounded"

@@ -1,7 +1,9 @@
-//import logo from './logo.svg';
-//import './App.css';
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 import Home from "./Components/Home";
 import About from "./Components/Listener/About.jsx";
@@ -14,7 +16,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 //Listener components
 import ListenerDashboard from "./Components/Listener/ListenerDashboard";
-import ListenerResources from "./Components/Listener/ListenerResources.jsx";
 import CoordinatorsListInListener from "./Components/Listener/CoordinatorsListInListener.jsx";
 import ListenerChatroom from "./Components/Listener/ListenerChatroom";
 import ListenerFeedback from "./Components/Listener/ListenerFeedback.jsx";
@@ -23,7 +24,6 @@ import ListenerHelp from "./Components/Listener/ListenerHelp.jsx";
 import ConversationSkills from "./Components/Listener/ConversationSkills.jsx";
 import ListeningSkills from "./Components/Listener/ListeningSkills.jsx";
 import MakePeopleComfortable from "./Components/Listener/MakePeopleComfortable.jsx";
-
 
 //Coordinator components
 import CoordinatorDashboard from "./Components/Coordinator/CoordinatorDashboard";
@@ -42,7 +42,6 @@ import AdminDashboard from "./Components/Admin/AdminDashboard";
 import AdminCoordinatorChatroom from "./Components/Admin/AdminCoordinatorChatroom";
 import AdminListenerChatroom from "./Components/Admin/AdminListenerChatroom";
 import AdminUserList from "./Components/Admin/AdminUserList";
-import AdminResources from "./Components/Admin/AdminResources";
 import AdminHelp from "./Components/Admin/AdminHelp";
 import AdminSchedulingSetting from "./Components/Admin/AdminSchedulingSetting";
 import AdminFeedback from "./Components/Admin/AdminFeedback";
@@ -55,9 +54,8 @@ function App() {
   return (
     <div>
       <ToastContainer position="top-center" autoClose={2000} />
-<AuthProvider>
-      <Router>
-
+      <AuthProvider>
+        <Router>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/ListenerHelp" element={<ListenerHelp />} />
@@ -67,47 +65,96 @@ function App() {
             <Route path="/forgot-password" element={<ResetRequest />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/BookedListener" element={<BookedListener />} />
-            
-<Route element={<ProtectedRoute requiredRole="listener" />}>
-              <Route path="/ListenerDashboard" element={<ListenerDashboard />}/>
-              <Route path="/ListenerResources" element={<ListenerResources />}/>
-              <Route path="/CoordinatorsListInListener" element={<CoordinatorsListInListener />} />
+
+            <Route element={<ProtectedRoute requiredRole="listener" />}>
+              <Route
+                path="/ListenerDashboard"
+                element={<ListenerDashboard />}
+              />
+
+              <Route
+                path="/CoordinatorsListInListener"
+                element={<CoordinatorsListInListener />}
+              />
               <Route path="/ListenerChatroom" element={<ListenerChatroom />} />
               <Route path="/ListenerFeedback" element={<ListenerFeedback />} />
-              <Route path="/ListenerScheduling" element={<ListenerScheduling />} />
-              <Route path="/listener/conversation-skills" element={<ConversationSkills />} />
-              <Route path="/listener/listening-skills" element={<ListeningSkills />}/>
-              <Route path="/listener/make-people-comfortable" element={<MakePeopleComfortable />} />
+              <Route
+                path="/ListenerScheduling"
+                element={<ListenerScheduling />}
+              />
+              <Route
+                path="/listener/conversation-skills"
+                element={<ConversationSkills />}
+              />
+              <Route
+                path="/listener/listening-skills"
+                element={<ListeningSkills />}
+              />
+              <Route
+                path="/listener/make-people-comfortable"
+                element={<MakePeopleComfortable />}
+              />
             </Route>
-<Route element={<ProtectedRoute requiredRole="coordinator" />}>
-              <Route path="/CoordinatorDashboard" element={<CoordinatorDashboard />} />
-              <Route path="/CoordinatorAppointments" element={<CoordinatorAppointments />} />
-              <Route path="/CoordinatorAvailability" element={<CoordinatorAvailability />} />
-              <Route path="/LessonCoordinator" element={<LessonCoordinator />}  />
-              <Route path="/CoordinatorChatroom" element={<CoordinatorChatroom />} />
-              <Route path="/CoordinatorListenerChatroom" element={<CoordinatorListenerChatroom />}  />
+            <Route element={<ProtectedRoute requiredRole="coordinator" />}>
+              <Route
+                path="/CoordinatorDashboard"
+                element={<CoordinatorDashboard />}
+              />
+              <Route
+                path="/CoordinatorAppointments"
+                element={<CoordinatorAppointments />}
+              />
+              <Route
+                path="/CoordinatorAvailability"
+                element={<CoordinatorAvailability />}
+              />
+              <Route
+                path="/LessonCoordinator"
+                element={<LessonCoordinator />}
+              />
+              <Route
+                path="/CoordinatorChatroom"
+                element={<CoordinatorChatroom />}
+              />
+              <Route
+                path="/CoordinatorListenerChatroom"
+                element={<CoordinatorListenerChatroom />}
+              />
               {/* <Route path="/Logos" element={<Logos />} /> */}
-              <Route path="/CoordinatorFeedback" element={<CoordinatorFeedback />}/>
+              <Route
+                path="/CoordinatorFeedback"
+                element={<CoordinatorFeedback />}
+              />
               <Route path="/CoordinatorHelp" element={<CoordinatorHelp />} />
-        </Route>
+            </Route>
             <Route element={<ProtectedRoute requiredRole="admin" />}>
-              <Route path="/AdminDashboard" element={<AdminDashboard />}/>
+              <Route path="/AdminDashboard" element={<AdminDashboard />} />
               <Route path="/AdminUserList" element={<AdminUserList />} />
-              <Route path="/AdminResources" element={<AdminResources />} />
               <Route path="/AdminHelp" element={<AdminHelp />} />
               <Route path="/AdminFeedback" element={<AdminFeedback />} />
-              <Route path="/AdminCoordinatorChatroom" element={<AdminCoordinatorChatroom />} />
-              <Route path="/AdminListenerChatroom" element={<AdminListenerChatroom />} />
-              <Route path="/AdminCoordinatorList" element={<AdminCoordinatorList />} />
-              <Route path="/AdminSchedulingSetting" element={<AdminSchedulingSetting />} />  
-   </Route>
- <Route element={<ProtectedRoute requiredRole="pending" />}>
+              <Route
+                path="/AdminCoordinatorChatroom"
+                element={<AdminCoordinatorChatroom />}
+              />
+              <Route
+                path="/AdminListenerChatroom"
+                element={<AdminListenerChatroom />}
+              />
+              <Route
+                path="/AdminCoordinatorList"
+                element={<AdminCoordinatorList />}
+              />
+              <Route
+                path="/AdminSchedulingSetting"
+                element={<AdminSchedulingSetting />}
+              />
+            </Route>
+            <Route element={<ProtectedRoute requiredRole="pending" />}>
               <Route path="/PendingApproval" element={<PendingApproval />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-
-      </Router>
+        </Router>
       </AuthProvider>
     </div>
   );

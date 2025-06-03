@@ -1,38 +1,33 @@
-// import React from "react";
-// import { Link, useNavigate } from "react-router-dom";
 import {
   fetchAllBookings,
   deletePastBookings,
 } from "../Controller/BookingController";
 import { useEffect, useState } from "react";
-// import logo from "../assets/Logo.jpg";
+
 import Navbar from "./Navbar";
+import { Helmet } from "react-helmet";
 
 export default function BookedListener() {
   const [bookings, setBookings] = useState([]);
-  // const navigate = useNavigate();
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Fetch all bookings and filter out past ones
   useEffect(() => {
     const getBookings = async () => {
       try {
         await deletePastBookings();
         const data = await fetchAllBookings();
 
-        console.log("Fetched bookings:", data);
-
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
+        // Filter out past bookings
         const filteredBookings = data.filter((b) => {
           const bookingDate = new Date(b.date);
           bookingDate.setHours(0, 0, 0, 0);
           const isFuture = bookingDate >= today;
-          console.log("Checking:", bookingDate, "Is future:", isFuture);
           return isFuture;
         });
 
-        console.log("Filtered bookings:", filteredBookings);
         setBookings(filteredBookings);
       } catch (err) {
         console.error("Error fetching bookings:", err);
@@ -41,12 +36,16 @@ export default function BookedListener() {
 
     getBookings();
   }, []);
-  // const handleLogoClick = () => {
-  //   navigate("/");
-  // };
 
   return (
     <>
+      <Helmet>
+        <title>WHo's at the Seat?</title>
+        <meta
+          name="description"
+          content="Access your ChatSeat account to book a listener or manage your availability."
+        />
+      </Helmet>
       <div className="min-h-sceen bg-white">
         <Navbar />
       </div>

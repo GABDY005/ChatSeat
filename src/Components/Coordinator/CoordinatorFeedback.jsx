@@ -1,58 +1,13 @@
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import supabase from "../../supabase";
-// import CoordinatorSidebar from "./CoordinatorSidebar";
-// import CoordinatorNavbar from "./CoordinatorNavbar";
-// import AdminNavbar from "../Admin/AdminNavbar";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 export default function Feedback() {
-  // const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  // const [firstName, setFirstName] = useState("User");
-  // const [userRole, setUserRole] = useState("");
-  // const [userId, setUserId] = useState("");
-  // const navigate = useNavigate();
-  const user = useSelector((state) => state.loggedInUser.success);
-
   const [open, setOpen] = useState(false);
-
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role, email")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile ||
-  //       profileError ||
-  //       !["admin", "coordinator"].includes(profile.role)
-  //     ) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //     setEmail(profile.email);
-  //     setUserId(user.id);
-  //   };
-
-  //   fetchUserInfo();
-  // }, [navigate]);
+  const user = useSelector((state) => state.loggedInUser.success);
 
   //To prevent the page from reloading when the feedback is submitted
   // useEffect(() => {

@@ -3,59 +3,16 @@ import supabase from "../../supabase";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
-// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import FeedbackWidget from "./CoordinatorFeedback";
+import { useSelector } from "react-redux";
 
 export default function CoordinatorImageGallery() {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
-  const [userRole, setUserRole] = useState("");
-  // const [firstName, setFirstName] = useState("User");
-  // const navigate = useNavigate();
-  // const [email, setEmail] = useState("");
-  // const [userId, setUserId] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-
-  //     if (profile.role !== "admin" && profile.role !== "coordinator") {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     fetchImages();
-  //   };
-
-  //   fetchUserInfo();
-  // }, [navigate]);
+  const user = useSelector((state) => state.loggedInUser.success);
+  
   useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("coordinator");
     fetchImages();
   }, []);
   const fetchImages = async () => {
@@ -119,7 +76,7 @@ export default function CoordinatorImageGallery() {
 
   return (
     <>
-      {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
         <CoordinatorNavbar title="Image Gallery" />

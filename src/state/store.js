@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import loggedInUserReducer from './loggedInUser';
 
-// Load state from localStorage
+// Function to load state from localStorage
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem('reduxState');
@@ -14,22 +14,26 @@ const loadState = () => {
   }
 };
 
-// Save state to localStorage
+// Function to save state to localStorage
 const saveState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
     localStorage.setItem('reduxState', serializedState);
   } catch {
-    // Ignore write errors
+    
   }
 };
 
+// Load the initial state from localStorage
 const preloadedState = loadState();
 
+// If no state is found, use an empty object for the loggedInUser
 const store = configureStore({
   reducer: {
     loggedInUser: loggedInUserReducer,
   },
+
+  // Use the preloaded state if available, otherwise use an empty object
   preloadedState,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -37,7 +41,7 @@ const store = configureStore({
     }),
 });
 
-// Subscribe to store changes and save to localStorage
+// Subscribe to store updates and save the state to localStorage
 store.subscribe(() => {
   saveState(store.getState());
 });

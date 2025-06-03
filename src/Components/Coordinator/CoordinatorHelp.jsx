@@ -1,60 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import supabase from "../../supabase";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
 import FeedbackWidget from "./CoordinatorFeedback";
+import { useSelector } from "react-redux";
 
 export default function CoordinatorHelp() {
-  const [firstName, setFirstName] = useState("User");
-  const [userRole, setUserRole] = useState("");
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [userId, setUserId] = useState(null);
+  const user = useSelector((state) => state.loggedInUser.success);
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     if (profile.role !== "coordinator" && profile.role !== "admin") {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //   };
-
-  //   fetchUser();
-  // }, [navigate]);
-  useEffect(() => {
-    localStorage.getItem("userRole") === "admin"
-      ? setUserRole("admin")
-      : setUserRole("coordinator");
-  }, []);
   return (
     <>
-      {userRole === "admin" ? (
+      {user.role === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
         <CoordinatorNavbar title="Help" />
@@ -62,7 +17,7 @@ export default function CoordinatorHelp() {
 
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
-          <CoordinatorSidebar userName={firstName} />
+          <CoordinatorSidebar />
         </div>
         <div className="flex-1 px-4 sm:px-6 md:px-10 pt-10 pb-8 w-full">
           <div className="w-full max-w-6xl mx-auto text-gray-800">
@@ -81,8 +36,9 @@ export default function CoordinatorHelp() {
                 </h4>
                 <p>
                   This page shows all your booked sessions with listeners. If
-                  necessary, you can <strong>delete</strong> any slot that’s no
-                  longer available or needed.
+                  necessary, you can <strong>Edit</strong> time, place or date
+                  also you can <strong>delete</strong> any slot that’s no longer
+                  available or needed.
                 </p>
               </div>
 

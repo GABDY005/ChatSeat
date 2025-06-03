@@ -4,9 +4,9 @@ import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-// import { useNavigate } from "react-router-dom";
 
 export default function AdminSchedulingSetting() {
+  // State variables
   const [locations, setLocations] = useState([]);
   const [newLocation, setNewLocation] = useState("");
   const [selectedLocationId, setSelectedLocationId] = useState("");
@@ -14,44 +14,28 @@ export default function AdminSchedulingSetting() {
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [existingTimes, setExistingTimes] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const [firstName, setFirstName] = useState("User");
-  // const navigate = useNavigate();
 
+  // Predefined timeslots for availability
+  // These are the timeslots available for selection
   const timeslots = [
-    "08:00", "09:00", "10:00", "11:00", "12:00", "13:00",
-    "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-    "20:00", "21:00"
+    "08:00",
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+    "19:00",
+    "20:00",
+    "21:00",
   ];
 
-  // useEffect(() => {
-  //   const fetchUserName = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (profileError || !profile || profile.role !== "admin") {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //   };
-
-  //   fetchUserName();
-  // }, [navigate]);
-
+  // Fetch locations from the database on component mount
+  // This effect runs once when the component mounts to load existing locations
   useEffect(() => {
     const fetchLocations = async () => {
       const { data } = await supabase.from("locations").select("*");
@@ -60,22 +44,27 @@ export default function AdminSchedulingSetting() {
     fetchLocations();
   }, []);
 
+  // Initialise the date picker using flatpickr
   useEffect(() => {
     flatpickr("#date-picker", {
       dateFormat: "Y-m-d",
-      onChange: (_, dateStr) => setSelectedDate(dateStr)
+      onChange: (_, dateStr) => setSelectedDate(dateStr),
     });
   }, []);
 
+  // Fetch existing times for the selected location and date
   useEffect(() => {
     fetchExistingTimes();
-  }, [selectedLocationId, selectedDate]);
+  }, [selectedLocationId, selectedDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Function to fetch existing times for the selected location and date
   const fetchExistingTimes = async () => {
     if (!selectedLocationId || !selectedDate) {
       setExistingTimes([]);
       return;
     }
+
+    // Fetch times from the availability table based on selected location and date
     const { data } = await supabase
       .from("availability")
       .select("id, time")
@@ -86,6 +75,7 @@ export default function AdminSchedulingSetting() {
     setExistingTimes(data || []);
   };
 
+  // Function to add a new location and set its availability for the next 90 days
   const handleAddLocation = async () => {
     if (!newLocation) return;
     const { data: inserted, error } = await supabase
@@ -120,6 +110,7 @@ export default function AdminSchedulingSetting() {
     setLocations(data || []);
   };
 
+  // Function to delete a location and its associated availability
   const handleDeleteLocation = async (id) => {
     if (!window.confirm("Delete this location?")) return;
     await supabase.from("locations").delete().eq("id", id);
@@ -127,14 +118,14 @@ export default function AdminSchedulingSetting() {
     setLocations(data || []);
   };
 
+  // Function to toggle the selection of a timeslot
   const toggleTime = (time) => {
     setSelectedTimes((prev) =>
-      prev.includes(time)
-        ? prev.filter((t) => t !== time)
-        : [...prev, time]
+      prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]
     );
   };
 
+  // Function to save selected availability for the chosen location and date
   const handleSaveAvailability = async () => {
     if (!selectedLocationId || !selectedDate || selectedTimes.length === 0) {
       alert("Please fill all fields");
@@ -143,10 +134,11 @@ export default function AdminSchedulingSetting() {
 
     setLoading(true);
 
-    const rows = selectedTimes.map(t => ({
+    // Prepare rows to insert into the availability table
+    const rows = selectedTimes.map((t) => ({
       location_id: selectedLocationId,
       date: selectedDate,
-      time: t
+      time: t,
     }));
 
     await supabase.from("availability").insert(rows);
@@ -157,6 +149,7 @@ export default function AdminSchedulingSetting() {
     setLoading(false);
   };
 
+  // Function to delete a specific time slot from the availability
   const handleDeleteTime = async (id) => {
     await supabase.from("availability").delete().eq("id", id);
     setExistingTimes((prev) => prev.filter((t) => t.id !== id));
@@ -175,9 +168,10 @@ export default function AdminSchedulingSetting() {
             Admin Scheduling Settings
           </h2>
 
-          {/* Manage Locations */}
           <div className="bg-white p-4 rounded shadow mb-6">
-            <h3 className="font-semibold mb-2 text-[#1E3A8A]">Manage Locations</h3>
+            <h3 className="font-semibold mb-2 text-[#1E3A8A]">
+              Manage Locations
+            </h3>
             <div className="flex gap-2 mb-4">
               <input
                 type="text"
@@ -194,8 +188,11 @@ export default function AdminSchedulingSetting() {
               </button>
             </div>
             <ul className="space-y-2">
-              {locations.map(loc => (
-                <li key={loc.id} className="flex justify-between items-center border p-2 rounded">
+              {locations.map((loc) => (
+                <li
+                  key={loc.id}
+                  className="flex justify-between items-center border p-2 rounded"
+                >
                   <span>{loc.name}</span>
                   <button
                     onClick={() => handleDeleteLocation(loc.id)}
@@ -208,17 +205,20 @@ export default function AdminSchedulingSetting() {
             </ul>
           </div>
 
-          {/* Set Availability */}
           <div className="bg-white p-4 rounded shadow">
-            <h3 className="font-semibold mb-3 text-[#1E3A8A]">Set Availability</h3>
+            <h3 className="font-semibold mb-3 text-[#1E3A8A]">
+              Set Availability
+            </h3>
             <select
               value={selectedLocationId}
               onChange={(e) => setSelectedLocationId(e.target.value)}
               className="w-full p-2 mb-3 border rounded"
             >
               <option value="">-- Select Location --</option>
-              {locations.map(loc => (
-                <option key={loc.id} value={loc.id}>{loc.name}</option>
+              {locations.map((loc) => (
+                <option key={loc.id} value={loc.id}>
+                  {loc.name}
+                </option>
               ))}
             </select>
 
@@ -231,10 +231,15 @@ export default function AdminSchedulingSetting() {
 
             {existingTimes.length > 0 && (
               <div className="mb-4">
-                <h4 className="font-semibold mb-2 text-[#003366]">Existing Times:</h4>
+                <h4 className="font-semibold mb-2 text-[#003366]">
+                  Existing Times:
+                </h4>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                  {existingTimes.map(t => (
-                    <div key={t.id} className="flex items-center justify-between border rounded px-2 py-1 bg-gray-50">
+                  {existingTimes.map((t) => (
+                    <div
+                      key={t.id}
+                      className="flex items-center justify-between border rounded px-2 py-1 bg-gray-50"
+                    >
                       <span>{t.time}</span>
                       <button
                         className="text-red-600 text-sm"
@@ -249,7 +254,7 @@ export default function AdminSchedulingSetting() {
             )}
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-4">
-              {timeslots.map(t => (
+              {timeslots.map((t) => (
                 <label key={t} className="flex items-center gap-2">
                   <input
                     type="checkbox"
