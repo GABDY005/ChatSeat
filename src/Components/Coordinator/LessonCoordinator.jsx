@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
@@ -18,17 +17,19 @@ function LessonCoordinator() {
   const [uploading, setUploading] = useState(false);
   const user = useSelector((state) => state.loggedInUser.success);
 
-  const navigate = useNavigate();
-
+ 
+// Set user details from Redux store
   useEffect(() => {
     const role = localStorage.getItem("userRole");
     setUserRole(role === "admin" ? "admin" : "coordinator");
   }, []);
 
+  // Fetch user details from Redux store
   useEffect(() => {
     fetchImages();
   }, []);
 
+  // Fetch images from Supabase storage
   const fetchImages = async () => {
     const { data, error } = await supabase.storage
       .from("coordinator-images")
@@ -42,6 +43,7 @@ function LessonCoordinator() {
       return;
     }
 
+    // Create signed URLs for the images
     const signed = await Promise.all(
       data.map(async (file) => {
         const { data: signedUrl } = await supabase.storage
@@ -55,6 +57,7 @@ function LessonCoordinator() {
     setFiles(signed);
   };
 
+  // Handle file upload
   const handleUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -75,6 +78,7 @@ function LessonCoordinator() {
     setUploading(false);
   };
 
+  // Handle file deletion
   const handleDelete = async (fileName) => {
     const { error } = await supabase.storage
       .from("coordinator-images")
@@ -88,6 +92,7 @@ function LessonCoordinator() {
     }
   };
 
+  // Render content based on the active tab
   const renderTabContent = () => {
     switch (activeTab) {
       case 0:

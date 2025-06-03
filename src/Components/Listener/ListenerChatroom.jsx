@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import ListenerSidebar from "./ListenerSidebar";
-// import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
-// import { useNavigate } from "react-router-dom";
 import ListenerFeedbackWidget from "./ListenerFeedback";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify/unstyled";
@@ -14,60 +12,11 @@ export default function ListenerChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // const [username, setUsername] = useState("User");
-  // const [userId, setUserId] = useState("");
-  // const [role, setRole] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  // const [userRole, setUserRole] = useState("");
-  // const [firstName, setFirstName] = useState("User");
   const [replyTexts, setReplyTexts] = useState({});
-
   const user = useSelector((state) => state.loggedInUser.success);
 
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     if (
-  //       profile.role !== "listener" &&
-  //       profile.role !== "coordinator" &&
-  //       profile.role !== "admin"
-  //     ) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //     setUserId(user.id);
-  //     setUsername(profile.first_name);
-  //     setRole(profile.role);
-  //   };
-
-  //   fetchUser();
-  // }, [navigate]);
-
+  
   useEffect(() => {
     const threadsRef = ref(database, "threads");
     onValue(threadsRef, (snapshot) => {
@@ -110,7 +59,7 @@ export default function ListenerChatroom() {
   };
 
   const handleDeleteThread = (threadId, threadTitle) => {
-    // Show confirmation dialog
+   
     const isConfirmed = window.confirm(
       `Are you sure you want to delete the thread "${threadTitle}"? This action cannot be undone.`
     );

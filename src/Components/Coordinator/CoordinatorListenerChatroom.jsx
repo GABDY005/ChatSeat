@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
-// import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
 import { toast } from "react-toastify";
 import FeedbackWidget from "./CoordinatorFeedback";
@@ -14,60 +12,19 @@ export default function CoordinatorListenerChatroom() {
   const [threads, setThreads] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // const [username, setUsername] = useState("User");
-  // const [userId, setUserId] = useState("");
-  // const [role, setRole] = useState("coordinator");
   const [searchQuery, setSearchQuery] = useState("");
-  // const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
   const [replyTexts, setReplyTexts] = useState({});
-  // const navigate = useNavigate();
-  // const [email, setEmail] = useState("");
   const user = useSelector((state) => state.loggedInUser.success);
 
-  //  useEffect(() => {
-  //    const verifyUser = async () => {
-  //      const {
-  //        data: { user },
-  //        error: authError,
-  //      } = await supabase.auth.getUser();
-
-  //      if (!user || authError) {
-  //        navigate("/");
-  //        return;
-  //      }
-
-  //      const { data: profile, error: profileError } = await supabase
-  //        .from("profiles")
-  //        .select("first_name, role")
-  //        .eq("id", user.id)
-  //        .single();
-
-  //      if (!profile || profileError) {
-  //        navigate("/");
-  //        return;
-  //      }
-
-  //      if (profile.role !== "coordinator" && profile.role !== "admin") {
-  //        navigate("/");
-  //        return;
-  //      }
-
-  //      setUserId(user.id);
-  //      setFirstName(profile.first_name);
-  //      setUserRole(profile.role);
-  //      setUsername(profile.first_name);
-  //      setRole(profile.role);
-  //    };
-
-  //    verifyUser();
-  //  }, [navigate]);
-
+  // Determine user role based on localStorage or user state
   useEffect(() => {
     localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
       : setUserRole("coordinator");
   }, []);
+
+  // Fetch threads from Firebase Realtime Database
   useEffect(() => {
     const threadsRef = ref(database, "threads");
     onValue(threadsRef, (snapshot) => {
@@ -76,12 +33,14 @@ export default function CoordinatorListenerChatroom() {
     });
   }, []);
 
+  // Handle posting a new thread
   const handlePost = () => {
     if (!title || !content) {
       toast.warning("Please enter a title and content!");
       return;
     }
 
+    // Check if the user is logged in
     const newRef = push(ref(database, "threads"));
     set(newRef, {
       title,
@@ -95,6 +54,7 @@ export default function CoordinatorListenerChatroom() {
     setContent("");
   };
 
+  // Handle posting a reply to a thread
   const handleReply = (threadID, replyText) => {
     if (!replyText) return;
 
@@ -108,8 +68,8 @@ export default function CoordinatorListenerChatroom() {
     });
   };
 
+  // Handle deleting a thread
   const handleDeleteThread = (threadId, threadTitle) => {
-    // Show confirmation dialog
     const isConfirmed = window.confirm(
       `Are you sure you want to delete the thread "${threadTitle}"? This action cannot be undone.`
     );
@@ -121,6 +81,7 @@ export default function CoordinatorListenerChatroom() {
     }
   };
 
+  // Handle deleting a reply from a thread
   const handleDeleteReply = (threadId, replyKey, reply) => {
     const isConfirmed = window.confirm(
       `Are you sure you want to delete the thread "${reply}"? This action cannot be undone.`
@@ -131,6 +92,7 @@ export default function CoordinatorListenerChatroom() {
     }
   };
 
+  // Function to check if the user can delete a reply
   const canDeleteReply = (replyUserId, replyUserRole) => {
     if (user.id === replyUserId) return true;
     if (user.role === "coordinator" && replyUserRole === "listener")
@@ -143,6 +105,7 @@ export default function CoordinatorListenerChatroom() {
     return false;
   };
 
+  // Filter threads based on search query
   const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
     thread.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -159,6 +122,7 @@ export default function CoordinatorListenerChatroom() {
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <CoordinatorSidebar />
         </div>
+
 
         <div className="main-content p-4 sm:p-6 w-full">
           <h2 className="text-lg sm:text-xl text-[#1E3A8A] font-bold mb-4">
@@ -195,6 +159,7 @@ export default function CoordinatorListenerChatroom() {
             </button>
           </div>
 
+        {/* Display threads */}
           <div className="space-y-4">
             {filteredThreads.length > 0 ? (
               filteredThreads.reverse().map(([id, thread]) => (
@@ -242,18 +207,8 @@ export default function CoordinatorListenerChatroom() {
                       Post
                     </button>
                   </div>
-                  {/* <input
-                    type="text"
-                    className="form-control mt-2 p-2 border rounded w-full"
-                    placeholder="Write a reply..."
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleReply(id, e.target.value);
-                        e.target.value = "";
-                      }
-                    }}
-                  /> */}
-
+                  
+                  {/*  Display replies */}
                   <div className="mt-3 space-y-2">
                     {thread.replies &&
                       Object.entries(thread.replies).map(([key, reply]) => (

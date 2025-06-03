@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminSidebar from "../Admin/AdminSidebar";
 import supabase from "../../supabase";
@@ -14,37 +14,10 @@ export default function Feedback() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(9);
   const [showMore, setShowMore] = useState(null);
-  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchUserName = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
 
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (profileError || !profile || profile.role !== "admin") {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //   };
-
-  //   fetchUserName();
-  // }, [navigate]);
-
+  
+// Fetch user name from localStorage or set default
   useEffect(() => {
     const fetchFeedback = async () => {
       const { data, error } = await supabase
@@ -72,15 +45,18 @@ export default function Feedback() {
     }
   };
 
+  // Fetch first name from localStorage or set default
   const toggleDropdown = (id) => {
     setOpenDropdown((prevId) => (prevId === id ? null : id));
   };
 
+  // Format date to YYYY-MM-DD for comparison
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toISOString().split("T")[0];
   };
 
+  // Filter feedback based on search criteria
   const filteredFeedback = feedback
     .filter((item) =>
       item.name.toLowerCase().includes(searchName.toLowerCase())
@@ -97,6 +73,7 @@ export default function Feedback() {
   const currentItems = filteredFeedback.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredFeedback.length / itemsPerPage);
 
+  // Function to toggle "Show More" text
   const toggleShowMore = (id) => {
     setShowMore((prev) => (prev === id ? null : id));
   };

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -12,40 +11,15 @@ export default function CoordinatorAvailability() {
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [userId, setUserId] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     const { data: { user }, error } = await supabase.auth.getUser();
-  //     if (!user || error) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //   };
-
-  //   fetchUserInfo();
-  // }, [navigate]);
+  // Fetch the user's first name from localStorage or supabase
   useEffect(() => {
     localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
       : setUserRole("coordinator");
   }, []);
+
+  // Fetch the user's first name from supabase
   useEffect(() => {
     const fetchCalendarEvents = async () => {
       const { data: bookings, error } = await supabase
@@ -57,6 +31,7 @@ export default function CoordinatorAvailability() {
         return;
       }
 
+      // Fetch the user's first name
       const grouped = {};
       for (const booking of bookings || []) {
         const key = `${booking.date}T${booking.time}`;
@@ -67,6 +42,7 @@ export default function CoordinatorAvailability() {
         });
       }
 
+      // Enrich the events with user names and colors
       const enrichedEvents = await Promise.all(
         Object.entries(grouped).flatMap(async ([start, entries]) =>
           Promise.all(
@@ -77,12 +53,14 @@ export default function CoordinatorAvailability() {
                 .eq("id", entry.user_id)
                 .single();
 
+              // Default to "Unknown" if no profile found
               const name = profile?.first_name || "Unknown";
               const count = entries.length;
               let bgColor = "#86efac";
               if (count === 1) bgColor = "#fde047";
               if (count >= 2) bgColor = "#f87171";
 
+              // Format the start date and time
               return {
                 title: `${entry.location} - ${name}`,
                 start,
@@ -93,7 +71,6 @@ export default function CoordinatorAvailability() {
           )
         )
       );
-
       setCalendarEvents(enrichedEvents.flat());
     };
 
@@ -102,6 +79,8 @@ export default function CoordinatorAvailability() {
 
   return (
     <>
+    
+
       {userRole === "admin" ? (
         <AdminNavbar title="Coordinator Dashboard" />
       ) : (
@@ -113,22 +92,26 @@ export default function CoordinatorAvailability() {
           <CoordinatorSidebar userName={firstName} />
         </div>
 
+        {/*  Main content area */}
         <div className="flex-1 p-4 sm:p-6 md:p-10">
           <h2 className="text-2xl font-bold text-[#1E3A8A] mb-6">
             View All Slots
           </h2>
-
+        
           <div className="flex flex-wrap gap-4 sm:gap-6 mb-4">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-[#fde047] rounded-sm"></div> Partially
               Booked
             </div>
+
+            
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-[#f87171] rounded-sm"></div> Fully
               Booked
             </div>
           </div>
 
+          {/* Calendar component */}
           <div className="bg-white p-4 sm:p-6 rounded shadow overflow-auto w-full">
             <FullCalendar
               plugins={[timeGridPlugin]}

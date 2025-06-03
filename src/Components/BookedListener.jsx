@@ -1,19 +1,16 @@
-// import React from "react";
-// import { Link, useNavigate } from "react-router-dom";
 import {
   fetchAllBookings,
   deletePastBookings,
 } from "../Controller/BookingController";
 import { useEffect, useState } from "react";
-// import logo from "../assets/Logo.jpg";
+
 import Navbar from "./Navbar";
 import { Helmet } from "react-helmet";
 
 export default function BookedListener() {
   const [bookings, setBookings] = useState([]);
-  // const navigate = useNavigate();
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  
+// Fetch all bookings and filter out past ones
   useEffect(() => {
     const getBookings = async () => {
       try {
@@ -25,6 +22,7 @@ export default function BookedListener() {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
+        // Filter out past bookings
         const filteredBookings = data.filter((b) => {
           const bookingDate = new Date(b.date);
           bookingDate.setHours(0, 0, 0, 0);
@@ -42,10 +40,7 @@ export default function BookedListener() {
 
     getBookings();
   }, []);
-  // const handleLogoClick = () => {
-  //   navigate("/");
-  // };
-
+  
   return (
     <>
     <Helmet>
@@ -55,6 +50,7 @@ export default function BookedListener() {
       <div className="min-h-sceen bg-white">
         <Navbar />
       </div>
+
 
       <div className="px-4 sm:px-6 py-8 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">

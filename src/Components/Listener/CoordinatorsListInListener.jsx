@@ -1,45 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
-import { useNavigate } from "react-router-dom";
 import ListenerFeedbackWidget from "./ListenerFeedback";
 
 export default function CoordinatorsListInListener() {
   const [firstName, setFirstName] = useState("User");
   const [coordinators, setCoordinators] = useState([]);
   const [userRole, setUserRole] = useState("");
-  const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (user && !authError) {
-  //       const { data: profile } = await supabase
-  //         .from("profiles")
-  //         .select("first_name, role")
-  //         .eq("id", user.id)
-  //         .single();
-
-  //       if (profile?.first_name) {
-  //         setFirstName(profile.first_name);
-  //         setUserRole(profile.role);
-  //       }
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, []);
+ 
+  // Set the first name from localStorage or default to "User"
   useEffect(() => {
     localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin")
       : setUserRole("listener");
   }, []);
+
+  // Set the first name from localStorage or default to "User"
   useEffect(() => {
     const fetchCoordinators = async () => {
       const { data, error } = await supabase.from("coordinators").select("*");
@@ -57,11 +35,13 @@ export default function CoordinatorsListInListener() {
         <ListenerNavbar title="Coordinators" />
       )}
 
+      {/* Main content area */}
       <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
         <div className="sticky top-16 h-[calc(100vh-64px)]">
           <ListenerSidebar userName={firstName} />
         </div>
 
+        {/*  Coordinator list section */}
         <div className="flex-1 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {coordinators.length === 0 ? (
             <p className="text-gray-500">No coordinators available.</p>

@@ -4,9 +4,10 @@ import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-// import { useNavigate } from "react-router-dom";
 
+// Main component for scheduling settings
 export default function AdminSchedulingSetting() {
+  // State variables
   const [locations, setLocations] = useState([]);
   const [newLocation, setNewLocation] = useState("");
   const [selectedLocationId, setSelectedLocationId] = useState("");
@@ -14,44 +15,17 @@ export default function AdminSchedulingSetting() {
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [existingTimes, setExistingTimes] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const [firstName, setFirstName] = useState("User");
-  // const navigate = useNavigate();
 
+  // Predefined timeslots for availability
+  // These are the timeslots available for selection
   const timeslots = [
     "08:00", "09:00", "10:00", "11:00", "12:00", "13:00",
     "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
     "20:00", "21:00"
   ];
 
-  // useEffect(() => {
-  //   const fetchUserName = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (profileError || !profile || profile.role !== "admin") {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //   };
-
-  //   fetchUserName();
-  // }, [navigate]);
-
+  // Fetch locations from the database on component mount
+  // This effect runs once when the component mounts to load existing locations
   useEffect(() => {
     const fetchLocations = async () => {
       const { data } = await supabase.from("locations").select("*");
@@ -60,6 +34,7 @@ export default function AdminSchedulingSetting() {
     fetchLocations();
   }, []);
 
+  // Initialise the date picker using flatpickr
   useEffect(() => {
     flatpickr("#date-picker", {
       dateFormat: "Y-m-d",
@@ -67,15 +42,19 @@ export default function AdminSchedulingSetting() {
     });
   }, []);
 
+  // Fetch existing times for the selected location and date
   useEffect(() => {
     fetchExistingTimes();
   }, [selectedLocationId, selectedDate]);
 
+  // Function to fetch existing times for the selected location and date
   const fetchExistingTimes = async () => {
     if (!selectedLocationId || !selectedDate) {
       setExistingTimes([]);
       return;
     }
+
+    // Fetch times from the availability table based on selected location and date
     const { data } = await supabase
       .from("availability")
       .select("id, time")
@@ -86,6 +65,7 @@ export default function AdminSchedulingSetting() {
     setExistingTimes(data || []);
   };
 
+  // Function to add a new location and set its availability for the next 90 days
   const handleAddLocation = async () => {
     if (!newLocation) return;
     const { data: inserted, error } = await supabase
@@ -120,6 +100,7 @@ export default function AdminSchedulingSetting() {
     setLocations(data || []);
   };
 
+  // Function to delete a location and its associated availability
   const handleDeleteLocation = async (id) => {
     if (!window.confirm("Delete this location?")) return;
     await supabase.from("locations").delete().eq("id", id);
@@ -127,6 +108,7 @@ export default function AdminSchedulingSetting() {
     setLocations(data || []);
   };
 
+  // Function to toggle the selection of a timeslot
   const toggleTime = (time) => {
     setSelectedTimes((prev) =>
       prev.includes(time)
@@ -135,6 +117,7 @@ export default function AdminSchedulingSetting() {
     );
   };
 
+  // Function to save selected availability for the chosen location and date
   const handleSaveAvailability = async () => {
     if (!selectedLocationId || !selectedDate || selectedTimes.length === 0) {
       alert("Please fill all fields");
@@ -143,6 +126,7 @@ export default function AdminSchedulingSetting() {
 
     setLoading(true);
 
+    // Prepare rows to insert into the availability table
     const rows = selectedTimes.map(t => ({
       location_id: selectedLocationId,
       date: selectedDate,
@@ -157,6 +141,7 @@ export default function AdminSchedulingSetting() {
     setLoading(false);
   };
 
+  // Function to delete a specific time slot from the availability
   const handleDeleteTime = async (id) => {
     await supabase.from("availability").delete().eq("id", id);
     setExistingTimes((prev) => prev.filter((t) => t.id !== id));
@@ -175,7 +160,7 @@ export default function AdminSchedulingSetting() {
             Admin Scheduling Settings
           </h2>
 
-          {/* Manage Locations */}
+         
           <div className="bg-white p-4 rounded shadow mb-6">
             <h3 className="font-semibold mb-2 text-[#1E3A8A]">Manage Locations</h3>
             <div className="flex gap-2 mb-4">
@@ -208,7 +193,7 @@ export default function AdminSchedulingSetting() {
             </ul>
           </div>
 
-          {/* Set Availability */}
+          
           <div className="bg-white p-4 rounded shadow">
             <h3 className="font-semibold mb-3 text-[#1E3A8A]">Set Availability</h3>
             <select

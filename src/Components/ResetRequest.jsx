@@ -1,14 +1,12 @@
 import { useState } from "react";
 import supabase from "../supabase";
-// import logo from "../assets/Logo.jpg";
-// import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
 export default function ResetRequest() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  // const navigate = useNavigate();
-
+  
+ // Function to handle password reset request
   const handleResetRequest = async (e) => {
     e.preventDefault();
 

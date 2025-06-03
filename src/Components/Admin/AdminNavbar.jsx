@@ -1,50 +1,26 @@
-import React, { useEffect , useState } from "react";
+import { useEffect , useState } from "react";
 import { useNavigate, useLocation  } from "react-router-dom";
 import logo from "../../assets/Logo.jpg";
-import supabase from "../../supabase";
 
 
 export default function AdminNavbar({title="Admin Dashboard"}) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const [userRole, setUserRole] = useState("");
-  const [switchDashboard, setSwitchDashboard] = useState(false);
 
+  // Function to handle logo click and reload the page
   const handleLogoClick = () => {
     window.location.reload();
   };
 
-  // useEffect(() => {
-  //   const fetchUserRole = async () => {
-  //     const { data: { user } } = await supabase.auth.getUser();
-  //     if (user) {
-  //       const { data: profile } = await supabase
-  //         .from("profiles")
-  //         .select("role")
-  //         .eq("id", user.id)
-  //         .single();
-
-  //         if (profile?.role) {
-  //       setUserRole(profile.role);
-  //     }
-  //   }
-    
-
-  //   const isListenerDashboard = location.pathname.includes("ListenerDashboard");
-  //   const isCoordinatorDashboard = location.pathname.includes("CoordinatorDashboard");
-  //   const isAdminDashboard = location.pathname.includes("AdminDashboard");
-
-  //    setSwitchDashboard(isListenerDashboard || isCoordinatorDashboard || isAdminDashboard);
-  // };
-  // fetchUserRole();
-  //   }, [location]);
+  // Effect to set user role based on localStorage value
   useEffect(() => {
     localStorage.getItem("userRole") === "admin"
       ? setUserRole("admin") : setUserRole("");
   }, []);
   return (
     <>
+    {/* Navbar component for Admin Dashboard */}
     <div className="fixed top-0 w-full z-50 bg-[#003366] text-white h-16 flex items-center justify-between px-6 shadow-md">
      
       <div
@@ -62,7 +38,7 @@ export default function AdminNavbar({title="Admin Dashboard"}) {
         <h4 className="text-xl font-bold">{title}</h4>
       </div>
 
-     
+     {/* Navigation buttons */}
       {userRole === "admin" && (
           <div className="right-6 relative">
             <button
@@ -71,7 +47,8 @@ export default function AdminNavbar({title="Admin Dashboard"}) {
             >
               Dashboards ▾
             </button>
-
+            
+            {/* Dropdown menu for different dashboards */}
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-56 bg-white text-gray-800 rounded shadow-lg z-10">
                 <button
@@ -92,6 +69,8 @@ export default function AdminNavbar({title="Admin Dashboard"}) {
                 >
                   Coordinator Dashboard
                 </button>
+
+              
                 <button
                   onClick={() => {
                     navigate("/AdminDashboard");

@@ -7,17 +7,20 @@ export const signupUser = async ({
   lastName,
   phoneNumber,
 }) => {
+  // Validate input
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
   });
 
+  // If there's an error during signup, throw an error
   if (error) {
     throw new Error("Signup failed：" + error.message);
   }
 
   const user = data.user;
 
+  // If user is not created, throw an error
   const { error: profileError } = await supabase.from("profiles").insert([
     {
       id: user.id,
@@ -25,7 +28,7 @@ export const signupUser = async ({
       first_name: firstName,
       last_name: lastName,
       phone_number: phoneNumber,
-      role: "pending", // default role is 'pending' for admin approval
+      role: "pending", 
     },
   ]);
 
@@ -49,6 +52,7 @@ export const loginUser = async ({ email, password }) => {
 
   const { user } = data;
 
+  // Fetch the user's profile to get their role
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
     .select("role")
@@ -77,6 +81,7 @@ export const getUserProfile = async (userId) => {
   return data;
 };
 
+// Update a user's profile
 export const updateUserRole = async (userId, newRole) => {
   const { error } = await supabase
     .from("profiles")
@@ -105,6 +110,7 @@ export const fetchAllUsers = async () => {
 export const deleteUserById = async (userId) => {
   const { error } = await supabase.from("profiles").delete().eq("id", userId);
 
+  // If there's an error during deletion, throw an error
   if (error) {
     throw new Error("Failed to delete user:" + error.message);
   }
@@ -112,6 +118,7 @@ export const deleteUserById = async (userId) => {
   return true;
 };
 
+// Sign out the current user
 export const getCurrentUser = async () => {
   const {
     data: { user },
@@ -120,6 +127,7 @@ export const getCurrentUser = async () => {
 
   if (error || !user) throw new Error("No authenticated user");
 
+  // Fetch the user's profile to get their first name and role
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
     .select("first_name, role")
@@ -131,13 +139,15 @@ export const getCurrentUser = async () => {
   return { id: user.id, ...profile };
 };
 
+// Check if the user has a specific role
 export const checkUserRole = async (requiredRole) => {
   const {
     data: { user },
     error: authError,
   } = await supabase.auth.getUser();
   if (authError || !user) throw new Error("User not authenticated");
-
+  
+  // Fetch the user's profile to get their role
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
     .select("role")

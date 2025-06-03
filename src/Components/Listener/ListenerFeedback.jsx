@@ -1,36 +1,20 @@
 import { useState } from "react";
-// import ListenerSidebar from "./ListenerSidebar";
 import supabase from "../../supabase";
-// import ListenerNavbar from "./ListenerNavbar";
-// import AdminNavbar from "../Admin/AdminNavbar";
-// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 export default function Feedback() {
-  // const [firstName, setFirstName] = useState("User");
-  // const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  // const [userRole, setUserRole] = useState("");
   const [open, setOpen] = useState(false);
-  // const [userId, setUserId] = useState("");
   const user = useSelector((state) => state.loggedInUser.success);
 
-  // const navigate = useNavigate();
-
-  //It prevents the page from reloading when the feedback is submitted
+// To prevent the page from reloading when the feedback is submitted
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    //it will get the user data from database
-    // const {
-    //   data: { user },
-    //   error: authError,
-    // } = await supabase.auth.getUser();
-
-    //it will check whether the user is log in or not
+// Check if user is logged in
     if (!user.id) {
       toast.warning("You must be logged in to submit feedback.");
       setLoading(false);
@@ -67,55 +51,7 @@ export default function Feedback() {
     }
   };
 
-  //it will get the user data from database
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     if (
-  //       profile.role !== "listener" &&
-  //       profile.role !== "coordinator" &&
-  //       profile.role !== "admin"
-  //     ) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //      setEmail(profile.email || "Unknown");
-  //     setUserRole(profile.role);
-  //     setUserId(user.id);
-
-  //   };
-
-  //   fetchUser();
-  // }, [navigate]);
-
-  // useEffect(() => {
-  //   localStorage.getItem("userRole") === "admin"
-  //     ? setUserRole("admin")
-  //     : setUserRole("listener");
-  // }, []);
+  
 
   return (
     <>

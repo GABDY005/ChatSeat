@@ -1,48 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchAllUsers } from "../../Controller/UserController";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
-import supabase from "../../supabase";
-import { useNavigate } from "react-router-dom";
 
 export default function AdminDashboard() {
- 
   const [pendingCount, setPendingCount] = useState(0);
-  // const [dropdownOpen, setDropdownOpen] = useState(false);
   const [firstName, setFirstName] = useState("User");
-  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchUserName = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (profileError || !profile || profile.role !== "admin") {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //   };
-
-  //   fetchUserName();
-  // }, [navigate]);
-  
-  //it will fetch the pending approvals of the user in the dashboard
-  
+// Fetch the first name from localStorage or user object
   useEffect(() => {
     const fetchPending = async () => {
       try {
@@ -63,36 +28,7 @@ export default function AdminDashboard() {
     <>
       
       <AdminNavbar title="Dashboard"/>
-      {/* <div className="bg-[#003366] text-white h-16 flex items-center justify-center px-6 shadow-md relative">
-        <h4 className="text-xl font-bold justify-center">Admin Dashboard</h4>
-
-       
-        <div className="absolute right-6">
-          <button
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="bg-blue-700 px-4 py-2 rounded hover:bg-blue-800 focus:outline-none"
-          >
-            Dashboards ▾
-          </button>
-
-          {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-56 bg-white text-gray-800 rounded shadow-lg z-10">
-              <a
-                href="/ListenerDashboard"
-                className="text-sm block px-4 py-2 hover:bg-blue-100"
-              >
-                Listener Dashboard
-              </a>
-              <a
-                href="/CoordinatorDashboard"
-                className="text-sm block px-4 py-2 hover:bg-green-100"
-              >
-                Coordinator Dashboard
-              </a>
-            </div>
-          )}
-        </div>
-      </div> */}
+      
 
 <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
 <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]" />

@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import supabase from "../../supabase";
 import { useSelector } from "react-redux";
@@ -10,9 +10,7 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.loggedInUser.success);
-  // const loading = useSelector((state) => state.loggedInUser.loading);
-
-  //  if (loading || !user.first_name) return null;
+  
 
   const getLinkStyle = (path) =>
     location.pathname === path
@@ -30,9 +28,7 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
 
   return (
     <div className="w-64 bg-[#A8E4F2] h-[calc(100vh-64px)] sticky top-16 flex flex-col px-4 py-6 overflow-y-auto">
-      {/* <div className="text-[#1E3A8A] font-bold text-xl mb-12 text-center">
-        Hello, {user.first_name || "User"}!
-      </div> */}
+   
 
  <div className="text-[#1E3A8A] font-bold text-xl mb-12 text-center">
       Hello, {user.first_name}!
@@ -86,17 +82,7 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
         >
           Listener Chat room
         </Link>
-        {/* <Link to="/Logos" className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle("/Logos")}`}>
-          Banners and Logo
-        </Link> */}
-        {/* <Link
-          to="/CoordinatorFeedback"
-          className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-            "/CoordinatorFeedback"
-          )}`}
-        >
-          Feedback
-        </Link> */}
+        
         <Link
           to="/CoordinatorHelp"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
@@ -107,7 +93,7 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
         </Link>
       </div>
 
-      {/* Logout */}
+     
       <div className="mt-auto">
         <button
           onClick={handleLogout}

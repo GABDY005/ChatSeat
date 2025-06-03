@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import supabase from "../../supabase";
 import { toast } from "react-toastify";
 
 export default function AdminCoordinatorList() {
+  // State variables
   const [firstName, setFirstName] = useState("User");
   const [formData, setFormData] = useState({
     name: "",
@@ -14,34 +15,12 @@ export default function AdminCoordinatorList() {
   });
   const [coordinators, setCoordinators] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchUserName = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (user && !authError) {
-  //       const { data: profile, error: profileError } = await supabase
-  //         .from("coordinators")
-  //         .select("first_name")
-  //         .eq("id", user.id)
-  //         .single();
-
-  //       if (profile?.first_name) {
-  //         setFirstName(profile.first_name);
-  //       }
-  //     }
-  //   };
-
-  //   fetchUserName();
-  //   fetchCoordinators();
-  // }, []);
-
+ // Fetch user role from local storage
    useEffect(() => {
         fetchCoordinators();
     }, [])
 
+    // Fetch coordinators from the database
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -49,6 +28,7 @@ export default function AdminCoordinatorList() {
     });
   };
 
+  // Handle adding a new coordinator
   const handleAdd = async () => {
     const { name, email, phone, place } = formData;
 
@@ -56,7 +36,8 @@ export default function AdminCoordinatorList() {
       toast.error("Please fill in all fields.");
       return;
     }
-    
+
+// Validate email format
     const { data, error } = await supabase
       .from("coordinators")
       .insert([{ ...formData }]);
@@ -69,6 +50,7 @@ export default function AdminCoordinatorList() {
     }
   };
 
+  // Fetch coordinators from the database
   const fetchCoordinators = async () => {
     const { data, error } = await supabase.from("coordinators").select("*");
     if (error) {
@@ -78,6 +60,7 @@ export default function AdminCoordinatorList() {
     }
   };
 
+  // Handle deleting a coordinator
   const handleDelete = async (id) => {
     const { error } = await supabase.from("coordinators").delete().eq("id", id);
     if (error) {

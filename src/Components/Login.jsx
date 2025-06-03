@@ -4,11 +4,11 @@ import { toast } from "react-toastify";
 import supabase from "../supabase";
 import { useDispatch } from "react-redux";
 import { setloggedInUserSuccess } from "../state/loggedInUser";
-// import logo from "../assets/Logo.jpg";
-// import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import { Helmet } from "react-helmet";
 
+// This component handles user login functionality
+// It allows users to enter their email and password, authenticate with Supabase, and navigate to different dashboards based on their role.
 export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -16,12 +16,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // const handleLogoClick = () => {
-  //   navigate("/");
-  // };
-
+  
   // Function will run when the login button is clicked
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -46,6 +41,7 @@ export default function LoginPage() {
 
       if (profileError) throw profileError;
 
+      // Check if profile data is available
       const role = profileData.role;
       console.log("User role:", profileData);
 
@@ -78,6 +74,7 @@ export default function LoginPage() {
 
   return (
     <>
+    {/* Helmet component to manage the document head for SEO */}
     <Helmet>
         <title>Login – ChatSeat</title>
         <meta name="description" content="Access your ChatSeat account to book a listener or manage your availability." />
@@ -85,16 +82,23 @@ export default function LoginPage() {
       <div className="h-screen">
         <Navbar />
 
+        {/* Main container for the login form */}
         <div className="h-full flex items-center justify-center bg-[#A8E4F2] px-4 md:px-6">
           <div className="bg-white px-6 py-8 md:p-10 shadow-lg w-full max-w-sm rounded-lg">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-[#003366] mb-6 md:mb-8">
               Login
             </h2>
+
+            {/* Login form */}
             <form onSubmit={handleLogin} className="space-y-5 md:space-y-6">
               <div>
+
+                {/* Input field for email address */}
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Email Address
                 </label>
+
+                {/* Component for email input */}
                 <input
                   type="email"
                   value={email}
@@ -105,9 +109,13 @@ export default function LoginPage() {
                 />
               </div>
               <div>
+
+                {/* Input field for password */}
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Password
                 </label>
+
+                {/* Component for password input with show/hide functionality */}
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -126,6 +134,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
+              {/* Button to submit the form */}
               <button
                 type="submit"
                 disabled={loading}
@@ -136,6 +145,7 @@ export default function LoginPage() {
                 {loading ? "Logging in..." : "Login"}
               </button>
 
+              {/* Links for navigation */}
               <div className="flex flex-col md:flex-row justify-between mt-6 space-y-3 md:space-y-0 text-sm text-[#003366] font-semibold">
                 <button
                   type="button"
@@ -153,6 +163,7 @@ export default function LoginPage() {
                 </button>
               </div>
 
+              {/* Link to reset password */}
               <div className="text-center mt-4">
                 <button
                   type="button"

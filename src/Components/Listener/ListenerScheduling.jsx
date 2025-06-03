@@ -7,11 +7,11 @@ import supabase from "../../supabase";
 import ListenerSidebar from "./ListenerSidebar";
 import ListenerNavbar from "./ListenerNavbar";
 import AdminNavbar from "../Admin/AdminNavbar";
-// import { useNavigate } from "react-router-dom";
 import ListenerFeedbackWidget from "./ListenerFeedback";
 import { useSelector } from "react-redux";
 
 export default function ListenerScheduling() {
+  // State variables for managing locations, booking details, and calendar events
   const [locations, setLocations] = useState([]);
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
@@ -20,9 +20,7 @@ export default function ListenerScheduling() {
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [calendarLocation, setCalendarLocation] = useState("");
   const [confirmation, setConfirmation] = useState("");
-  // const [userName, setUserName] = useState("");
   const [userBookings, setUserBookings] = useState([]);
-  // const [userId, setUserId] = useState(null);
   const [activeTab, setActiveTab] = useState("Upcoming");
   const [editBookingId, setEditBookingId] = useState(null);
   const [editValues, setEditValues] = useState({
@@ -31,11 +29,9 @@ export default function ListenerScheduling() {
     location: "",
   });
   const [editAvailableTimes, setEditAvailableTimes] = useState([]);
-  // const [userRole, setUserRole] = useState("");
-  // const [firstName, setFirstName] = useState("User");
-  // const navigate = useNavigate();
   const user = useSelector((state) => state.loggedInUser.success);
 
+  // Fetch locations from the database when the component mounts
   useEffect(() => {
     const fetchLocations = async () => {
       const { data, error } = await supabase.from("locations").select("*");
@@ -48,49 +44,8 @@ export default function ListenerScheduling() {
     fetchLocations();
   }, []);
 
-  // useEffect(() => {
-
-  //   const fetchUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     if (
-  //       profile.role !== "listener" &&
-  //       profile.role !== "coordinator" &&
-  //       profile.role !== "admin"
-  //     ) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //     setUserId(user.id);
-  //     setUserName(profile.first_name);
-  //     fetchUserBookings(user.id);
-  //   };
-
-  //   fetchUser();
-  // }, [navigate]);
-
+  
+// Fetch user bookings when the component mounts or user changes
   useEffect(() => {
     flatpickr("#date-picker", {
       dateFormat: "Y-m-d",
@@ -99,6 +54,7 @@ export default function ListenerScheduling() {
     });
   }, [activeTab]);
 
+  // Fetch user bookings when the component mounts or user changes
   useEffect(() => {
     if (editBookingId !== null) {
       flatpickr("#edit-date-picker", {
@@ -110,6 +66,7 @@ export default function ListenerScheduling() {
     }
   }, [editBookingId]);
 
+  // Fetch locations from the database when the component mounts
   useEffect(() => {
     const fetchLocations = async () => {
       const { data } = await supabase.from("locations").select("*");
@@ -118,30 +75,8 @@ export default function ListenerScheduling() {
     fetchLocations();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (user && !authError) {
-  //       const { data: profile, error: profileError } = await supabase
-  //         .from("profiles")
-  //         .select("first_name, role")
-  //         .eq("id", user.id)
-  //         .single();
-
-  //       if (profile?.first_name) {
-  //         setFirstName(profile.first_name);
-  //         setUserRole(profile.role);
-  //       }
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, []);
-
+  
+// Fetch user bookings when the component mounts or user changes
   const fetchUserBookings = async (uid) => {
     const { data } = await supabase
       .from("bookings")
@@ -150,12 +85,14 @@ export default function ListenerScheduling() {
     if (data) setUserBookings(data);
   };
 
+  // Fetch user bookings when the component mounts or user changes
   const loadAvailableTimes = useCallback(async () => {
     if (!location || !date) return;
 
     const loc = locations.find((l) => l.name === location);
     if (!loc) return;
 
+    // Fetch all available times for the selected location and date
     const { data: allAvailable } = await supabase
       .from("availability")
       .select("*")
@@ -173,6 +110,7 @@ export default function ListenerScheduling() {
       countMap[b.time] = (countMap[b.time] || 0) + 1;
     });
 
+    // Filter available times based on booking count (max 2 per time slot)
     const filtered = allAvailable
       ?.map((a) => a.time)
       .filter((t) => !countMap[t] || countMap[t] < 2);
@@ -180,10 +118,12 @@ export default function ListenerScheduling() {
     setAvailableTimes(filtered || []);
   }, [location, date, locations]);
 
+  // Load available times when location or date changes
   useEffect(() => {
     if (location && date) loadAvailableTimes();
   }, [location, date, loadAvailableTimes]);
 
+  // Fetch user bookings when the component mounts or user changes
   useEffect(() => {
     const fetchEditTimes = async () => {
       if (!editValues.location || !editValues.date) return;
@@ -191,12 +131,14 @@ export default function ListenerScheduling() {
       const loc = locations.find((l) => l.name === editValues.location);
       if (!loc) return;
 
+      // Fetch all available times for the selected location and date
       const { data: allAvailable } = await supabase
         .from("availability")
         .select("*")
         .eq("location_id", loc.id)
         .eq("date", editValues.date);
 
+      // Fetch all booked times for the selected location and date
       const { data: allBooked } = await supabase
         .from("bookings")
         .select("*")
@@ -208,6 +150,7 @@ export default function ListenerScheduling() {
         countMap[b.time] = (countMap[b.time] || 0) + 1;
       });
 
+      // Filter available times based on booking count (max 2 per time slot)
       const filtered = allAvailable
         ?.map((a) => a.time)
         .filter((t) => !countMap[t] || countMap[t] < 2);
@@ -215,15 +158,18 @@ export default function ListenerScheduling() {
       setEditAvailableTimes(filtered || []);
     };
 
+    // Fetch user bookings when the component mounts or user changes
     fetchEditTimes();
   }, [editValues.date, editValues.location, locations]);
 
+  // Function to book a slot
   const bookSlot = async () => {
     if (!location || !date || !time) {
       alert("Please complete all fields.");
       return;
     }
 
+    // Check if the user has already booked a slot for this location, date, and time
     const { data: existing } = await supabase
       .from("bookings")
       .select("*")
@@ -243,6 +189,7 @@ export default function ListenerScheduling() {
     loadAvailableTimes();
   };
 
+  // Function to fetch calendar events for the selected location
   const fetchCalendarEvents = async (locName) => {
     const { data: bookings, error } = await supabase
       .from("bookings")
@@ -254,6 +201,7 @@ export default function ListenerScheduling() {
       return;
     }
 
+    // Group bookings by date and time
     const grouped = {};
 
     for (const booking of bookings || []) {
@@ -262,6 +210,7 @@ export default function ListenerScheduling() {
       grouped[key].push(booking.user_id);
     }
 
+    // Enrich events with user names
     const enrichedEvents = await Promise.all(
       Object.entries(grouped).map(async ([start, userIds]) => {
         const names = await Promise.all(
@@ -286,10 +235,12 @@ export default function ListenerScheduling() {
     setCalendarEvents(enrichedEvents);
   };
 
+  // Fetch calendar events when the component mounts or calendarLocation changes
   useEffect(() => {
     if (calendarLocation) fetchCalendarEvents(calendarLocation);
   }, [calendarLocation]);
 
+  // Fetch user bookings when the component mounts or user changes
   const handleUpdateBooking = async (id) => {
     const { error } = await supabase
       .from("bookings")
@@ -305,6 +256,7 @@ export default function ListenerScheduling() {
     }
   };
 
+  // Function to handle booking cancellation
   const handleCancel = async (id) => {
     await supabase.from("bookings").delete().eq("id", id);
     fetchUserBookings(user.id);

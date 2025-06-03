@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
 import database from "../firebase";
 import { ref, push, onValue, set, remove } from "firebase/database";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "../Admin/AdminNavbar";
-// import supabase from "../../supabase";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
@@ -20,40 +18,9 @@ export default function AdminListenerChatroom() {
   const [replyTexts, setReplyTexts] = useState({});
   const user = useSelector((state) => state.loggedInUser.success);
 
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const verifyUser = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError || profile.role !== "admin") {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setUserId(user.id);
-  //     setUsername(profile.first_name);
-  //     setFirstName(profile.first_name);
-  //     setUserRole("admin");
-  //   };
-
-  //   verifyUser();
-  // }, [navigate]);
-
+ 
+  
+// Set user role and ID from Redux store
   useEffect(() => {
     const threadsRef = ref(database, "threads");
     onValue(threadsRef, (snapshot) => {
@@ -62,6 +29,7 @@ export default function AdminListenerChatroom() {
     });
   }, []);
 
+  // Set user role and ID from Redux store
   const handlePost = () => {
     if (!title || !content) {
       toast.warning("Please enter a title and content!");
@@ -81,9 +49,11 @@ export default function AdminListenerChatroom() {
     setContent("");
   };
 
+  // Set user role and ID from Redux store
   const handleReply = (threadID, replyText) => {
     if (!replyText) return;
 
+    // Create a new reply under the specified thread
     const newReply = push(ref(database, `threads/${threadID}/replies`));
     set(newReply, {
       text: replyText,
@@ -94,8 +64,9 @@ export default function AdminListenerChatroom() {
     });
   };
 
+  // Function to handle thread deletion with confirmation
   const handleDeleteThread = (threadId, threadTitle) => {
-    // Show confirmation dialog
+   
     const isConfirmed = window.confirm(
       `Are you sure you want to delete the thread "${threadTitle}"? This action cannot be undone.`
     );
@@ -107,6 +78,7 @@ export default function AdminListenerChatroom() {
     }
   };
 
+  // Function to handle reply deletion with confirmation
   const handleDeleteReply = (threadId, replyKey, reply) => {
     const isConfirmed = window.confirm(
       `Are you sure you want to delete the thread "${reply}"? This action cannot be undone.`
@@ -120,10 +92,12 @@ export default function AdminListenerChatroom() {
     }
   };
 
+  // Function to check if the user can delete a reply
   const canDeleteReply = (replyUserId) => {
     return user.id === replyUserId || user.role === "admin";
   };
 
+  // Filter threads based on search query
   const filteredThreads = Object.entries(threads).filter(([id, thread]) =>
     thread.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -215,17 +189,7 @@ export default function AdminListenerChatroom() {
                     </button>
                   </div>
 
-                  {/* <input
-                    type="text"
-                    className="form-control mt-2 p-2 border rounded w-full"
-                    placeholder="Write a reply..."
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleReply(id, e.target.value);
-                        e.target.value = "";
-                      }
-                    }}
-                  /> */}
+                 
 
                   <div className="mt-3 space-y-2">
                     {thread.replies &&

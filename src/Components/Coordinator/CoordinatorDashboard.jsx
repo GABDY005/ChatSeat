@@ -1,50 +1,15 @@
 import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
 import CoordinatorSidebar from "./CoordinatorSidebar";
 import CoordinatorNavbar from "./CoordinatorNavbar";
-// import supabase from "../../supabase";
 import AdminNavbar from "../Admin/AdminNavbar";
 import FeedbackWidget from "./CoordinatorFeedback";
 import { useSelector } from "react-redux";
 
 function CoordinatorDashboard() {
-  // const [firstName, setFirstName] = useState("User");
   const [userRole, setUserRole] = useState("");
-  // const navigate = useNavigate();
-  // const [email, setEmail] = useState("");
-  // const [userId, setUserId] = useState(null);
   const user = useSelector((state) => state.loggedInUser.success);
 
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (!profile || profileError || (profile.role !== "admin" && profile.role !== "coordinator")) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //     setUserRole(profile.role);
-  //   };
-
-  //   fetchUserInfo();
-  // }, [navigate]);
-
+  // Set user role based on the logged-in user's role
   useEffect(() => {
     user.role === "admin" ? setUserRole("admin") : setUserRole("coordinator");
   }, []);

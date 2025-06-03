@@ -1,42 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import AdminSidebar from "./AdminSidebar";
-import supabase from "../../supabase";
 import AdminNavbar from "./AdminNavbar";
 
 export default function Help() {
   const [firstName, setFirstName] = useState("User");
-  const navigate = useNavigate();
+ 
 
-  // useEffect(() => {
-  //   const fetchUserName = async () => {
-  //     const {
-  //       data: { user },
-  //       error: authError,
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user || authError) {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     const { data: profile, error: profileError } = await supabase
-  //       .from("profiles")
-  //       .select("first_name, role")
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (profileError || !profile || profile.role !== "admin") {
-  //       navigate("/");
-  //       return;
-  //     }
-
-  //     setFirstName(profile.first_name);
-  //   };
-
-  //   fetchUserName();
-  // }, [navigate]);
-
+  
   return (
     <>
       <AdminNavbar title="Help" />
