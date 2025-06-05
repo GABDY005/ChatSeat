@@ -59,6 +59,9 @@ export default function CoordinatorHelp() {
                 <p>
                   Access important materials, guides, or tools curated
                   specifically to help coordinators deliver better support.
+                  <br />
+                  Download official banners and logos. These assets can be used
+                  for events or any communication material.
                 </p>
               </div>
 
@@ -70,16 +73,6 @@ export default function CoordinatorHelp() {
                   Engage in discussions with either <strong>listeners</strong>{" "}
                   or other <strong>coordinators</strong>. These spaces offer a
                   safe place to share tips or get clarifications.
-                </p>
-              </div>
-
-              <div className="bg-pink-50 border-l-4 border-pink-400 p-6 rounded-xl shadow-sm hover:shadow-md transition">
-                <h4 className="text-pink-900 font-semibold text-lg mb-2">
-                  Banner & Logo
-                </h4>
-                <p>
-                  Download official banners and logos. These assets can be used
-                  for events or any communication material.
                 </p>
               </div>
 

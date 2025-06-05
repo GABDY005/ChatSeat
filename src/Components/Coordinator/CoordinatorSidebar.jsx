@@ -29,58 +29,58 @@ export default function CoordinatorSidebar({ userName = "Coordinator" }) {
       </div>
       <div className="flex flex-col space-y-3 mb-6">
         <Link
-          to="/CoordinatorDashboard"
+          to="/coordinatordashboard"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-            "/CoordinatorDashboard"
+            "/coordinatordashboard"
           )}`}
         >
           Dashboard
         </Link>
         <Link
-          to="/CoordinatorAppointments"
+          to="/coordinatorappointments"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-            "/CoordinatorAppointments"
+            "/coordinatorappointments"
           )}`}
         >
           Appointments
         </Link>
         <Link
-          to="/CoordinatorAvailability"
+          to="/coordinatoravailability"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-            "/CoordinatorAvailability"
+            "/coordinatoravailability"
           )}`}
         >
           Availability
         </Link>
         <Link
-          to="/LessonCoordinator"
+          to="/lessoncoordinator"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-            "/LessonCoordinator"
+            "/lessoncoordinator"
           )}`}
         >
           Resources
         </Link>
         <Link
-          to="/CoordinatorChatroom"
+          to="/coordinatorchatroom"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-            "/CoordinatorChatroom"
+            "/coordinatorchatroom"
           )}`}
         >
           Coordinator Chat room
         </Link>
         <Link
-          to="/CoordinatorListenerChatroom"
+          to="/coordinatorlistenerchatroom"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-            "/CoordinatorListenerChatroom"
+            "/coordinatorlistenerchatroom"
           )}`}
         >
           Listener Chat room
         </Link>
 
         <Link
-          to="/CoordinatorHelp"
+          to="/coordinatorhelp"
           className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-            "/CoordinatorHelp"
+            "/coordinatorhelp"
           )}`}
         >
           Help

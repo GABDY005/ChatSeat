@@ -35,67 +35,67 @@ export default function AdminSidebar({ userName = "" }) {
         {/* Navigation links for admin functionalities */}
         <div className="flex flex-col space-y-3 mb-auto">
           <Link
-            to="/AdminDashboard"
+            to="/admindashboard"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/AdminDashboard"
+              "/admindashboard"
             )}`}
           >
             Dashboard
           </Link>
           <Link
-            to="/AdminUserList"
+            to="/adminuserlist"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/AdminUserList"
+              "/adminuserlist"
             )}`}
           >
             Manage Users
           </Link>
           <Link
-            to="/AdminCoordinatorChatroom"
+            to="/admincoordinatorchatroom"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/AdminCoordinatorChatroom"
+              "/admincoordinatorchatroom"
             )}`}
           >
             Coordinator Chat Room
           </Link>
           <Link
-            to="/AdminListenerChatroom"
+            to="/adminlistenerchatroom"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/AdminListenerChatroom"
+              "/adminlistenerchatroom"
             )}`}
           >
             Listener Chat room
           </Link>
           <Link
-            to="/AdminSchedulingSetting"
+            to="/adminschedulingsetting"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/AdminSchedulingSetting"
+              "/adminschedulingsetting"
             )}`}
           >
             Admin Scheduling Setting
           </Link>
 
           <Link
-            to="/AdminCoordinatorList"
+            to="/admincoordinatorlist"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/AdminCoordinatorList"
+              "/admincoordinatorlist"
             )}`}
           >
             Coordinator List
           </Link>
 
           <Link
-            to="/AdminFeedback"
+            to="/adminfeedback"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/AdminFeedback"
+              "/adminfeedback"
             )}`}
           >
             Feedback
           </Link>
           <Link
-            to="/AdminHelp"
+            to="/adminhelp"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/AdminHelp"
+              "/adminhelp"
             )}`}
           >
             Help

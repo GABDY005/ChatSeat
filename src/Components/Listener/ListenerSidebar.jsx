@@ -33,51 +33,51 @@ export default function ListenerSidebar({ userName = "" }) {
         {/* Navigation Links */}
         <div className="flex flex-col space-y-3 mb-auto">
           <Link
-            to="/ListenerDashboard"
+            to="/listenerdashboard"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/ListenerDashboard"
+              "/listenerdashboard"
             )}`}
           >
             Dashboard
           </Link>
           <Link
-            to="/CoordinatorsListInListener"
+            to="/coordinatorslistinlistener"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/CoordinatorsListInListener"
+              "/coordinatorslistinlistener"
             )}`}
           >
             List of Coordinators
           </Link>
           <Link
-            to="/ListenerScheduling"
+            to="/listenerscheduling"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/ListenerScheduling"
+              "/listenerscheduling"
             )}`}
           >
             Scheduling
           </Link>
 
           <Link
-            to="/ListenerChatroom"
+            to="/listenerchatroom"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/ListenerChatroom"
+              "/listenerchatroom"
             )}`}
           >
             Let's Talk
           </Link>
           <Link
-            to="/About"
+            to="/about"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/About"
+              "/about"
             )}`}
           >
             About Us
           </Link>
 
           <Link
-            to="/ListenerHelp"
+            to="/listenerhelp"
             className={`px-4 py-2 rounded-full text-center shadow whitespace-nowrap ${getLinkStyle(
-              "/ListenerHelp"
+              "/listenerhelp"
             )}`}
           >
             Help

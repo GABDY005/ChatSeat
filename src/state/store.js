@@ -1,10 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit';
-import loggedInUserReducer from './loggedInUser';
+import { configureStore } from "@reduxjs/toolkit";
+import loggedInUserReducer from "./loggedInUser";
 
 // Function to load state from localStorage
 const loadState = () => {
   try {
-    const serializedState = localStorage.getItem('reduxState');
+    const serializedState = localStorage.getItem("reduxState");
     if (serializedState === null) {
       return undefined;
     }
@@ -18,10 +18,8 @@ const loadState = () => {
 const saveState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
-    localStorage.setItem('reduxState', serializedState);
-  } catch {
-    
-  }
+    localStorage.setItem("reduxState", serializedState);
+  } catch {}
 };
 
 // Load the initial state from localStorage

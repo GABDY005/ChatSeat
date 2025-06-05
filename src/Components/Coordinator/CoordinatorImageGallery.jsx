@@ -11,7 +11,7 @@ export default function CoordinatorImageGallery() {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const user = useSelector((state) => state.loggedInUser.success);
-  
+
   useEffect(() => {
     fetchImages();
   }, []);

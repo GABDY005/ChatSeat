@@ -51,13 +51,13 @@ export default function LoginPage() {
 
       // Navigate based on role (keeping your existing navigation logic)
       if (role === "admin") {
-        navigate("/AdminDashboard");
+        navigate("/admindashboard");
       } else if (role === "listener") {
-        navigate("/ListenerDashboard");
+        navigate("/listenerdashboard");
       } else if (role === "coordinator") {
-        navigate("/CoordinatorDashboard");
+        navigate("/coordinatordashboard");
       } else if (role === "pending") {
-        navigate("/PendingApproval");
+        navigate("/pendingapproval");
       } else {
         toast.warning("Unknown role. Please contact admin.");
       }
