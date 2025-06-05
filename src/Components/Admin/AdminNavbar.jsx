@@ -47,31 +47,31 @@ export default function AdminNavbar({ title = "Admin Dashboard" }) {
               <div className="absolute right-0 mt-2 w-56 bg-white text-gray-800 rounded shadow-lg z-10">
                 <button
                   onClick={() => {
-                    navigate("/ListenerDashboard");
+                    navigate("/listenerdashboard");
                     setDropdownOpen(false);
                   }}
                   className="text-sm w-full text-left px-4 py-2 hover:bg-blue-100"
                 >
-                  Listener Dashboard
+                  Listener Portal
                 </button>
                 <button
                   onClick={() => {
-                    navigate("/CoordinatorDashboard");
+                    navigate("/coordinatordashboard");
                     setDropdownOpen(false);
                   }}
                   className="text-sm w-full text-left px-4 py-2 hover:bg-green-100"
                 >
-                  Coordinator Dashboard
+                  Coordinator Portal
                 </button>
 
                 <button
                   onClick={() => {
-                    navigate("/AdminDashboard");
+                    navigate("/admindashboard");
                     setDropdownOpen(false);
                   }}
                   className="text-sm w-full text-left px-4 py-2 hover:bg-yellow-100"
                 >
-                  Admin Dashboard
+                  Admin Portal
                 </button>
               </div>
             )}

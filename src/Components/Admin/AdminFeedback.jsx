@@ -13,7 +13,6 @@ export default function Feedback() {
   const [itemsPerPage] = useState(9);
   const [showMore, setShowMore] = useState(null);
 
-  
   useEffect(() => {
     const fetchFeedback = async () => {
       const { data, error } = await supabase

@@ -9,12 +9,6 @@ export default function Feedback() {
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.loggedInUser.success);
 
-  //To prevent the page from reloading when the feedback is submitted
-  // useEffect(() => {
-  //   localStorage.getItem("userRole") === "admin"
-  //     ? setUserRole("admin")
-  //     : setUserRole("Coordinator");
-  // }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

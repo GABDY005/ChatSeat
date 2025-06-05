@@ -100,10 +100,10 @@ export default function Navbar() {
                 <Link
                   to={
                     user.role === "admin"
-                      ? "/AdminDashboard"
+                      ? "/admindashboard"
                       : user.role === "coordinator"
-                      ? "/CoordinatorDashboard"
-                      : "/ListenerDashboard"
+                      ? "/coordinatordashboard"
+                      : "/listenerdashboard"
                   }
                   className="block bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200 text-center"
                   onClick={() => setIsMenuOpen(false)}

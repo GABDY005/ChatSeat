@@ -28,7 +28,7 @@ export const signupUser = async ({
       first_name: firstName,
       last_name: lastName,
       phone_number: phoneNumber,
-      role: "pending", 
+      role: "pending",
     },
   ]);
 
@@ -146,7 +146,7 @@ export const checkUserRole = async (requiredRole) => {
     error: authError,
   } = await supabase.auth.getUser();
   if (authError || !user) throw new Error("User not authenticated");
-  
+
   // Fetch the user's profile to get their role
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
@@ -158,5 +158,3 @@ export const checkUserRole = async (requiredRole) => {
 
   return profile.role === requiredRole;
 };
-
-

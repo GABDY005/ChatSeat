@@ -38,7 +38,7 @@ export const {
   setloggedInUserSuccess,
   setloggedInUserLoading,
   setloggedInUserError,
-  logoutUser 
+  logoutUser,
 } = loggedInUser.actions;
 
 export default loggedInUser.reducer;
