@@ -42,17 +42,18 @@ export default function Navbar() {
             </Link>
             {user && user.id ? (
               <Link
-                to={
-                  user.role === "admin"
-                    ? "/AdminDashboard"
-                    : user.role === "coordinator"
-                    ? "/CoordinatorDashboard"
-                    : "/ListenerDashboard"
-                }
-                className="bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200"
-              >
-                Dashboard
-              </Link>
+                  to={
+                    user.role === "admin"
+                      ? "/admindashboard"
+                      : user.role === "coordinator"
+                      ? "/coordinatordashboard"
+                      : "/listenerdashboard"
+                  }
+                  className="block bg-[#A8E4F2] text-[#003366] font-semibold px-4 py-2 rounded-full hover:bg-white shadow transition duration-200 text-center"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
             ) : (
               <Link
                 to="/Login"

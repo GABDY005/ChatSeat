@@ -120,7 +120,7 @@ function App() {
                 path="/coordinatorlistenerchatroom"
                 element={<CoordinatorListenerChatroom />}
               />
-              {/* <Route path="/Logos" element={<Logos />} /> */}
+              
               <Route
                 path="/coordinatorfeedback"
                 element={<CoordinatorFeedback />}

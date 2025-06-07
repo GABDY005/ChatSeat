@@ -71,14 +71,7 @@ export default function LoginPage() {
 
   return (
     <>
-      {/* Helmet component to manage the document head for SEO */}
-      <Helmet>
-        <title>Login – ChatSeat</title>
-        <meta
-          name="description"
-          content="Access your ChatSeat account to book a listener or manage your availability."
-        />
-      </Helmet>
+     
       <div className="h-screen">
         <Navbar />
 

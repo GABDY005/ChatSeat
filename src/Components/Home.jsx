@@ -16,13 +16,7 @@ export default function Home() {
 
   return (
     <>
-      <Helmet>
-        <title>Have a Chat Seat</title>
-        <meta
-          name="description"
-          content="Access your ChatSeat account to book a listener or manage your availability."
-        />
-      </Helmet>
+      
 
       <Navbar />
 
@@ -91,24 +85,6 @@ export default function Home() {
                 where you can chat with other Coordinators.
               </p>
             </div>
-          </div>
-
-          <div
-            className="bg-[#E0F7FA] p-6 md:p-8 rounded-xl shadow"
-            data-aos="zoom-in"
-          >
-            <h4 className="text-lg md:text-2xl font-bold mb-4 text-[#003366]">
-              Does this sound like something that you would be interested in
-              doing?
-            </h4>
-            <p className="text-sm md:text-base">
-              If you would like to volunteer as a Coordinator, then you will
-              need to sign in and proceed to the page for Coordinators. On this
-              page you will find information about "Lessons learned" which
-              describes some of the lessons we and others have learned when they
-              established Chat Seats. There are also files of the graphics that
-              have been used previously: banner, logo, name tags.
-            </p>
           </div>
 
           <div
