@@ -12,6 +12,7 @@ export default function AdminUserList() {
   // State variables to manage users, active tab, and first name
   const [users, setUsers] = useState([]);
   const [activeTab, setActiveTab] = useState("pending");
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch all users when the component mounts
   useEffect(() => {
@@ -55,7 +56,14 @@ export default function AdminUserList() {
   };
 
   //it will filter the user according tot he role
-  const filteredUsers = users.filter((user) => user.role === activeTab);
+  const filteredUsers = users
+  .filter((user) => user.role === activeTab)
+  .filter((user) =>
+    `${user.first_name} ${user.last_name}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
 
   return (
     <>
@@ -86,6 +94,16 @@ export default function AdminUserList() {
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}s
               </button>
             ))}
+          </div>
+
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Search pending user by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full md:w-1/3 px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+            />
           </div>
 
           {/* Table to display the filtered users */}

@@ -13,6 +13,7 @@ export default function Feedback() {
   const [itemsPerPage] = useState(9);
   const [showMore, setShowMore] = useState(null);
 
+  // Fetch feedback data from Supabase on component mount
   useEffect(() => {
     const fetchFeedback = async () => {
       const { data, error } = await supabase

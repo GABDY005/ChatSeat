@@ -3,9 +3,8 @@ import {
   deletePastBookings,
 } from "../Controller/BookingController";
 import { useEffect, useState } from "react";
-
 import Navbar from "./Navbar";
-import { Helmet } from "react-helmet";
+
 
 export default function BookedListener() {
   const [bookings, setBookings] = useState([]);
@@ -39,13 +38,7 @@ export default function BookedListener() {
 
   return (
     <>
-      <Helmet>
-        <title>WHo's at the Seat?</title>
-        <meta
-          name="description"
-          content="Access your ChatSeat account to book a listener or manage your availability."
-        />
-      </Helmet>
+      
       <div className="min-h-sceen bg-white">
         <Navbar />
       </div>

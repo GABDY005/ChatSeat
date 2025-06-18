@@ -1,41 +1,33 @@
+// AdminWeeklyScheduler.jsx
 import { useEffect, useState } from "react";
 import supabase from "../../supabase";
 import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
+import { startOfWeek, addDays, format } from "date-fns";
 
-export default function AdminSchedulingSetting() {
-  // State variables
+const timeslots = [
+  "08:00",
+  "09:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+  "18:00",
+  "19:00",
+  "20:00",
+];
+
+export default function AdminWeeklyScheduler() {
   const [locations, setLocations] = useState([]);
   const [newLocation, setNewLocation] = useState("");
   const [selectedLocationId, setSelectedLocationId] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTimes, setSelectedTimes] = useState([]);
-  const [existingTimes, setExistingTimes] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [selectedWeek, setSelectedWeek] = useState("");
+  const [availability, setAvailability] = useState({});
 
-  // Predefined timeslots for availability
-  // These are the timeslots available for selection
-  const timeslots = [
-    "08:00",
-    "09:00",
-    "10:00",
-    "11:00",
-    "12:00",
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
-    "18:00",
-    "19:00",
-    "20:00",
-    "21:00",
-  ];
-
-  // Fetch locations from the database on component mount
-  // This effect runs once when the component mounts to load existing locations
   useEffect(() => {
     const fetchLocations = async () => {
       const { data } = await supabase.from("locations").select("*");
@@ -44,47 +36,85 @@ export default function AdminSchedulingSetting() {
     fetchLocations();
   }, []);
 
-  // Initialise the date picker using flatpickr
   useEffect(() => {
-    flatpickr("#date-picker", {
-      dateFormat: "Y-m-d",
-      onChange: (_, dateStr) => setSelectedDate(dateStr),
-    });
-  }, []);
-
-  // Fetch existing times for the selected location and date
-  useEffect(() => {
-    fetchExistingTimes();
-  }, [selectedLocationId, selectedDate]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Function to fetch existing times for the selected location and date
-  const fetchExistingTimes = async () => {
-    if (!selectedLocationId || !selectedDate) {
-      setExistingTimes([]);
-      return;
+    if (selectedLocationId && selectedWeek) {
+      fetchAvailability();
     }
+  }, [selectedLocationId, selectedWeek]);
 
-    // Fetch times from the availability table based on selected location and date
+  const fetchAvailability = async () => {
+    const [year, week] = selectedWeek.split("-W");
+    const firstDayOfYear = new Date(year, 0, 1);
+    const weekStart = addDays(firstDayOfYear, (parseInt(week) - 1) * 7);
+    const monday = startOfWeek(weekStart, { weekStartsOn: 1 });
+
+    const start = monday;
+    const end = addDays(start, 6);
     const { data } = await supabase
       .from("availability")
-      .select("id, time")
+      .select("date, time")
       .eq("location_id", selectedLocationId)
-      .eq("date", selectedDate)
-      .order("time", { ascending: true });
+      .gte("date", format(start, "yyyy-MM-dd"))
+      .lte("date", format(end, "yyyy-MM-dd"));
 
-    setExistingTimes(data || []);
+    const newAvailability = {};
+    for (let i = 0; i < 7; i++) {
+      const dateStr = format(addDays(start, i), "yyyy-MM-dd");
+      newAvailability[dateStr] = [];
+    }
+    (data || []).forEach(({ date, time }) => {
+      if (!newAvailability[date]) newAvailability[date] = [];
+      newAvailability[date].push(time);
+    });
+    setAvailability(newAvailability);
   };
 
-  // Function to add a new location and set its availability for the next 90 days
+  const toggleSlot = (date, time) => {
+    setAvailability((prev) => {
+      const daySlots = prev[date] || [];
+      const newSlots = daySlots.includes(time)
+        ? daySlots.filter((t) => t !== time)
+        : [...daySlots, time];
+      return { ...prev, [date]: newSlots };
+    });
+  };
+
+  const toggleAllSlots = (checked) => {
+    const updated = {};
+    getWeekDates().forEach((day) => {
+      const dateStr = format(day, "yyyy-MM-dd");
+      updated[dateStr] = checked ? [...timeslots] : [];
+    });
+    setAvailability(updated);
+  };
+
+  const handleSave = async () => {
+    const rows = [];
+    Object.keys(availability).forEach((date) => {
+      availability[date].forEach((time) => {
+        rows.push({ location_id: selectedLocationId, date, time });
+      });
+    });
+    await supabase
+      .from("availability")
+      .delete()
+      .eq("location_id", selectedLocationId);
+    await supabase.from("availability").insert(rows);
+    alert("Availability updated for the week!");
+  };
+
   const handleAddLocation = async () => {
-    if (!newLocation) return;
+    if (!newLocation.trim()) return;
     const { data: inserted, error } = await supabase
       .from("locations")
       .insert([{ name: newLocation }])
       .select()
       .single();
 
-    if (error || !inserted) return;
+    if (error || !inserted) {
+      alert("Error adding location.");
+      return;
+    }
 
     const newLocationId = inserted.id;
     const now = new Date();
@@ -110,66 +140,40 @@ export default function AdminSchedulingSetting() {
     setLocations(data || []);
   };
 
-  // Function to delete a location and its associated availability
   const handleDeleteLocation = async (id) => {
-    if (!window.confirm("Delete this location?")) return;
+    if (!window.confirm("Are you sure you want to delete this location?"))
+      return;
     await supabase.from("locations").delete().eq("id", id);
+    await supabase.from("availability").delete().eq("location_id", id);
     const { data } = await supabase.from("locations").select("*");
     setLocations(data || []);
+    if (selectedLocationId === id) setSelectedLocationId("");
   };
 
-  // Function to toggle the selection of a timeslot
-  const toggleTime = (time) => {
-    setSelectedTimes((prev) =>
-      prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]
-    );
-  };
-
-  // Function to save selected availability for the chosen location and date
-  const handleSaveAvailability = async () => {
-    if (!selectedLocationId || !selectedDate || selectedTimes.length === 0) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    setLoading(true);
-
-    // Prepare rows to insert into the availability table
-    const rows = selectedTimes.map((t) => ({
-      location_id: selectedLocationId,
-      date: selectedDate,
-      time: t,
-    }));
-
-    await supabase.from("availability").insert(rows);
-    alert("Availability saved!");
-
-    setSelectedTimes([]);
-    await fetchExistingTimes();
-    setLoading(false);
-  };
-
-  // Function to delete a specific time slot from the availability
-  const handleDeleteTime = async (id) => {
-    await supabase.from("availability").delete().eq("id", id);
-    setExistingTimes((prev) => prev.filter((t) => t.id !== id));
+  const getWeekDates = () => {
+    if (!selectedWeek) return [];
+    const [year, week] = selectedWeek.split("-W");
+    const firstDayOfYear = new Date(year, 0, 1);
+    const weekStart = addDays(firstDayOfYear, (parseInt(week) - 1) * 7);
+    const monday = startOfWeek(weekStart, { weekStartsOn: 1 });
+    return Array.from({ length: 7 }, (_, i) => addDays(monday, i));
   };
 
   return (
     <>
-      <AdminNavbar title="Scheduling Settings" />
-      <div className="flex min-h-screen pt-16 bg-[#e6f4f9]">
+      <AdminNavbar title="Weekly Scheduler" />
+      <div className="flex min-h-screen pt-16 bg-[#f9f9f9]">
         <div className="w-full sm:w-auto sticky top-16 h-[calc(100vh-64px)]">
           <AdminSidebar />
         </div>
-
-        <div className="p-4 sm:p-6 md:p-8 flex-1">
-          <h2 className="text-2xl font-bold text-[#003366] mb-6">
+        <div className="p-6 flex-1">
+          <h2 className="text-2xl font-bold mb-4 text-blue-800">
             Admin Scheduling Settings
           </h2>
 
+          {/* Add New Location */}
           <div className="bg-white p-4 rounded shadow mb-6">
-            <h3 className="font-semibold mb-2 text-[#1E3A8A]">
+            <h3 className="text-lg font-semibold text-blue-800 mb-2">
               Manage Locations
             </h3>
             <div className="flex gap-2 mb-4">
@@ -178,11 +182,11 @@ export default function AdminSchedulingSetting() {
                 value={newLocation}
                 onChange={(e) => setNewLocation(e.target.value)}
                 className="border p-2 rounded w-full"
-                placeholder="New location name"
+                placeholder="Enter location name"
               />
               <button
                 onClick={handleAddLocation}
-                className="bg-green-600 text-white px-4 rounded"
+                className="bg-green-600 text-white px-4 py-2 rounded"
               >
                 Add
               </button>
@@ -196,7 +200,7 @@ export default function AdminSchedulingSetting() {
                   <span>{loc.name}</span>
                   <button
                     onClick={() => handleDeleteLocation(loc.id)}
-                    className="text-red-600"
+                    className="text-red-600 hover:text-red-800"
                   >
                     Delete
                   </button>
@@ -205,14 +209,12 @@ export default function AdminSchedulingSetting() {
             </ul>
           </div>
 
-          <div className="bg-white p-4 rounded shadow">
-            <h3 className="font-semibold mb-3 text-[#1E3A8A]">
-              Set Availability
-            </h3>
+          {/* Week Selection and Availability Grid */}
+          <div className="bg-white p-4 rounded shadow mb-4">
             <select
+              className="border p-2 rounded w-full mb-3"
               value={selectedLocationId}
               onChange={(e) => setSelectedLocationId(e.target.value)}
-              className="w-full p-2 mb-3 border rounded"
             >
               <option value="">-- Select Location --</option>
               {locations.map((loc) => (
@@ -223,57 +225,74 @@ export default function AdminSchedulingSetting() {
             </select>
 
             <input
-              id="date-picker"
-              className="w-full p-2 mb-3 border rounded"
-              placeholder="Select date"
-              readOnly
+              type="week"
+              className="border p-2 rounded w-full"
+              value={selectedWeek}
+              onChange={(e) => setSelectedWeek(e.target.value)}
             />
-
-            {existingTimes.length > 0 && (
-              <div className="mb-4">
-                <h4 className="font-semibold mb-2 text-[#003366]">
-                  Existing Times:
-                </h4>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                  {existingTimes.map((t) => (
-                    <div
-                      key={t.id}
-                      className="flex items-center justify-between border rounded px-2 py-1 bg-gray-50"
-                    >
-                      <span>{t.time}</span>
-                      <button
-                        className="text-red-600 text-sm"
-                        onClick={() => handleDeleteTime(t.id)}
-                      >
-                        ❌
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-4">
-              {timeslots.map((t) => (
-                <label key={t} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedTimes.includes(t)}
-                    onChange={() => toggleTime(t)}
-                  />
-                  {t}
-                </label>
-              ))}
-            </div>
-
-            <button
-              onClick={handleSaveAvailability}
-              className="bg-blue-700 text-white py-2 px-4 rounded"
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save Availability"}
-            </button>
           </div>
+
+          {selectedLocationId && selectedWeek && (
+            <div className="bg-white p-4 rounded shadow">
+              <div className="flex justify-end mb-2">
+                <button
+                  onClick={() => toggleAllSlots(true)}
+                  className="mr-2 bg-green-500 text-white px-3 py-1 rounded"
+                >
+                  Select All
+                </button>
+                <button
+                  onClick={() => toggleAllSlots(false)}
+                  className="bg-red-500 text-white px-3 py-1 rounded"
+                >
+                  Clear All
+                </button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="table-auto w-full text-center">
+                  <thead>
+                    <tr>
+                      <th className="border px-2 py-1">Day</th>
+                      {timeslots.map((slot) => (
+                        <th key={slot} className="border px-2 py-1">
+                          {slot}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {getWeekDates().map((day) => {
+                      const dateStr = format(day, "yyyy-MM-dd");
+                      return (
+                        <tr key={dateStr}>
+                          <td className="border px-2 py-1 font-semibold">
+                            {format(day, "EEE dd/MM")}
+                          </td>
+                          {timeslots.map((slot) => (
+                            <td key={slot} className="border px-2 py-1">
+                              <input
+                                type="checkbox"
+                                checked={
+                                  availability[dateStr]?.includes(slot) || false
+                                }
+                                onChange={() => toggleSlot(dateStr, slot)}
+                              />
+                            </td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <button
+                onClick={handleSave}
+                className="mt-4 bg-blue-700 text-white py-2 px-4 rounded"
+              >
+                Save Changes
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
