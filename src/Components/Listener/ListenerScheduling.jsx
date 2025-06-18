@@ -63,7 +63,7 @@ export default function ListenerScheduling() {
           setEditValues((prev) => ({ ...prev, date: dateStr })),
       });
     }
-  }, [editBookingId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [editBookingId]); 
 
   // Fetch locations from the database when the component mounts
   useEffect(() => {

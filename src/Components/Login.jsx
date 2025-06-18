@@ -5,7 +5,6 @@ import supabase from "../supabase";
 import { useDispatch } from "react-redux";
 import { setloggedInUserSuccess } from "../state/loggedInUser";
 import Navbar from "./Navbar";
-import { Helmet } from "react-helmet";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -45,9 +44,12 @@ export default function LoginPage() {
       // Store user session info for protected routes
       localStorage.setItem("userRole", role);
 
-      toast.success("Login successful!");
-
-      dispatch(setloggedInUserSuccess(profileData));
+      if (profileData.role !== "pending") {
+        dispatch(setloggedInUserSuccess(profileData));
+        toast.success("Login successful!");
+      } else {
+        toast.warning("Awaiting approval");
+      }
 
       // Navigate based on role (keeping your existing navigation logic)
       if (role === "admin") {
@@ -71,12 +73,11 @@ export default function LoginPage() {
 
   return (
     <>
-     
       <div className="h-screen">
         <Navbar />
 
         {/* Main container for the login form */}
-        <div className="h-full flex items-center justify-center bg-[#A8E4F2] px-4 md:px-6">
+        <div className="h-full flex items-center justify-center bg-[#A8E4F2] px-4 md:px-6 ">
           <div className="bg-white px-6 py-8 md:p-10 shadow-lg w-full max-w-sm rounded-lg">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-[#003366] mb-6 md:mb-8">
               Login

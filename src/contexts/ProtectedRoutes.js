@@ -15,8 +15,10 @@ export default function ProtectedRoute({
     return <Navigate to={redirectPath} replace />;
   }
 
+  // Check user role from localStorage 
   const userRole = localStorage.getItem("userRole");
 
+  // If userRole is not set, default to "user"
   if (userRole === "admin") {
     return <Outlet />;
   }

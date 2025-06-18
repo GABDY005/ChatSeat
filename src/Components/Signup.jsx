@@ -6,7 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import Navbar from "./Navbar";
-import { Helmet } from "react-helmet";
 
 // Validation schema for the signup form
 const schema = Yup.object().shape({
@@ -56,14 +55,6 @@ export default function Signup() {
 
   return (
     <>
-      {/* Helmet component to manage the document head */}
-      <Helmet>
-        <title>Sign Up</title>
-        <meta
-          name="description"
-          content="Access your ChatSeat account to book a listener or manage your availability."
-        />
-      </Helmet>
 
       {/* Navbar component for the header */}
       <div className=" bg-white">

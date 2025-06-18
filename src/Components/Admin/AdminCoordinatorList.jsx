@@ -19,7 +19,7 @@ export default function AdminCoordinatorList() {
     fetchCoordinators();
   }, []);
 
-  // Fetch coordinators from the database
+  // Handle input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -36,7 +36,7 @@ export default function AdminCoordinatorList() {
       return;
     }
 
-    // Validate email format
+    // Validate format
     const { error } = await supabase
       .from("coordinators")
       .insert([{ ...formData }]);

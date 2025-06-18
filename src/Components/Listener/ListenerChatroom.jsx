@@ -83,7 +83,7 @@ export default function ListenerChatroom() {
       remove(replyRef);
     }
   };
-
+  
   // Check if the user can delete a reply
   const canDeleteReply = (replyUserId, replyUserRole) => {
     return user.id === replyUserId || user.role === "admin";
